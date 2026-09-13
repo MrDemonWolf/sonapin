@@ -1,0 +1,70 @@
+name: Native iOS
+
+on:
+  push:
+    paths:
+      - ".github/workflows/native.yml"
+      - "apps/native/**"
+      - "scripts/**"
+      - "Makefile"
+  pull_request:
+    paths:
+      - ".github/workflows/native.yml"
+      - "apps/native/**"
+      - "scripts/**"
+      - "Makefile"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Xcode 26.6 / macOS 26
+    runs-on: macos-26
+    timeout-minutes: 45
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Print tool versions
+        run: |
+          sw_vers
+          xcodebuild -version
+          swift --version
+
+      - name: Ensure XcodeGen is available
+        run: command -v xcodegen >/dev/null || brew install xcodegen
+
+      - name: Generate and inspect project
+        run: |
+          make project
+          xcodebuild -project apps/native/SonaPin.xcodeproj -scheme SonaPin -list
+
+      - name: Resolve Swift packages
+        run: make resolve
+
+      - name: Build for iOS Simulator
+        run: make build
+
+      - name: Run unit tests
+        run: make test
+
+      - name: Run UI tests
+        run: make ui-test
+
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-diagnostics-macos-26
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            artifacts/*.log
+            artifacts/*.xcresult
+            apps/native/.derived-data/Logs/Test/*.xcresult
