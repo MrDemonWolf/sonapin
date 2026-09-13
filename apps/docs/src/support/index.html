@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#091533">
+    <meta name="description" content="Pre-release support and troubleshooting guidance for SonaPin.">
+    <title>Support draft — SonaPin</title>
+    <link rel="icon" href="__BASE_PATH__brand/sonapin-mascot.png" type="image/png">
+    <link rel="stylesheet" href="__BASE_PATH__styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="__BASE_PATH__" aria-label="SonaPin home">
+          <img src="__BASE_PATH__brand/sonapin-mascot.png" alt="" width="42" height="42">
+          <span>SonaPin</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <ul>
+            <li><a href="__BASE_PATH__#features">Features</a></li>
+            <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
+            <li><a href="__BASE_PATH__support/" aria-current="page">Support</a></li>
+            <li><a href="__BASE_PATH__acknowledgments/">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="page-hero">
+        <p class="eyebrow">Support draft · Pre-release</p>
+        <h1>Keep your badge on track.</h1>
+        <p>
+          SonaPin has not shipped yet. These planned troubleshooting steps will be verified against the release build, and the final support contact will be added before App Store submission.
+        </p>
+      </header>
+
+      <article class="prose">
+        <p class="notice">
+          <strong>Need support today?</strong> There is no public app build yet. Follow development in the <a href="__REPOSITORY_URL__">source repository</a> or visit the <a href="https://mrdemonwolf.com/">MrDemonWolf website</a>. A dedicated contact channel is still being finalized.
+        </p>
+
+        <div class="support-grid">
+          <section class="support-card">
+            <h2>QR code will not scan</h2>
+            <p>Enlarge the code, use the high-contrast option, raise screen brightness, and reduce glare. Keep the entire white quiet zone visible.</p>
+          </section>
+
+          <section class="support-card">
+            <h2>Avatar import shows warnings</h2>
+            <p>Review the compatibility report before replacing your current avatar. Unsupported model features should appear as actionable warnings rather than a raw parser error.</p>
+          </section>
+
+          <section class="support-card">
+            <h2>Motion feels uncomfortable</h2>
+            <p>Enable Reduce Motion in iOS or SonaPin settings and lower interaction sensitivity. The release build is planned to respect the system preference.</p>
+          </section>
+
+          <section class="support-card">
+            <h2>Badge settings changed</h2>
+            <p>Use the accidental-edit lock before handing your phone to someone. Onboarding, camera, and local app data reset controls are planned for Settings.</p>
+          </section>
+        </div>
+
+        <h2>Before reporting a problem</h2>
+        <ol>
+          <li>Record the SonaPin version shown in Settings.</li>
+          <li>Record your iPhone model and iOS version.</li>
+          <li>Write the smallest sequence of steps that reproduces the problem.</li>
+          <li>Note whether the built-in demo avatar has the same problem.</li>
+          <li>Add a screenshot only if it does not expose personal information.</li>
+        </ol>
+
+        <h2>Protect private data</h2>
+        <p>
+          Do not post private QR payloads, contact links, local file paths, or an avatar file you do not have permission to redistribute. A compatibility report is safer than sharing the original model, but review it before posting.
+        </p>
+
+        <h2>Imported model rights</h2>
+        <p>
+          Only import and display a model you have permission to use. SonaPin may summarize embedded license metadata, but it cannot grant rights or determine whether your use is allowed.
+        </p>
+
+        <h2>Accessibility support</h2>
+        <p>
+          The release target includes VoiceOver labels, Dynamic Type, Reduce Motion behavior, high-contrast QR presentation, and usable touch targets. Please include the accessibility setting involved when reporting a problem.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p>Support content remains a pre-release draft.</p>
+        <ul class="footer-links">
+          <li><a href="__BASE_PATH__">Home</a></li>
+          <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
+          <li><a href="__BASE_PATH__acknowledgments/">Acknowledgments</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

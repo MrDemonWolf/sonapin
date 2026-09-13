@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#091533">
+    <meta name="description" content="Draft privacy policy for the local-first SonaPin iOS app.">
+    <title>Privacy draft — SonaPin</title>
+    <link rel="icon" href="__BASE_PATH__brand/sonapin-mascot.png" type="image/png">
+    <link rel="stylesheet" href="__BASE_PATH__styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="__BASE_PATH__" aria-label="SonaPin home">
+          <img src="__BASE_PATH__brand/sonapin-mascot.png" alt="" width="42" height="42">
+          <span>SonaPin</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <ul>
+            <li><a href="__BASE_PATH__#features">Features</a></li>
+            <li><a href="__BASE_PATH__privacy/" aria-current="page">Privacy</a></li>
+            <li><a href="__BASE_PATH__support/">Support</a></li>
+            <li><a href="__BASE_PATH__acknowledgments/">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="page-hero">
+        <p class="eyebrow">Policy draft · September 12, 2026</p>
+        <h1>Privacy without fine print.</h1>
+        <p>
+          SonaPin version 1 is designed to work locally on your iPhone. This public draft documents the intended behavior while the app is still in development.
+        </p>
+      </header>
+
+      <article class="prose">
+        <p class="notice">
+          <strong>Pre-release notice:</strong> This policy is a draft, not a claim that the app has shipped. It will be checked against the final build before App Store release.
+        </p>
+
+        <h2>The short version</h2>
+        <p>
+          SonaPin version 1 is planned with no account, login, advertising, analytics, tracking, cloud profile, or SonaPin-operated backend. Your imported avatar, badge details, QR content, and settings stay in the app’s local storage.
+        </p>
+
+        <h2>Information stored on your device</h2>
+        <p>SonaPin needs local information to make your badge work. That may include:</p>
+        <ul>
+          <li>Your display name, pronouns, species or character type, and optional tagline.</li>
+          <li>Your QR type and payload, such as a website, social profile, contact link, or custom text.</li>
+          <li>An imported VRM file plus compatibility, checksum, author, and license metadata read from that file.</li>
+          <li>Your badge theme, interaction, haptic, motion, display, and onboarding preferences.</li>
+          <li>Local diagnostics needed to explain an import or rendering problem without recording private QR payloads or model paths in production logs.</li>
+        </ul>
+
+        <p>This information is intended to remain inside SonaPin’s app container on your device.</p>
+
+        <h2>Information SonaPin does not collect</h2>
+        <p>Version 1 is designed without:</p>
+        <ul>
+          <li>Accounts or login credentials.</li>
+          <li>Advertising or behavioral tracking.</li>
+          <li>Analytics or crash-reporting SDKs.</li>
+          <li>Model uploads, cloud storage, public galleries, comments, or social feeds.</li>
+          <li>Background networking.</li>
+        </ul>
+
+        <h2>Sharing</h2>
+        <p>
+          SonaPin does not plan to transmit your model or badge data in version 1. A future release may add an explicit system share sheet. If that happens, you will choose what to share and where it goes; this policy will be updated before that feature ships.
+        </p>
+
+        <h2>Apple services</h2>
+        <p>
+          Apple may process App Store downloads, purchases made outside SonaPin, or device diagnostics you choose to share with Apple under Apple’s own terms and privacy policy. That activity is controlled by Apple and your device settings, not by a SonaPin analytics service.
+        </p>
+
+        <h2>Your imported content</h2>
+        <p>
+          You are responsible for having permission to use any avatar, artwork, identity details, or link you add. SonaPin is intended to show available model license metadata during import, but that report is informational and is not legal advice.
+        </p>
+
+        <h2>Delete your data</h2>
+        <p>
+          Version 1 is planned to include a “delete all local app data” control in Settings. Deleting the app through iOS also removes its local app container, subject to Apple’s platform behavior and any device backup settings you control.
+        </p>
+
+        <h2>Policy changes</h2>
+        <p>
+          This draft will change as implementation and App Store review details are finalized. The release policy will show its effective date and describe any material change before publication.
+        </p>
+
+        <h2>Questions</h2>
+        <p>
+          Visit the <a href="__BASE_PATH__support/">support page</a> for current contact status and troubleshooting guidance.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p>SonaPin privacy policy draft. Final review pending.</p>
+        <ul class="footer-links">
+          <li><a href="__BASE_PATH__">Home</a></li>
+          <li><a href="__BASE_PATH__support/">Support</a></li>
+          <li><a href="__BASE_PATH__acknowledgments/">Acknowledgments</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

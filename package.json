@@ -1,0 +1,12 @@
+{
+  "name": "sonapin",
+  "private": true,
+  "packageManager": "bun@1.4.2",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter @sonapin/docs build",
+    "build:docs": "bun run --cwd apps/docs build"
+  }
+}

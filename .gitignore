@@ -1,0 +1,25 @@
+.DS_Store
+.build/
+.swiftpm/
+.turbo/
+node_modules/
+apps/docs/dist/
+
+# Xcode
+DerivedData/
+*.xcresult
+*.xcuserstate
+xcuserdata/
+apps/native/.derived-data/
+apps/native/.build/
+
+# Local models and generated evidence
+LocalAssets/
+artifacts/*
+!artifacts/README.md
+
+# Signing material
+*.cer
+*.p12
+*.mobileprovision
+

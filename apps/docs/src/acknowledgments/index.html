@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#091533">
+    <meta name="description" content="Draft open-source and platform acknowledgments for SonaPin.">
+    <title>Acknowledgments draft — SonaPin</title>
+    <link rel="icon" href="__BASE_PATH__brand/sonapin-mascot.png" type="image/png">
+    <link rel="stylesheet" href="__BASE_PATH__styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="__BASE_PATH__" aria-label="SonaPin home">
+          <img src="__BASE_PATH__brand/sonapin-mascot.png" alt="" width="42" height="42">
+          <span>SonaPin</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <ul>
+            <li><a href="__BASE_PATH__#features">Features</a></li>
+            <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
+            <li><a href="__BASE_PATH__support/">Support</a></li>
+            <li><a href="__BASE_PATH__acknowledgments/" aria-current="page">Credits</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="page-hero">
+        <p class="eyebrow">Acknowledgments · Working draft</p>
+        <h1>Built on a generous ecosystem.</h1>
+        <p>
+          SonaPin uses Apple platform technologies and plans to use a small, pinned set of open-source code. Exact versions and license text will be published from the final resolved build.
+        </p>
+      </header>
+
+      <article class="prose">
+        <p class="notice">
+          <strong>Draft status:</strong> Dependency validation is still in progress. This page does not replace the final third-party notices bundled with the release app.
+        </p>
+
+        <h2>Planned app technology</h2>
+        <table class="ack-table">
+          <thead>
+            <tr>
+              <th scope="col">Technology</th>
+              <th scope="col">Role</th>
+              <th scope="col">Release status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Swift and SwiftUI</th>
+              <td>Native app language and interface framework.</td>
+              <td>Apple platform technology; final SDK details pending.</td>
+            </tr>
+            <tr>
+              <th scope="row">RealityKit</th>
+              <td>Native 3D presentation and avatar interaction.</td>
+              <td>Apple platform technology; device validation pending.</td>
+            </tr>
+            <tr>
+              <th scope="row">Core Image</th>
+              <td>On-device QR code generation.</td>
+              <td>Apple platform technology; release validation pending.</td>
+            </tr>
+            <tr>
+              <th scope="row">VRMKit</th>
+              <td>Candidate package for VRM parsing and RealityKit rendering.</td>
+              <td>Exact stable version and license notice not yet finalized.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Standards and community work</h2>
+        <p>
+          The VRM format and its public specifications make portable humanoid avatars possible. SonaPin’s compatibility work is informed by the VRM specification and the broader open avatar ecosystem.
+        </p>
+
+        <h2>Documentation site</h2>
+        <p>
+          This site is hand-built static HTML and CSS. Its build step uses Bun plus Node-compatible standard-library file APIs. It loads no third-party fonts, analytics, advertising, or runtime scripts.
+        </p>
+
+        <h2>Final release checklist</h2>
+        <ul>
+          <li>Pin every production package to a verified stable version.</li>
+          <li>Record its author, source, version, and complete required license notice.</li>
+          <li>Match this public page to the acknowledgments included inside the app.</li>
+          <li>Review model assets and demo content for redistribution permission.</li>
+        </ul>
+
+        <p>
+          See a missing credit? Use the <a href="__BASE_PATH__support/">support page</a> for the current contact status.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p>Acknowledgments draft. Exact notices pending.</p>
+        <ul class="footer-links">
+          <li><a href="__BASE_PATH__">Home</a></li>
+          <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
+          <li><a href="__BASE_PATH__support/">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>
