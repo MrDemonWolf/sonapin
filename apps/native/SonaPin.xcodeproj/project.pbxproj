@@ -1,0 +1,814 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		037D9CEDA72E02907A360D04 /* VRMImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BA65DE2D2FDD3F88CD8595 /* VRMImportService.swift */; };
+		0A329359BA2634EF3BBFA174 /* SonaPinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E94641DCFD6B197E961EC68 /* SonaPinApp.swift */; };
+		0C37614BD31B1DE780DDA8BD /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527FDA1F4A27ED460F4BEBBA /* AppModel.swift */; };
+		1674586EEC700F80BBECBC50 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224E21E0E43221D59F5F292 /* QRCodeView.swift */; };
+		19E76076A659AD0ED3FB2D3C /* AvatarImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27401B45120B8C9B781AD0D5 /* AvatarImportView.swift */; };
+		2D0E02F1C603F29F996CF4F3 /* AppModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9B135B9DE5ECFB51F15C0 /* AppModels.swift */; };
+		2EB0D986AE36AA6AE3070A57 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1432D7DFB5C8965B1633EE83 /* AppIcon.icon */; };
+		302AF428240D93140A63670E /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC3879C16E0F1017BDFBB8E /* BadgeView.swift */; };
+		3156126DEE634D1D1253D62B /* SonaPinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */; };
+		582A39E707CC1024306E0846 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */; };
+		621502CADEEFB4DBDB8BC362 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D567D2D232B896C799B26A61 /* AppRootView.swift */; };
+		654C9C0E9AEB4E7E034F8FC6 /* SonaPinStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30984E3996934D67DA8024B /* SonaPinStyle.swift */; };
+		677034CB593C3192BF6EB582 /* SonaPinCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B43D0688699DC13F1FF2082 /* SonaPinCoreTests.swift */; };
+		78F1B44A28D37F39650BC6B2 /* VRMRealityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 519DB447BA221E1EA8440014 /* VRMRealityKit */; };
+		9D8221BA4F8EEAF2E6EFDE41 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D1E74BF7C8B29CBFDE332C /* QRCodeGenerator.swift */; };
+		A1C991B870DAA41569D2DE0C /* ProfileEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116913DAC6158BC35E1E8101 /* ProfileEditorView.swift */; };
+		A1CC02F4906B4E3903710429 /* AvatarStageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63221C67F690A90676A38C95 /* AvatarStageView.swift */; };
+		A75F33B2962406CADFCBF27B /* VRMKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0BA79646B21235F61FB280F7 /* VRMKit */; };
+		AA30B2915FED36FE042CA74A /* AppDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8630CB9270C057AFC717F5E3 /* AppDiagnostics.swift */; };
+		AF6BBAB903236DE593EA18BE /* AppPersistenceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF22C7C2F34AE6D873E9AC6 /* AppPersistenceStore.swift */; };
+		B63557950A703D6003E272F1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */; };
+		CA702A879F0167C2EDD36E86 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAED173FA61DAA452CA7DF8 /* OnboardingView.swift */; };
+		E6BCA407BE994297BDA8B816 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C63D837B9D9CEF4A84F586 /* Validation.swift */; };
+		E7755CFFF0E8255BEE079B58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6852DD19055F9D638AB64EFB /* Assets.xcassets */; };
+		E7CFD477CDEF64592817FF7F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F14D20ED092B2877A38D739 /* SettingsView.swift */; };
+		F695C0193AF718C49DEAA5D1 /* AvatarRenderers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE5ABB714BF09D0599BC12C /* AvatarRenderers.swift */; };
+		FB14AE22F12C10FF38455503 /* AvatarDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA69EAF63F6F44C65F8E2A9 /* AvatarDomain.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2F32EC28CF61C3A39E3166FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6EB45F0BBCEC663A7F3499B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE485A86FB4C9C678941B7BC;
+			remoteInfo = SonaPin;
+		};
+		79813C4FB91AF4E24AB41115 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6EB45F0BBCEC663A7F3499B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE485A86FB4C9C678941B7BC;
+			remoteInfo = SonaPin;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0BB03A131D24FB02ED9B9E31 /* SonaPinTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SonaPinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		10C63D837B9D9CEF4A84F586 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		116913DAC6158BC35E1E8101 /* ProfileEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorView.swift; sourceTree = "<group>"; };
+		1224E21E0E43221D59F5F292 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
+		1432D7DFB5C8965B1633EE83 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		14D1E74BF7C8B29CBFDE332C /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		1E94641DCFD6B197E961EC68 /* SonaPinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonaPinApp.swift; sourceTree = "<group>"; };
+		1F14D20ED092B2877A38D739 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonaPinUITests.swift; sourceTree = "<group>"; };
+		27401B45120B8C9B781AD0D5 /* AvatarImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImportView.swift; sourceTree = "<group>"; };
+		3BB9B135B9DE5ECFB51F15C0 /* AppModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModels.swift; sourceTree = "<group>"; };
+		4B43D0688699DC13F1FF2082 /* SonaPinCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonaPinCoreTests.swift; sourceTree = "<group>"; };
+		527FDA1F4A27ED460F4BEBBA /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		59BA65DE2D2FDD3F88CD8595 /* VRMImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VRMImportService.swift; sourceTree = "<group>"; };
+		5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		5FC3879C16E0F1017BDFBB8E /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		63221C67F690A90676A38C95 /* AvatarStageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStageView.swift; sourceTree = "<group>"; };
+		6852DD19055F9D638AB64EFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		8630CB9270C057AFC717F5E3 /* AppDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDiagnostics.swift; sourceTree = "<group>"; };
+		8EA69EAF63F6F44C65F8E2A9 /* AvatarDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarDomain.swift; sourceTree = "<group>"; };
+		95299040DF6255C733F933C1 /* SonaPinUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SonaPinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA46D22E901862DF6D6F9E6D /* SonaPin.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SonaPin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACF22C7C2F34AE6D873E9AC6 /* AppPersistenceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistenceStore.swift; sourceTree = "<group>"; };
+		B30984E3996934D67DA8024B /* SonaPinStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonaPinStyle.swift; sourceTree = "<group>"; };
+		BAE5ABB714BF09D0599BC12C /* AvatarRenderers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRenderers.swift; sourceTree = "<group>"; };
+		D567D2D232B896C799B26A61 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
+		ECAED173FA61DAA452CA7DF8 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		06D2EA062C95E52FB0CA8863 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A75F33B2962406CADFCBF27B /* VRMKit in Frameworks */,
+				78F1B44A28D37F39650BC6B2 /* VRMRealityKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08C57AF6BDEAAB932AC2246E = {
+			isa = PBXGroup;
+			children = (
+				6B3FCA683D74713A3F1F9AD9 /* Resources */,
+				B56E6E86CEE2BF8C1E4628F5 /* SonaPin */,
+				CA7384103EFCDA5F05DDBF22 /* SonaPinTests */,
+				76D4758EB5258B0D60A4B2E4 /* SonaPinUITests */,
+				85C424717C0B1BDC18CF2D31 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		29F8A2F46A694D5C0B9C6A18 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				527FDA1F4A27ED460F4BEBBA /* AppModel.swift */,
+				D567D2D232B896C799B26A61 /* AppRootView.swift */,
+				1E94641DCFD6B197E961EC68 /* SonaPinApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3F5159802724115912B8C45C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3BB9B135B9DE5ECFB51F15C0 /* AppModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		47FC7F41B07F2F58D4B4C4F3 /* Diagnostics */ = {
+			isa = PBXGroup;
+			children = (
+				8630CB9270C057AFC717F5E3 /* AppDiagnostics.swift */,
+			);
+			path = Diagnostics;
+			sourceTree = "<group>";
+		};
+		6B3FCA683D74713A3F1F9AD9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1432D7DFB5C8965B1633EE83 /* AppIcon.icon */,
+				6852DD19055F9D638AB64EFB /* Assets.xcassets */,
+				69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */,
+				5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */,
+			);
+			name = Resources;
+			path = SonaPin/Resources;
+			sourceTree = "<group>";
+		};
+		6D7D16D9690C6383764113A2 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				47FC7F41B07F2F58D4B4C4F3 /* Diagnostics */,
+				3F5159802724115912B8C45C /* Models */,
+				D5CD582DC853A749D419A9AF /* Persistence */,
+				81E2E61268DB6AF694D545C1 /* Utilities */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		76D4758EB5258B0D60A4B2E4 /* SonaPinUITests */ = {
+			isa = PBXGroup;
+			children = (
+				22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */,
+			);
+			path = SonaPinUITests;
+			sourceTree = "<group>";
+		};
+		81E2E61268DB6AF694D545C1 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				10C63D837B9D9CEF4A84F586 /* Validation.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		85C424717C0B1BDC18CF2D31 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA46D22E901862DF6D6F9E6D /* SonaPin.app */,
+				0BB03A131D24FB02ED9B9E31 /* SonaPinTests.xctest */,
+				95299040DF6255C733F933C1 /* SonaPinUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8F852221848D749553C2FD9D /* Badge */ = {
+			isa = PBXGroup;
+			children = (
+				5FC3879C16E0F1017BDFBB8E /* BadgeView.swift */,
+			);
+			path = Badge;
+			sourceTree = "<group>";
+		};
+		99BA00C8BF093EC07B0A717A /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				8EA69EAF63F6F44C65F8E2A9 /* AvatarDomain.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		9A469EA2B998DCD3A8CC13B8 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				E092809E9C1B10A79DFD8B0E /* Avatar */,
+				8F852221848D749553C2FD9D /* Badge */,
+				CCBFBE962400801FC9FC02FD /* Onboarding */,
+				B557C17CB7A21FCB8D008498 /* Profile */,
+				DFB067B8E5DF018C6B3AEDD6 /* QRCode */,
+				F9658CA0FF23559863965CE5 /* Settings */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A39F1CAE659B2F5F0736A69B /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				BAE5ABB714BF09D0599BC12C /* AvatarRenderers.swift */,
+				59BA65DE2D2FDD3F88CD8595 /* VRMImportService.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		A90A3A2845BE122AAAFFDB8E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				1224E21E0E43221D59F5F292 /* QRCodeView.swift */,
+				B30984E3996934D67DA8024B /* SonaPinStyle.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		B557C17CB7A21FCB8D008498 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				116913DAC6158BC35E1E8101 /* ProfileEditorView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		B56E6E86CEE2BF8C1E4628F5 /* SonaPin */ = {
+			isa = PBXGroup;
+			children = (
+				29F8A2F46A694D5C0B9C6A18 /* App */,
+				6D7D16D9690C6383764113A2 /* Core */,
+				9A469EA2B998DCD3A8CC13B8 /* Features */,
+				ED0F2A16F4A6F60C6B82C456 /* Shared */,
+			);
+			path = SonaPin;
+			sourceTree = "<group>";
+		};
+		B6F3BB99616EB64BF3CE4DF3 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				27401B45120B8C9B781AD0D5 /* AvatarImportView.swift */,
+				63221C67F690A90676A38C95 /* AvatarStageView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		CA7384103EFCDA5F05DDBF22 /* SonaPinTests */ = {
+			isa = PBXGroup;
+			children = (
+				4B43D0688699DC13F1FF2082 /* SonaPinCoreTests.swift */,
+			);
+			path = SonaPinTests;
+			sourceTree = "<group>";
+		};
+		CCBFBE962400801FC9FC02FD /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				ECAED173FA61DAA452CA7DF8 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		D5CD582DC853A749D419A9AF /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				ACF22C7C2F34AE6D873E9AC6 /* AppPersistenceStore.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		DFB067B8E5DF018C6B3AEDD6 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				14D1E74BF7C8B29CBFDE332C /* QRCodeGenerator.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
+		E092809E9C1B10A79DFD8B0E /* Avatar */ = {
+			isa = PBXGroup;
+			children = (
+				99BA00C8BF093EC07B0A717A /* Domain */,
+				A39F1CAE659B2F5F0736A69B /* Infrastructure */,
+				B6F3BB99616EB64BF3CE4DF3 /* UI */,
+			);
+			path = Avatar;
+			sourceTree = "<group>";
+		};
+		ED0F2A16F4A6F60C6B82C456 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A90A3A2845BE122AAAFFDB8E /* UI */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		F9658CA0FF23559863965CE5 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1F14D20ED092B2877A38D739 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7B0C2E96454A4A7C8AE96AE5 /* SonaPinTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE984EA6EEAA25447488F761 /* Build configuration list for PBXNativeTarget "SonaPinTests" */;
+			buildPhases = (
+				80A528A968608158BA5C2F4B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C94694289CF8A91CD04FD6B2 /* PBXTargetDependency */,
+			);
+			name = SonaPinTests;
+			packageProductDependencies = (
+			);
+			productName = SonaPinTests;
+			productReference = 0BB03A131D24FB02ED9B9E31 /* SonaPinTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BE485A86FB4C9C678941B7BC /* SonaPin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DA9693DCE27EC8610B11AF1 /* Build configuration list for PBXNativeTarget "SonaPin" */;
+			buildPhases = (
+				61789DFD85DB9DA91C90BA1D /* Sources */,
+				F2F421348B814403D6C1CB89 /* Resources */,
+				06D2EA062C95E52FB0CA8863 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SonaPin;
+			packageProductDependencies = (
+				0BA79646B21235F61FB280F7 /* VRMKit */,
+				519DB447BA221E1EA8440014 /* VRMRealityKit */,
+			);
+			productName = SonaPin;
+			productReference = AA46D22E901862DF6D6F9E6D /* SonaPin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E5F640C29E4BA83A6A5C1284 /* SonaPinUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22E011D66909691575D2C9EF /* Build configuration list for PBXNativeTarget "SonaPinUITests" */;
+			buildPhases = (
+				FD7E471EBE72AB536CFE2104 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4AB972817E021E740E1FB850 /* PBXTargetDependency */,
+			);
+			name = SonaPinUITests;
+			packageProductDependencies = (
+			);
+			productName = SonaPinUITests;
+			productReference = 95299040DF6255C733F933C1 /* SonaPinUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6EB45F0BBCEC663A7F3499B7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					BE485A86FB4C9C678941B7BC = {
+						ProvisioningStyle = Automatic;
+					};
+					E5F640C29E4BA83A6A5C1284 = {
+						TestTargetID = BE485A86FB4C9C678941B7BC;
+					};
+				};
+			};
+			buildConfigurationList = 7B2FDC75089F9FD32C2060CE /* Build configuration list for PBXProject "SonaPin" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 08C57AF6BDEAAB932AC2246E;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				350D5B8865FDEC252EFBA26F /* XCRemoteSwiftPackageReference "VRMKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 85C424717C0B1BDC18CF2D31 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE485A86FB4C9C678941B7BC /* SonaPin */,
+				7B0C2E96454A4A7C8AE96AE5 /* SonaPinTests */,
+				E5F640C29E4BA83A6A5C1284 /* SonaPinUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F2F421348B814403D6C1CB89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2EB0D986AE36AA6AE3070A57 /* AppIcon.icon in Resources */,
+				E7755CFFF0E8255BEE079B58 /* Assets.xcassets in Resources */,
+				B63557950A703D6003E272F1 /* Localizable.xcstrings in Resources */,
+				582A39E707CC1024306E0846 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		61789DFD85DB9DA91C90BA1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA30B2915FED36FE042CA74A /* AppDiagnostics.swift in Sources */,
+				0C37614BD31B1DE780DDA8BD /* AppModel.swift in Sources */,
+				2D0E02F1C603F29F996CF4F3 /* AppModels.swift in Sources */,
+				AF6BBAB903236DE593EA18BE /* AppPersistenceStore.swift in Sources */,
+				621502CADEEFB4DBDB8BC362 /* AppRootView.swift in Sources */,
+				FB14AE22F12C10FF38455503 /* AvatarDomain.swift in Sources */,
+				19E76076A659AD0ED3FB2D3C /* AvatarImportView.swift in Sources */,
+				F695C0193AF718C49DEAA5D1 /* AvatarRenderers.swift in Sources */,
+				A1CC02F4906B4E3903710429 /* AvatarStageView.swift in Sources */,
+				302AF428240D93140A63670E /* BadgeView.swift in Sources */,
+				CA702A879F0167C2EDD36E86 /* OnboardingView.swift in Sources */,
+				A1C991B870DAA41569D2DE0C /* ProfileEditorView.swift in Sources */,
+				9D8221BA4F8EEAF2E6EFDE41 /* QRCodeGenerator.swift in Sources */,
+				1674586EEC700F80BBECBC50 /* QRCodeView.swift in Sources */,
+				E7CFD477CDEF64592817FF7F /* SettingsView.swift in Sources */,
+				0A329359BA2634EF3BBFA174 /* SonaPinApp.swift in Sources */,
+				654C9C0E9AEB4E7E034F8FC6 /* SonaPinStyle.swift in Sources */,
+				037D9CEDA72E02907A360D04 /* VRMImportService.swift in Sources */,
+				E6BCA407BE994297BDA8B816 /* Validation.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80A528A968608158BA5C2F4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				677034CB593C3192BF6EB582 /* SonaPinCoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD7E471EBE72AB536CFE2104 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3156126DEE634D1D1253D62B /* SonaPinUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4AB972817E021E740E1FB850 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE485A86FB4C9C678941B7BC /* SonaPin */;
+			targetProxy = 79813C4FB91AF4E24AB41115 /* PBXContainerItemProxy */;
+		};
+		C94694289CF8A91CD04FD6B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE485A86FB4C9C678941B7BC /* SonaPin */;
+			targetProxy = 2F32EC28CF61C3A39E3166FC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2A226B3118659D47542D5D61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin.uitests;
+				SDKROOT = iphoneos;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SonaPin;
+			};
+			name = Debug;
+		};
+		3C74F4225EA98D1BC51C6237 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		42CF90FF57AA56986DCEA6B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin.tests;
+				SDKROOT = iphoneos;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SonaPin.app/SonaPin";
+			};
+			name = Debug;
+		};
+		76BF8F9E3530DAB8A8C8D59A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SonaPin;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin;
+				PRODUCT_NAME = SonaPin;
+				SDKROOT = iphoneos;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8A001C970879EBA6C3D082FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin.tests;
+				SDKROOT = iphoneos;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SonaPin.app/SonaPin";
+			};
+			name = Release;
+		};
+		A4DEE030B6396D832F68375E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		BC63F2A0848F8A5CF32BBC0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin.uitests;
+				SDKROOT = iphoneos;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SonaPin;
+			};
+			name = Release;
+		};
+		E857F963D77006AFD2E902A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SonaPin;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin;
+				PRODUCT_NAME = SonaPin;
+				SDKROOT = iphoneos;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		22E011D66909691575D2C9EF /* Build configuration list for PBXNativeTarget "SonaPinUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A226B3118659D47542D5D61 /* Debug */,
+				BC63F2A0848F8A5CF32BBC0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3DA9693DCE27EC8610B11AF1 /* Build configuration list for PBXNativeTarget "SonaPin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E857F963D77006AFD2E902A3 /* Debug */,
+				76BF8F9E3530DAB8A8C8D59A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7B2FDC75089F9FD32C2060CE /* Build configuration list for PBXProject "SonaPin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C74F4225EA98D1BC51C6237 /* Debug */,
+				A4DEE030B6396D832F68375E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EE984EA6EEAA25447488F761 /* Build configuration list for PBXNativeTarget "SonaPinTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42CF90FF57AA56986DCEA6B3 /* Debug */,
+				8A001C970879EBA6C3D082FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		350D5B8865FDEC252EFBA26F /* XCRemoteSwiftPackageReference "VRMKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tattn/VRMKit.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0BA79646B21235F61FB280F7 /* VRMKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 350D5B8865FDEC252EFBA26F /* XCRemoteSwiftPackageReference "VRMKit" */;
+			productName = VRMKit;
+		};
+		519DB447BA221E1EA8440014 /* VRMRealityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 350D5B8865FDEC252EFBA26F /* XCRemoteSwiftPackageReference "VRMKit" */;
+			productName = VRMRealityKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 6EB45F0BBCEC663A7F3499B7 /* Project object */;
+}

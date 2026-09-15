@@ -1,0 +1,104 @@
+name: SonaPin
+
+options:
+  bundleIdPrefix: com.mrdemonwolf
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "26.0"
+  groupSortPosition: top
+
+packages:
+  VRMKit:
+    url: https://github.com/tattn/VRMKit.git
+    exactVersion: 0.10.0
+
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
+    CLANG_ENABLE_MODULES: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+
+targets:
+  SonaPin:
+    type: application
+    platform: iOS
+    sources:
+      - path: SonaPin
+        excludes:
+          - Resources
+      - path: SonaPin/Resources
+        buildPhase: resources
+    dependencies:
+      - package: VRMKit
+        product: VRMKit
+      - package: VRMKit
+        product: VRMRealityKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mrdemonwolf.sonapin
+        PRODUCT_NAME: SonaPin
+        SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_CFBundleDisplayName: SonaPin
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.social-networking
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UIRequiresFullScreen: NO
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        TARGETED_DEVICE_FAMILY: "1,2"
+
+  SonaPinTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: SonaPinTests
+    dependencies:
+      - target: SonaPin
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mrdemonwolf.sonapin.tests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
+
+  SonaPinUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: SonaPinUITests
+    dependencies:
+      - target: SonaPin
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mrdemonwolf.sonapin.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: SonaPin
+        SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
+
+schemes:
+  SonaPin:
+    build:
+      targets:
+        SonaPin: all
+        SonaPinTests: [test]
+        SonaPinUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - name: SonaPinTests
+          parallelizable: true
+        - name: SonaPinUITests
+          parallelizable: false
+    archive:
+      config: Release
