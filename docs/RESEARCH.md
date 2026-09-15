@@ -1,6 +1,6 @@
 # SonaPin research
 
-Research checked on 2026-09-12. This document records the evidence behind the native iOS implementation. It is not a claim that every device or model has been tested.
+Research checked on 2026-09-12 and reconciled with local verification evidence on 2026-09-14. This document records the evidence behind the native iOS implementation. It is not a claim that every device or model has been tested.
 
 ## Platform APIs
 
@@ -70,6 +70,20 @@ These are compatibility boundaries, not permission to accept corrupt or unsuppor
 - GitHub's macOS 26 Arm64 image currently includes Xcode 26.6 at `/Applications/Xcode_26.6.app`. Source: [macOS 26 Arm64 image](https://github.com/actions/runner-images/blob/main/images/macos/macos-26-arm64-Readme.md).
 - `macos-latest` can move to a newer image. The native workflow uses the explicit `macos-26` label and prints tool versions. Xcode 26.6 is required because the final app icon is an Icon Composer `.icon` document; Xcode 16.4 is retained here only as compatibility research, not as a supported build lane. Source: [GitHub Actions runner images](https://github.com/actions/runner-images).
 
+## Local verification snapshot
+
+The following results were verified on 2026-09-14 with Xcode 26.6:
+
+- A generic iOS Simulator build completed successfully with code signing disabled.
+- The unit suite completed with 29 tests in 5 suites passing. The optional parsing and rendering paths for `LocalAssets/TestAvatar.vrm` were not exercised because that local, rights-controlled fixture is absent.
+- The UI suite completed 3 XCTest UI tests with 0 failures. It covered completing the badge flow, editing a profile and deleting local data, fresh-launch onboarding, and onboarding restoration.
+- The app built, installed, and launched on the local **ConPaws iPhone Pro Max** Simulator with the iOS 26.5 runtime. `artifacts/simulator-home.png` shows onboarding Step 1 of 9, and `artifacts/simulator-run.txt` records the run metadata.
+- The captured Simulator log contains no app crash or serious runtime fault. It does contain two CoreSimulator app-launch measurement submission errors, which are retained in the evidence rather than hidden.
+- This Mac has no iOS 18 Simulator runtime installed. The deployment target is iOS 18.0, but these results do not prove runtime behavior on iOS 18.
+- Physical-iPhone behavior and the owner's real VRM remain unverified. See `docs/DEVICE_TEST_CHECKLIST.md`.
+
+The app icon source is an Apple Icon Composer document. Its 1024 x 1024 furry-wolf foreground PNG has an alpha channel and is layered over an opaque 1024 x 1024 navy background with Icon Composer translucency enabled. Archive renditions and physical-device appearance remain release checks.
+
 ## Repository and Pages layout
 
 - Better-T Stack's documented shape uses `apps/*` for runnable applications and `packages/*` for shared code. SonaPin follows that convention with the native product in `apps/native` and the public site in `apps/docs`. Source: [Better-T Stack project structure](https://www.better-t-stack.dev/docs/project-structure).
@@ -78,6 +92,9 @@ These are compatibility boundaries, not permission to accept corrupt or unsuppor
 ## Open questions before release
 
 - Test the owner's real VRM on a physical iPhone and record the exact compatibility envelope.
+- Add a rights-controlled `LocalAssets/TestAvatar.vrm` only when available, then rerun the optional parsing and VRMKit rendering checks.
+- Run the automated suite on an installed iOS 18 Simulator runtime or an iPhone running iOS 18.
+- Verify Icon Composer output in a release archive and on a physical iPhone.
 - Generate an archive privacy report and reconcile it with the app and every dependency.
 - Recheck GitHub runner image inventories when upgrading Xcode or the deployment target.
 - Recheck App Review rules immediately before submission.

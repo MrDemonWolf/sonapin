@@ -12,7 +12,8 @@ Updated after each verified phase. A checked item means evidence exists in this 
 - [x] Primary-source research and name research are documented.
 - [x] `SonaPin.xcodeproj` and the shared `SonaPin` scheme generate with XcodeGen.
 - [x] VRMKit is pinned exactly to 0.10.0.
-- [ ] Icon Composer document and flattened renditions are verified.
+- [x] Apple Icon Composer document uses the 1024 x 1024 transparent wolf foreground over the navy background.
+- [ ] Flattened icon renditions and appearance variants are verified in an archive and on a physical iPhone.
 
 ## Product
 
@@ -28,15 +29,16 @@ Updated after each verified phase. A checked item means evidence exists in this 
 
 ## Verification
 
-- [ ] `make build` passes.
-- [ ] `make test` passes.
-- [ ] `make ui-test` passes.
-- [ ] `make lint-check` passes.
+- [x] `make build` passes for a generic iOS Simulator destination with Xcode 26.6.
+- [x] `make test` passes: 29 tests in 5 suites, with the optional local VRM fixture paths not exercised because `LocalAssets/TestAvatar.vrm` is absent.
+- [x] `make ui-test` passes: 3 XCTest UI tests with 0 failures.
+- [x] `make lint-check` passes.
 - [x] `make docs-build` passes.
-- [ ] `make sim` launches the app in a local iPhone Simulator.
-- [ ] `artifacts/simulator-home.png` exists.
-- [ ] `artifacts/simulator-run.txt` records the exact local run.
-- [ ] Simulator logs are inspected for crashes and serious runtime faults.
+- [x] `make sim` builds, installs, and launches the app on the local ConPaws iPhone Pro Max Simulator running iOS 26.5.
+- [x] `artifacts/simulator-home.png` captures the running app at onboarding Step 1 of 9.
+- [x] `artifacts/simulator-run.txt` records Xcode 26.6, the iOS 26.5 runtime, device, build command, installed app path, launch result, and screenshot path.
+- [x] `artifacts/simulator.log` was inspected: no app crash or serious runtime fault was found; two CoreSimulator launch-measurement submission errors remain in the log.
+- [ ] Run the automated suite on an iOS 18 Simulator runtime; no iOS 18 runtime is installed on this Mac.
 
 ## Release preparation
 

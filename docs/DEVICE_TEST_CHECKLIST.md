@@ -2,6 +2,19 @@
 
 Status: **pending**. Nothing below can be marked passed from Simulator evidence.
 
+## Automated evidence already available
+
+- [x] Generic iOS Simulator build succeeded with Xcode 26.6.
+- [x] Unit suite passed 29 tests in 5 suites.
+- [x] UI suite passed 3 tests with 0 failures.
+- [x] App installed and launched on the ConPaws iPhone Pro Max Simulator running iOS 26.5.
+- [x] Launch metadata, screenshot, build log, runtime log, test logs, and result bundles exist under `artifacts/`.
+- [x] Captured Simulator log was inspected; it contains no app crash or serious runtime fault and retains two CoreSimulator launch-measurement submission errors.
+- [ ] Run on an iOS 18 runtime. No iOS 18 Simulator runtime is installed on the verification Mac.
+- [ ] Run the optional local VRM parsing and rendering tests. `LocalAssets/TestAvatar.vrm` is absent.
+
+These checks establish build and Simulator behavior only. They do not satisfy any physical-iPhone item below.
+
 Record device model, iOS version, app commit, VRM checksum, tester, date, and evidence path for every run.
 
 ## Avatar and rendering
@@ -13,6 +26,7 @@ Record device model, iOS version, app commit, VRM checksum, tester, date, and ev
 - [ ] Verify spring bones, including ears, tail, and hair when present.
 - [ ] Verify look-at behavior.
 - [ ] Verify scale, framing, clipping, rotation, and reset-camera behavior in portrait and landscape.
+- [ ] Verify the Icon Composer wolf icon, transparency, Liquid Glass depth, and appearance variants on the Home Screen and in Settings.
 
 ## Interaction and accessibility
 
@@ -57,4 +71,3 @@ Record device model, iOS version, app commit, VRM checksum, tester, date, and ev
 - [ ] Compatibility claims match the models and devices actually tested.
 - [ ] The archive privacy report matches `PrivacyInfo.xcprivacy` and App Store Connect disclosures.
 - [ ] Product owner approves physical-device evidence for release.
-

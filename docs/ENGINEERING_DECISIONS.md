@@ -60,7 +60,7 @@ Reason: Simulator tests are repeatable in CI, but cannot establish camera scanni
 
 Decision: test the shared `SonaPin` scheme on GitHub's pinned `macos-26` image with Xcode 26.6.
 
-Reason: the final app icon is an Xcode 26 Icon Composer `.icon` document with a Liquid Glass treatment. Xcode 16.4 predates that asset format and is not an honest supported build lane. Pinning the current runner avoids the moving `macos-latest` alias. Simulator builds disable signing and require no secrets.
+Reason: the final app icon is an Xcode 26 Icon Composer `.icon` document with a transparent furry-wolf foreground, an opaque navy background, and a Liquid Glass treatment. Xcode 16.4 predates that asset format and is not an honest supported build lane. Pinning the current runner avoids the moving `macos-latest` alias. Simulator builds disable signing and require no secrets.
 
 ## 11. Public documentation publishing
 
