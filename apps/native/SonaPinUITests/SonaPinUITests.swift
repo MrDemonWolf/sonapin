@@ -1,15 +1,16 @@
 import XCTest
 
+@MainActor
 final class SonaPinUITests: XCTestCase {
     private var app: XCUIApplication!
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--reset-app-state", "--use-demo-avatar"]
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         app = nil
     }
 
@@ -53,6 +54,22 @@ final class SonaPinUITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["badge.edit-lock"].waitForExistence(timeout: 10))
         XCTAssertTrue(element("badge.identity").label.contains("Blue Wolf"))
+
+        tapWhenHittable(app.buttons["badge.full-screen"])
+        XCTAssertTrue(element("badge.full-screen.qr").waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["badge.full-screen.close"].isHittable)
+        let avatarStage = element("badge.full-screen.avatar")
+        XCTAssertTrue(avatarStage.waitForExistence(timeout: 5))
+        let avatarReady = expectation(
+            for: NSPredicate(format: "value == %@", "Ready"),
+            evaluatedWith: avatarStage
+        )
+        wait(for: [avatarReady], timeout: 8)
+        let fullScreenScreenshot = XCTAttachment(screenshot: app.screenshot())
+        fullScreenScreenshot.name = "immersive-badge"
+        fullScreenScreenshot.lifetime = .keepAlways
+        add(fullScreenScreenshot)
+        app.buttons["badge.full-screen.close"].tap()
 
         tapWhenHittable(app.buttons["avatar.react"])
 

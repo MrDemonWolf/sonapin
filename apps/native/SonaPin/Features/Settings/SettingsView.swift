@@ -3,7 +3,6 @@ import SwiftUI
 @MainActor
 struct SettingsView: View {
     @Bindable var model: AppModel
-    let leaveBadgeMode: () -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var confirmsResetOnboarding = false
@@ -35,7 +34,7 @@ struct SettingsView: View {
                 titleVisibility: .visible
             ) {
                 Button("Reset Onboarding", role: .destructive) {
-                    leaveBadgeMode()
+                    dismiss()
                     Task { await model.resetOnboarding() }
                 }
                 Button("Cancel", role: .cancel) {}
@@ -48,7 +47,7 @@ struct SettingsView: View {
                 titleVisibility: .visible
             ) {
                 Button("Delete All Data", role: .destructive) {
-                    leaveBadgeMode()
+                    dismiss()
                     Task { await model.deleteAllLocalData() }
                 }
                 .accessibilityIdentifier("settings.delete-all.confirm")

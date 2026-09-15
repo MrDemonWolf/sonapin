@@ -56,6 +56,7 @@ struct AvatarStageView: View {
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @State private var renderer: any AvatarRendering
     @State private var loadError: String?
+    @State private var isLoaded = false
     @State private var yaw: Float = 0
     @State private var restingYaw: Float = 0
     @State private var zoom: Float = 1
@@ -90,6 +91,26 @@ struct AvatarStageView: View {
         VStack(spacing: 12) {
             ZStack {
                 RealityView { content in
+                    content.camera = .virtual
+
+                    let camera = PerspectiveCamera()
+                    camera.camera = PerspectiveCameraComponent(fieldOfViewInDegrees: 42)
+                    camera.look(
+                        at: SIMD3<Float>(0, 0.95, 0),
+                        from: SIMD3<Float>(0, 0.95, 3.2),
+                        relativeTo: nil
+                    )
+                    content.add(camera)
+
+                    let keyLight = DirectionalLight()
+                    keyLight.light = DirectionalLightComponent(color: .white, intensity: 3_000)
+                    keyLight.look(
+                        at: SIMD3<Float>(0, 0.95, 0),
+                        from: SIMD3<Float>(1.5, 2.5, 3),
+                        relativeTo: nil
+                    )
+                    content.add(keyLight)
+
                     do {
                         try await renderer.load(source)
                         content.add(renderer.rootEntity)
@@ -99,14 +120,18 @@ struct AvatarStageView: View {
                         }
                         applyTransform()
                         loadError = nil
+                        isLoaded = true
                     } catch {
                         loadError = error.localizedDescription
+                        isLoaded = false
                     }
                 } update: { _ in
                     applyTransform()
                 } placeholder: {
                     ProgressView()
                         .tint(.sonaCyan)
+                        .accessibilityLabel("Rendering avatar")
+                        .accessibilityIdentifier("avatar.rendering")
                 }
 
                 if let loadError {
@@ -173,8 +198,13 @@ struct AvatarStageView: View {
                     }
             )
             .accessibilityLabel("Interactive avatar")
-            .accessibilityHint("Double tap for a friendly reaction. Use the buttons below for accessible avatar controls.")
-            .accessibilityIdentifier("avatar.stage")
+            .accessibilityValue(isLoaded ? "Ready" : loadError == nil ? "Loading" : "Unavailable")
+            .accessibilityHint(
+                showsControls
+                    ? "Double tap for a friendly reaction. Use the buttons below for accessible avatar controls."
+                    : "Double tap for a friendly reaction."
+            )
+            .accessibilityIdentifier(showsControls ? "avatar.stage" : "badge.full-screen.avatar")
 
             if showsControls {
                 ViewThatFits(in: .horizontal) {

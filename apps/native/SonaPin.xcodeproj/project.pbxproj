@@ -16,6 +16,7 @@
 		2EB0D986AE36AA6AE3070A57 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1432D7DFB5C8965B1633EE83 /* AppIcon.icon */; };
 		302AF428240D93140A63670E /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC3879C16E0F1017BDFBB8E /* BadgeView.swift */; };
 		3156126DEE634D1D1253D62B /* SonaPinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */; };
+		34E9D965B763E7C49BC5F312 /* ImmersiveBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B056EE47F01251918444809B /* ImmersiveBadgeView.swift */; };
 		582A39E707CC1024306E0846 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */; };
 		621502CADEEFB4DBDB8BC362 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D567D2D232B896C799B26A61 /* AppRootView.swift */; };
 		654C9C0E9AEB4E7E034F8FC6 /* SonaPinStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30984E3996934D67DA8024B /* SonaPinStyle.swift */; };
@@ -78,6 +79,7 @@
 		95299040DF6255C733F933C1 /* SonaPinUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SonaPinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA46D22E901862DF6D6F9E6D /* SonaPin.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SonaPin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACF22C7C2F34AE6D873E9AC6 /* AppPersistenceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistenceStore.swift; sourceTree = "<group>"; };
+		B056EE47F01251918444809B /* ImmersiveBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveBadgeView.swift; sourceTree = "<group>"; };
 		B30984E3996934D67DA8024B /* SonaPinStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonaPinStyle.swift; sourceTree = "<group>"; };
 		BAE5ABB714BF09D0599BC12C /* AvatarRenderers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRenderers.swift; sourceTree = "<group>"; };
 		D567D2D232B896C799B26A61 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				5FC3879C16E0F1017BDFBB8E /* BadgeView.swift */,
+				B056EE47F01251918444809B /* ImmersiveBadgeView.swift */,
 			);
 			path = Badge;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				F695C0193AF718C49DEAA5D1 /* AvatarRenderers.swift in Sources */,
 				A1CC02F4906B4E3903710429 /* AvatarStageView.swift in Sources */,
 				302AF428240D93140A63670E /* BadgeView.swift in Sources */,
+				34E9D965B763E7C49BC5F312 /* ImmersiveBadgeView.swift in Sources */,
 				CA702A879F0167C2EDD36E86 /* OnboardingView.swift in Sources */,
 				A1C991B870DAA41569D2DE0C /* ProfileEditorView.swift in Sources */,
 				9D8221BA4F8EEAF2E6EFDE41 /* QRCodeGenerator.swift in Sources */,

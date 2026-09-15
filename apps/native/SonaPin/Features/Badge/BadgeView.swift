@@ -7,6 +7,7 @@ struct BadgeView: View {
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var activeSheet: BadgeSheet?
+    @State private var presentsFullScreen = false
     @State private var isEditLocked = true
     @State private var displaySession = BadgeDisplaySession()
 
@@ -16,16 +17,18 @@ struct BadgeView: View {
                 model.snapshot.theme.primaryColor
                     .ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    badgeToolbar
+                if !presentsFullScreen {
+                    VStack(spacing: 0) {
+                        badgeToolbar
 
-                    if proxy.size.width > proxy.size.height {
-                        LandscapeBadgePresentation(model: model) {
-                            activeSheet = .enlargedQR
-                        }
-                    } else {
-                        PortraitBadgePresentation(model: model) {
-                            activeSheet = .enlargedQR
+                        if proxy.size.width > proxy.size.height {
+                            LandscapeBadgePresentation(model: model) {
+                                activeSheet = .enlargedQR
+                            }
+                        } else {
+                            PortraitBadgePresentation(model: model) {
+                                activeSheet = .enlargedQR
+                            }
                         }
                     }
                 }
@@ -58,10 +61,11 @@ struct BadgeView: View {
             case .enlargedQR:
                 EnlargedQRCodeView(configuration: model.snapshot.qrConfiguration)
             case .settings:
-                SettingsView(model: model) {
-                    activeSheet = nil
-                }
+                SettingsView(model: model)
             }
+        }
+        .fullScreenCover(isPresented: $presentsFullScreen) {
+            ImmersiveBadgeView(model: model)
         }
         .sensoryFeedback(.selection, trigger: isEditLocked) { _, _ in
             model.snapshot.preferences.hapticsEnabled
@@ -75,6 +79,18 @@ struct BadgeView: View {
                 .foregroundStyle(model.snapshot.theme.foregroundColor)
 
             Spacer()
+
+            Button {
+                presentsFullScreen = true
+            } label: {
+                Label("Full Screen", systemImage: "arrow.up.left.and.arrow.down.right")
+                    .labelStyle(.iconOnly)
+                    .frame(width: 44, height: 44)
+                    .contentShape(.rect)
+            }
+            .foregroundStyle(model.snapshot.theme.foregroundColor)
+            .accessibilityHint("Shows an immersive badge with your avatar presenting the QR code.")
+            .accessibilityIdentifier("badge.full-screen")
 
             Button {
                 isEditLocked.toggle()
@@ -177,13 +193,13 @@ struct BadgeIdentityView: View {
 
             Text(identityLine)
                 .font(.title3.weight(.semibold))
-                .foregroundStyle(theme.foregroundColor.opacity(0.82))
+                .foregroundStyle(theme.foregroundColor)
 
             if !profile.tagline.isEmpty {
                 Text(profile.tagline)
                     .font(.body)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(theme.foregroundColor.opacity(0.82))
+                    .foregroundStyle(theme.foregroundColor)
             }
         }
         .foregroundStyle(theme.foregroundColor)
@@ -221,6 +237,7 @@ private struct BadgeQRButton: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Enlarge QR code")
+        .accessibilityValue(QRPayloadValidator.accessibilityDescription(for: model.snapshot.qrConfiguration))
         .accessibilityHint("Shows a larger code for easier scanning.")
         .accessibilityIdentifier("badge.qr")
     }

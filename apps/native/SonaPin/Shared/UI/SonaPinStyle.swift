@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 extension Color {
     static let sonaNavy = Color(red: 9 / 255, green: 21 / 255, blue: 51 / 255)
@@ -25,7 +26,7 @@ extension BadgeTheme {
     }
 
     var foregroundColor: Color {
-        self == .cerulean ? .sonaNavy : .white
+        self == .midnight ? .white : .sonaNavy
     }
 
     var accentColor: Color {
@@ -33,6 +34,15 @@ extension BadgeTheme {
         case .midnight: .sonaCyan
         case .cerulean: .sonaNavy
         case .cornflower: .sonaAmber
+        }
+    }
+
+    var surfaceColor: Color {
+        switch self {
+        case .midnight:
+            Color(red: 19 / 255, green: 36 / 255, blue: 76 / 255)
+        case .cerulean, .cornflower:
+            .white
         }
     }
 }
@@ -93,44 +103,23 @@ struct SonaPinBackground: View {
 
 struct SonaCardModifier: ViewModifier {
     func body(content: Content) -> some View {
+        let shape = RoundedRectangle(cornerRadius: 22, style: .continuous)
+
         content
             .padding(20)
-            .background(Color.white.opacity(0.08))
-            .clipShape(.rect(cornerRadius: 22))
+            .background(Color(uiColor: .secondarySystemBackground), in: shape)
             .overlay {
-                RoundedRectangle(cornerRadius: 22)
-                    .stroke(Color.white.opacity(0.12), lineWidth: 1)
+                shape
+                    .stroke(Color(uiColor: .separator), lineWidth: 0.5)
                     .accessibilityHidden(true)
             }
+            .containerShape(shape)
     }
 }
 
 extension View {
     func sonaCard() -> some View {
         modifier(SonaCardModifier())
-    }
-}
-
-struct SonaPrimaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.headline)
-            .frame(maxWidth: .infinity, minHeight: 52)
-            .foregroundStyle(Color.sonaNavy)
-            .background(Color.sonaCyan.opacity(configuration.isPressed ? 0.78 : 1))
-            .clipShape(.rect(cornerRadius: 14))
-            .scaleEffect(configuration.isPressed ? 0.98 : 1)
-    }
-}
-
-struct SonaSecondaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.headline)
-            .frame(maxWidth: .infinity, minHeight: 50)
-            .foregroundStyle(.white)
-            .background(Color.white.opacity(configuration.isPressed ? 0.16 : 0.09))
-            .clipShape(.rect(cornerRadius: 14))
     }
 }
 

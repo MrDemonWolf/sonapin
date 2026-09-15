@@ -29,13 +29,15 @@ struct OnboardingView: View {
                 }
                 .scrollDismissesKeyboard(.interactively)
 
-                OnboardingNavigationBar(
-                    step: step,
-                    canContinue: canContinue,
-                    goBack: goBack,
-                    goForward: goForward
-                )
             }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            OnboardingNavigationBar(
+                step: step,
+                canContinue: canContinue,
+                goBack: goBack,
+                goForward: goForward
+            )
         }
         .preferredColorScheme(.dark)
         .sensoryFeedback(.selection, trigger: navigationFeedback) { _, _ in
@@ -414,7 +416,8 @@ private struct OnboardingNavigationBar: View {
         HStack(spacing: 12) {
             if step != .welcome {
                 Button("Back", systemImage: "chevron.left", action: goBack)
-                    .buttonStyle(SonaSecondaryButtonStyle())
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
                     .accessibilityIdentifier("onboarding.back")
             }
 
@@ -424,8 +427,10 @@ private struct OnboardingNavigationBar: View {
                     systemImage: step == .complete ? "rectangle.portrait.and.arrow.right" : "chevron.right"
                 )
                 .labelStyle(.titleAndIcon)
+                .frame(maxWidth: .infinity)
             }
-            .buttonStyle(SonaPrimaryButtonStyle())
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
             .disabled(!canContinue)
             .accessibilityHint(canContinue ? "Moves to the next setup step." : "Complete the required fields first.")
             .accessibilityIdentifier(step == .complete ? "onboarding.finish" : "onboarding.next")
@@ -433,6 +438,10 @@ private struct OnboardingNavigationBar: View {
         .frame(maxWidth: 720)
         .padding(.horizontal, 22)
         .padding(.vertical, 14)
-        .background(Color.sonaNavy.opacity(0.96))
+        .background(Color.sonaNavy)
+        .overlay(alignment: .top) {
+            Divider()
+                .overlay(Color.white.opacity(0.14))
+        }
     }
 }

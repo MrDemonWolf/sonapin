@@ -29,7 +29,7 @@ struct QRCodeView: View {
     var body: some View {
         VStack(spacing: 12) {
             if let raster {
-                Image(decorative: raster.image, scale: 1)
+                Image(raster.image, scale: 1, label: Text("QR code"))
                     .resizable()
                     .interpolation(.none)
                     .scaledToFit()
