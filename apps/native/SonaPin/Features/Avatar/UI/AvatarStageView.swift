@@ -32,7 +32,6 @@ struct AvatarStageHost: View {
                     .id(model.snapshot.avatar.checksum ?? importedURL.path)
                 } else {
                     ProgressView("Loading imported avatar…")
-                        .tint(.sonaCyan)
                         .frame(maxWidth: .infinity, minHeight: minimumHeight)
                         .accessibilityIdentifier("avatar.loading")
                 }
@@ -129,7 +128,6 @@ struct AvatarStageView: View {
                     applyTransform()
                 } placeholder: {
                     ProgressView()
-                        .tint(.sonaCyan)
                         .accessibilityLabel("Rendering avatar")
                         .accessibilityIdentifier("avatar.rendering")
                 }
@@ -202,9 +200,15 @@ struct AvatarStageView: View {
             .accessibilityHint(
                 showsControls
                     ? "Double tap for a friendly reaction. Use the buttons below for accessible avatar controls."
-                    : "Double tap for a friendly reaction."
+                    : "Double-tap to react. More actions include Reset Avatar."
             )
             .accessibilityIdentifier(showsControls ? "avatar.stage" : "badge.full-screen.avatar")
+            .accessibilityAction(.default) {
+                react(with: .surprised, animation: "reaction")
+            }
+            .accessibilityAction(named: Text("Reset Avatar")) {
+                resetView()
+            }
 
             if showsControls {
                 ViewThatFits(in: .horizontal) {

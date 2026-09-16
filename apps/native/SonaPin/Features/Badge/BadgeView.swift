@@ -12,15 +12,12 @@ struct BadgeView: View {
     @State private var displaySession = BadgeDisplaySession()
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack {
-                model.snapshot.theme.primaryColor
-                    .ignoresSafeArea()
+        NavigationStack {
+            GeometryReader { proxy in
+                ZStack {
+                    SonaPinBackground(theme: model.snapshot.theme)
 
-                if !presentsFullScreen {
-                    VStack(spacing: 0) {
-                        badgeToolbar
-
+                    if !presentsFullScreen {
                         if proxy.size.width > proxy.size.height {
                             LandscapeBadgePresentation(model: model) {
                                 activeSheet = .enlargedQR
@@ -33,8 +30,45 @@ struct BadgeView: View {
                     }
                 }
             }
+            .navigationTitle("SonaPin Badge")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button {
+                        presentsFullScreen = true
+                    } label: {
+                        Label("Full Screen", systemImage: "arrow.up.left.and.arrow.down.right")
+                    }
+                    .accessibilityHint("Shows an immersive badge with your avatar presenting the QR code.")
+                    .accessibilityIdentifier("badge.full-screen")
+
+                    Button {
+                        isEditLocked.toggle()
+                    } label: {
+                        Label(
+                            isEditLocked ? "Unlock editing" : "Lock editing",
+                            systemImage: isEditLocked ? "lock.fill" : "lock.open.fill"
+                        )
+                    }
+                    .accessibilityLabel(isEditLocked ? "Unlock badge editing" : "Lock badge editing")
+                    .accessibilityHint("Controls access to badge settings so they cannot open accidentally.")
+                    .accessibilityIdentifier("badge.edit-lock")
+
+                    Button {
+                        activeSheet = .settings
+                    } label: {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
+                    .disabled(isEditLocked)
+                    .accessibilityHint(
+                        isEditLocked
+                            ? "Unlock badge editing first."
+                            : "Opens your profile, QR, avatar, and display settings."
+                    )
+                    .accessibilityIdentifier("badge.settings")
+                }
+            }
         }
-        .preferredColorScheme(.dark)
         .onAppear {
             displaySession.activate(keepAwake: model.snapshot.preferences.keepScreenAwake)
         }
@@ -72,62 +106,6 @@ struct BadgeView: View {
         }
     }
 
-    private var badgeToolbar: some View {
-        HStack(spacing: 12) {
-            Label("SonaPin Badge", systemImage: "pawprint.fill")
-                .font(.headline)
-                .foregroundStyle(model.snapshot.theme.foregroundColor)
-
-            Spacer()
-
-            Button {
-                presentsFullScreen = true
-            } label: {
-                Label("Full Screen", systemImage: "arrow.up.left.and.arrow.down.right")
-                    .labelStyle(.iconOnly)
-                    .frame(width: 44, height: 44)
-                    .contentShape(.rect)
-            }
-            .foregroundStyle(model.snapshot.theme.foregroundColor)
-            .accessibilityHint("Shows an immersive badge with your avatar presenting the QR code.")
-            .accessibilityIdentifier("badge.full-screen")
-
-            Button {
-                isEditLocked.toggle()
-            } label: {
-                Label(
-                    isEditLocked ? "Unlock editing" : "Lock editing",
-                    systemImage: isEditLocked ? "lock.fill" : "lock.open.fill"
-                )
-                .labelStyle(.iconOnly)
-                .frame(width: 44, height: 44)
-                .contentShape(.rect)
-            }
-            .foregroundStyle(model.snapshot.theme.foregroundColor)
-            .accessibilityLabel(isEditLocked ? "Unlock badge editing" : "Lock badge editing")
-            .accessibilityHint("Controls access to badge settings so they cannot open accidentally.")
-            .accessibilityIdentifier("badge.edit-lock")
-
-            Button {
-                activeSheet = .settings
-            } label: {
-                Label("Settings", systemImage: "gearshape.fill")
-                    .labelStyle(.iconOnly)
-                    .frame(width: 44, height: 44)
-                    .contentShape(.rect)
-            }
-            .foregroundStyle(model.snapshot.theme.foregroundColor)
-            .disabled(isEditLocked)
-            .accessibilityHint(
-                isEditLocked
-                    ? "Unlock badge editing first."
-                    : "Opens your profile, QR, avatar, and display settings."
-            )
-            .accessibilityIdentifier("badge.settings")
-        }
-        .padding(.horizontal)
-        .padding(.top, 6)
-    }
 }
 
 private enum BadgeSheet: String, Identifiable {
@@ -183,13 +161,14 @@ private struct LandscapeBadgePresentation: View {
 struct BadgeIdentityView: View {
     let profile: BadgeProfile
     let theme: BadgeTheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(spacing: 5) {
             Text(profile.displayName.isEmpty ? "Your name" : profile.displayName)
                 .font(.largeTitle.bold())
-                .minimumScaleFactor(0.65)
-                .lineLimit(2)
+                .minimumScaleFactor(dynamicTypeSize.isAccessibilitySize ? 1 : 0.65)
+                .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 2)
 
             Text(identityLine)
                 .font(.title3.weight(.semibold))
@@ -258,7 +237,9 @@ struct BadgePreviewCard: View {
         }
         .padding(24)
         .frame(maxWidth: .infinity)
-        .background(snapshot.theme.primaryColor)
+        .background {
+            SonaPinBackground(theme: snapshot.theme)
+        }
         .clipShape(.rect(cornerRadius: 28))
         .overlay {
             RoundedRectangle(cornerRadius: 28)
@@ -279,7 +260,7 @@ private struct EnlargedQRCodeView: View {
                 QRCodeView(configuration: configuration, maximumDimension: 560, showsPayload: true)
                     .padding(24)
             }
-            .background(Color.sonaNavy.ignoresSafeArea())
+            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
             .navigationTitle("Scan my badge")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -289,7 +270,6 @@ private struct EnlargedQRCodeView: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
         .presentationDetents([.large])
     }
 }

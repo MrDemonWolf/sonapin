@@ -56,7 +56,6 @@ struct SettingsView: View {
                 Text("This removes your profile, QR settings, imported avatar, preferences, and onboarding progress from this device. This cannot be undone.")
             }
         }
-        .preferredColorScheme(.dark)
     }
 
     private var identitySection: some View {
@@ -233,7 +232,7 @@ private struct SettingsRow: View {
             }
         } icon: {
             Image(systemName: systemImage)
-                .foregroundStyle(Color.sonaCyan)
+                .foregroundStyle(Color.accentColor)
         }
     }
 }
@@ -258,11 +257,6 @@ private struct SettingsInformationView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                Label(page.title, systemImage: icon)
-                    .font(.largeTitle.bold())
-                    .foregroundStyle(Color.sonaCyan)
-                    .accessibilityAddTraits(.isHeader)
-
                 content
             }
             .frame(maxWidth: 680, alignment: .leading)

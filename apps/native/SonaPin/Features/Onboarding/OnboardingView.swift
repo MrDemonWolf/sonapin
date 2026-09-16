@@ -12,15 +12,28 @@ struct OnboardingView: View {
     }
 
     var body: some View {
-        ZStack {
-            SonaPinBackground()
-
-            VStack(spacing: 0) {
-                OnboardingHeader(step: step)
+        NavigationStack {
+            ZStack {
+                Color(uiColor: .systemGroupedBackground)
+                    .ignoresSafeArea()
 
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 22) {
-                        OnboardingTitle(step: step)
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
+                            .font(.subheadline.monospacedDigit())
+                            .foregroundStyle(.secondary)
+
+                        Text(step.onboardingDetail)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        ProgressView(
+                            value: Double(step.number),
+                            total: Double(OnboardingStep.allCases.count)
+                        )
+                        .accessibilityLabel("Onboarding progress")
+                        .accessibilityValue("Step \(step.number) of \(OnboardingStep.allCases.count)")
+
                         stepContent
                     }
                     .frame(maxWidth: 720, alignment: .leading)
@@ -28,20 +41,32 @@ struct OnboardingView: View {
                     .padding(.vertical, 20)
                 }
                 .scrollDismissesKeyboard(.interactively)
-
             }
+            .navigationTitle(step.onboardingTitle)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar { onboardingToolbar }
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            OnboardingNavigationBar(
-                step: step,
-                canContinue: canContinue,
-                goBack: goBack,
-                goForward: goForward
-            )
-        }
-        .preferredColorScheme(.dark)
         .sensoryFeedback(.selection, trigger: navigationFeedback) { _, _ in
             model.snapshot.preferences.hapticsEnabled && !systemReduceMotion
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var onboardingToolbar: some ToolbarContent {
+        if step != .welcome {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Back", systemImage: "chevron.left", action: goBack)
+                    .labelStyle(.iconOnly)
+                    .accessibilityLabel("Back")
+                    .accessibilityIdentifier("onboarding.back")
+            }
+        }
+
+        ToolbarItem(placement: .primaryAction) {
+            Button(step == .complete ? "Enter Badge Mode" : "Continue", action: goForward)
+                .disabled(!canContinue)
+                .accessibilityHint(canContinue ? "Moves to the next setup step." : "Complete the required fields first.")
+                .accessibilityIdentifier(step == .complete ? "onboarding.finish" : "onboarding.next")
         }
     }
 
@@ -119,46 +144,9 @@ struct OnboardingView: View {
     }
 }
 
-private struct OnboardingHeader: View {
-    let step: OnboardingStep
-
-    var body: some View {
-        VStack(spacing: 8) {
-            HStack {
-                Label("SonaPin", systemImage: "pawprint.fill")
-                    .font(.headline)
-                Spacer()
-                Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
-                    .font(.subheadline.monospacedDigit())
-                    .foregroundStyle(.secondary)
-            }
-            ProgressView(value: Double(step.number), total: Double(OnboardingStep.allCases.count))
-                .tint(.sonaCyan)
-                .accessibilityLabel("Onboarding progress")
-                .accessibilityValue("Step \(step.number) of \(OnboardingStep.allCases.count)")
-        }
-        .padding(.horizontal, 22)
-        .padding(.top, 14)
-    }
-}
-
-private struct OnboardingTitle: View {
-    let step: OnboardingStep
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.largeTitle.bold())
-                .accessibilityAddTraits(.isHeader)
-            Text(detail)
-                .font(.body)
-                .foregroundStyle(.secondary)
-        }
-        .accessibilityElement(children: .combine)
-    }
-
-    private var title: String {
-        switch step {
+private extension OnboardingStep {
+    var onboardingTitle: String {
+        switch self {
         case .welcome: "Your sona. Your badge. Alive."
         case .avatar: "Choose your avatar"
         case .compatibility: "Check compatibility"
@@ -171,8 +159,8 @@ private struct OnboardingTitle: View {
         }
     }
 
-    private var detail: String {
-        switch step {
+    var onboardingDetail: String {
+        switch self {
         case .welcome:
             "SonaPin is a private, local-only convention badge with an interactive 3D avatar. No account, ads, analytics, or tracking."
         case .avatar:
@@ -200,14 +188,14 @@ private struct WelcomeStep: View {
         VStack(alignment: .leading, spacing: 16) {
             Image(systemName: "pawprint.fill")
                 .font(.system(size: 76))
-                .foregroundStyle(Color.sonaCyan)
+                .foregroundStyle(Color.accentColor)
                 .accessibilityHidden(true)
 
             ForEach(welcomePoints, id: \.title) { point in
                 HStack(alignment: .top, spacing: 14) {
                     Image(systemName: point.icon)
                         .font(.title2)
-                        .foregroundStyle(Color.sonaCornflower)
+                        .foregroundStyle(Color.accentColor)
                         .frame(width: 34)
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 3) {
@@ -370,7 +358,7 @@ struct ThemePicker: View {
                         Spacer()
                         Image(systemName: selection == theme ? "checkmark.circle.fill" : "circle")
                             .font(.title2)
-                            .foregroundStyle(selection == theme ? Color.sonaCyan : .secondary)
+                            .foregroundStyle(selection == theme ? Color.accentColor : .secondary)
                             .accessibilityHidden(true)
                     }
                     .frame(maxWidth: .infinity, minHeight: 54)
@@ -391,7 +379,7 @@ private struct CompletionStep: View {
         VStack(spacing: 18) {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 78))
-                .foregroundStyle(Color.sonaCyan)
+                .foregroundStyle(Color.accentColor)
                 .accessibilityHidden(true)
             Text("Badge setup complete")
                 .font(.title2.bold())
@@ -403,45 +391,5 @@ private struct CompletionStep: View {
         .sonaCard()
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("onboarding.complete")
-    }
-}
-
-private struct OnboardingNavigationBar: View {
-    let step: OnboardingStep
-    let canContinue: Bool
-    let goBack: () -> Void
-    let goForward: () -> Void
-
-    var body: some View {
-        HStack(spacing: 12) {
-            if step != .welcome {
-                Button("Back", systemImage: "chevron.left", action: goBack)
-                    .buttonStyle(.bordered)
-                    .controlSize(.large)
-                    .accessibilityIdentifier("onboarding.back")
-            }
-
-            Button(action: goForward) {
-                Label(
-                    step == .complete ? "Enter Badge Mode" : "Continue",
-                    systemImage: step == .complete ? "rectangle.portrait.and.arrow.right" : "chevron.right"
-                )
-                .labelStyle(.titleAndIcon)
-                .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .disabled(!canContinue)
-            .accessibilityHint(canContinue ? "Moves to the next setup step." : "Complete the required fields first.")
-            .accessibilityIdentifier(step == .complete ? "onboarding.finish" : "onboarding.next")
-        }
-        .frame(maxWidth: 720)
-        .padding(.horizontal, 22)
-        .padding(.vertical, 14)
-        .background(Color.sonaNavy)
-        .overlay(alignment: .top) {
-            Divider()
-                .overlay(Color.white.opacity(0.14))
-        }
     }
 }

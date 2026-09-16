@@ -3,7 +3,7 @@ import UIKit
 
 extension Color {
     static let sonaNavy = Color(red: 9 / 255, green: 21 / 255, blue: 51 / 255)
-    static let sonaCyan = Color(red: 0 / 255, green: 172 / 255, blue: 237 / 255)
+    static let sonaCyan = Color(red: 15 / 255, green: 172 / 255, blue: 237 / 255)
     static let sonaCornflower = Color(red: 107 / 255, green: 139 / 255, blue: 245 / 255)
     static let sonaAmber = Color(red: 1, green: 183 / 255, blue: 77 / 255)
 }
@@ -11,6 +11,7 @@ extension Color {
 extension BadgeTheme {
     var title: String {
         switch self {
+        case .system: "System"
         case .midnight: "Midnight"
         case .cerulean: "Cerulean"
         case .cornflower: "Cornflower"
@@ -19,6 +20,7 @@ extension BadgeTheme {
 
     var primaryColor: Color {
         switch self {
+        case .system: Color(uiColor: .systemGroupedBackground)
         case .midnight: .sonaNavy
         case .cerulean: .sonaCyan
         case .cornflower: .sonaCornflower
@@ -26,11 +28,16 @@ extension BadgeTheme {
     }
 
     var foregroundColor: Color {
-        self == .midnight ? .white : .sonaNavy
+        switch self {
+        case .system: .primary
+        case .midnight: .white
+        case .cerulean, .cornflower: .sonaNavy
+        }
     }
 
     var accentColor: Color {
         switch self {
+        case .system: .accentColor
         case .midnight: .sonaCyan
         case .cerulean: .sonaNavy
         case .cornflower: .sonaAmber
@@ -39,6 +46,8 @@ extension BadgeTheme {
 
     var surfaceColor: Color {
         switch self {
+        case .system:
+            Color(uiColor: .secondarySystemGroupedBackground)
         case .midnight:
             Color(red: 19 / 255, green: 36 / 255, blue: 76 / 255)
         case .cerulean, .cornflower:
@@ -83,19 +92,27 @@ extension OnboardingStep {
 }
 
 struct SonaPinBackground: View {
+    var theme: BadgeTheme = .system
+
     var body: some View {
         ZStack {
-            Color.sonaNavy
-            Circle()
-                .fill(Color.sonaCyan.opacity(0.08))
-                .frame(width: 360, height: 360)
-                .offset(x: 190, y: -320)
-                .accessibilityHidden(true)
-            Circle()
-                .fill(Color.sonaCornflower.opacity(0.07))
-                .frame(width: 300, height: 300)
-                .offset(x: -190, y: 340)
-                .accessibilityHidden(true)
+            LinearGradient(
+                colors: [theme.primaryColor, theme.surfaceColor],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            if theme != .system {
+                Circle()
+                    .fill(theme.accentColor.opacity(0.10))
+                    .frame(width: 360, height: 360)
+                    .offset(x: 190, y: -320)
+                    .accessibilityHidden(true)
+                Circle()
+                    .fill(Color.sonaCornflower.opacity(0.08))
+                    .frame(width: 300, height: 300)
+                    .offset(x: -190, y: 340)
+                    .accessibilityHidden(true)
+            }
         }
         .ignoresSafeArea()
     }
@@ -126,7 +143,7 @@ extension View {
 struct InlineStatusView: View {
     let systemImage: String
     let text: String
-    var tint: Color = .sonaCyan
+    var tint: Color = .accentColor
 
     var body: some View {
         Label(text, systemImage: systemImage)

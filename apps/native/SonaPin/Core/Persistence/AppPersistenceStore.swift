@@ -39,7 +39,7 @@ enum SnapshotMigrator {
                 return AppSnapshot(
                     profile: legacy.profile ?? BadgeProfile(),
                     qrConfiguration: legacy.qrConfiguration ?? QRConfiguration(),
-                    theme: legacy.theme ?? .midnight,
+                    theme: legacy.theme ?? .system,
                     preferences: legacy.preferences ?? InteractionPreferences(),
                     avatar: legacy.avatar ?? .demo,
                     onboarding: legacy.onboarding ?? OnboardingProgress()

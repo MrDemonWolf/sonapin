@@ -6,6 +6,11 @@ import Testing
 
 @Suite("Profile and QR validation")
 struct ValidationTests {
+    @Test("New profiles follow the system appearance")
+    func defaultThemeFollowsSystem() {
+        #expect(AppSnapshot.empty.theme == .system)
+    }
+
     @Test("Profile values are trimmed")
     func profileIsNormalized() throws {
         let result = try ProfileValidator.validate(
@@ -126,6 +131,7 @@ struct PersistenceTests {
             JSONSerialization.jsonObject(with: JSONEncoder().encode(AppSnapshot.empty)) as? [String: Any]
         )
         legacy.removeValue(forKey: "schemaVersion")
+        legacy.removeValue(forKey: "theme")
         var profile = try #require(legacy["profile"] as? [String: Any])
         profile["displayName"] = "Migrated"
         legacy["profile"] = profile
@@ -137,6 +143,7 @@ struct PersistenceTests {
 
         #expect(result.schemaVersion == AppSnapshot.currentSchemaVersion)
         #expect(result.profile.displayName == "Migrated")
+        #expect(result.theme == .system)
         #expect(result.preferences.defaultExpression == .neutral)
     }
 

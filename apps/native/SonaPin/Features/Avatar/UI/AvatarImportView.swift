@@ -79,7 +79,7 @@ private struct AvatarChoiceLabel: View {
         HStack(alignment: .top, spacing: 14) {
             Image(systemName: systemImage)
                 .font(.title2)
-                .foregroundStyle(Color.sonaCyan)
+                .foregroundStyle(Color.accentColor)
                 .frame(width: 36, height: 36)
                 .accessibilityHidden(true)
 
@@ -96,7 +96,7 @@ private struct AvatarChoiceLabel: View {
 
             Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                 .font(.title2)
-                .foregroundStyle(isSelected ? Color.sonaCyan : .secondary)
+                .foregroundStyle(isSelected ? Color.accentColor : .secondary)
                 .accessibilityLabel(isSelected ? "Selected" : "Not selected")
         }
         .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)

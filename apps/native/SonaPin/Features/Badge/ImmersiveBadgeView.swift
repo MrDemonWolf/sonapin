@@ -11,8 +11,7 @@ struct ImmersiveBadgeView: View {
             let isLandscape = proxy.size.width > proxy.size.height
 
             ZStack {
-                model.snapshot.theme.primaryColor
-                    .ignoresSafeArea()
+                SonaPinBackground(theme: model.snapshot.theme)
 
                 AvatarStageHost(
                     model: model,
@@ -34,30 +33,36 @@ struct ImmersiveBadgeView: View {
             }
         }
         .statusBarHidden()
-        .preferredColorScheme(.dark)
     }
 
+    @ViewBuilder
     private var closeButton: some View {
         VStack {
             HStack {
                 Spacer()
-                Button("Close Full Screen", systemImage: "xmark") {
-                    dismiss()
+                if #available(iOS 26.0, *) {
+                    dismissButton
+                        .buttonStyle(.glass)
+                        .buttonBorderShape(.circle)
+                } else {
+                    dismissButton
+                        .background(.regularMaterial, in: Circle())
                 }
-                .labelStyle(.iconOnly)
-                .font(.headline)
-                .frame(width: 44, height: 44)
-                .foregroundStyle(model.snapshot.theme.foregroundColor)
-                .background(model.snapshot.theme.surfaceColor, in: Circle())
-                .overlay {
-                    Circle()
-                        .stroke(model.snapshot.theme.foregroundColor.opacity(0.18), lineWidth: 1)
-                }
-                .accessibilityIdentifier("badge.full-screen.close")
             }
             Spacer()
         }
         .padding()
+    }
+
+    private var dismissButton: some View {
+        Button("Close Full Screen", systemImage: "xmark") {
+            dismiss()
+        }
+        .labelStyle(.iconOnly)
+        .font(.headline)
+        .frame(width: 44, height: 44)
+        .foregroundStyle(.primary)
+        .accessibilityIdentifier("badge.full-screen.close")
     }
 }
 
@@ -69,54 +74,65 @@ private struct ImmersiveBadgeOverlay: View {
     let isLandscape: Bool
 
     var body: some View {
-        VStack {
-            Spacer()
+        ViewThatFits(in: .vertical) {
+            VStack {
+                Spacer()
+                layout
+            }
+            .padding(20)
 
-            if isLandscape {
-                HStack(alignment: .bottom, spacing: 20) {
+            ScrollView {
+                layout
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 72)
+                    .padding(.bottom, 20)
+            }
+            .scrollIndicators(.hidden)
+        }
+    }
+
+    @ViewBuilder
+    private var layout: some View {
+        if isLandscape {
+            HStack(alignment: .bottom, spacing: 20) {
+                identityCard
+                    .frame(maxWidth: 380)
+                Spacer(minLength: 12)
+                PresentedQRCodeCard(
+                    configuration: configuration,
+                    theme: theme,
+                    maximumDimension: min(size.height * 0.42, 220)
+                )
+            }
+        } else {
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .bottom, spacing: 12) {
                     identityCard
-                        .frame(maxWidth: 380)
-                    Spacer(minLength: 12)
+                        .frame(width: max(min(size.width * 0.46, 220), 170))
                     PresentedQRCodeCard(
                         configuration: configuration,
                         theme: theme,
-                        maximumDimension: min(size.height * 0.42, 220)
+                        maximumDimension: min(size.width * 0.30, 150)
                     )
                 }
-            } else {
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .bottom, spacing: 12) {
-                        identityCard
-                            .frame(width: max(min(size.width * 0.46, 220), 170))
-                        PresentedQRCodeCard(
-                            configuration: configuration,
-                            theme: theme,
-                            maximumDimension: min(size.width * 0.30, 150)
-                        )
-                    }
 
-                    VStack(spacing: 12) {
-                        identityCard
-                        PresentedQRCodeCard(
-                            configuration: configuration,
-                            theme: theme,
-                            maximumDimension: min(size.width * 0.42, 190)
-                        )
-                    }
+                VStack(spacing: 12) {
+                    identityCard
+                    PresentedQRCodeCard(
+                        configuration: configuration,
+                        theme: theme,
+                        maximumDimension: min(size.width * 0.42, 190)
+                    )
                 }
             }
         }
-        .padding(20)
     }
 
     private var identityCard: some View {
         BadgeIdentityView(profile: profile, theme: theme)
             .padding(16)
-            .background(theme.surfaceColor, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(theme.foregroundColor.opacity(0.18), lineWidth: 1)
-            }
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
     }
 }
 

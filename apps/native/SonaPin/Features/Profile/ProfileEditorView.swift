@@ -27,7 +27,7 @@ struct ProfileEditorView: View {
             Section("Preview") {
                 BadgeIdentityView(profile: draft, theme: model.snapshot.theme)
                     .padding(.vertical, 14)
-                    .listRowBackground(model.snapshot.theme.primaryColor)
+                    .listRowBackground(model.snapshot.theme.surfaceColor)
             }
         }
         .navigationTitle("Edit Profile")

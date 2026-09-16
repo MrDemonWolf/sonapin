@@ -20,7 +20,6 @@ struct AppRootView: View {
                 }
             }
         }
-        .tint(.sonaCyan)
         .alert(item: $model.notice) { notice in
             Alert(
                 title: Text(notice.title),
@@ -34,14 +33,13 @@ struct AppRootView: View {
 private struct LoadingView: View {
     var body: some View {
         ZStack {
-            Color.sonaNavy.ignoresSafeArea()
+            SonaPinBackground()
             VStack(spacing: 16) {
                 ProgressView()
                     .controlSize(.large)
-                    .tint(.sonaCyan)
                 Text("Loading your badge…")
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
             }
         }
         .accessibilityElement(children: .combine)

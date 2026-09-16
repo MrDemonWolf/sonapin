@@ -29,6 +29,7 @@ struct QRConfiguration: Codable, Equatable, Sendable {
 }
 
 enum BadgeTheme: String, Codable, CaseIterable, Sendable {
+    case system
     case midnight
     case cerulean
     case cornflower
@@ -97,7 +98,7 @@ struct AppSnapshot: Codable, Equatable, Sendable {
     var schemaVersion: Int = Self.currentSchemaVersion
     var profile = BadgeProfile()
     var qrConfiguration = QRConfiguration()
-    var theme: BadgeTheme = .midnight
+    var theme: BadgeTheme = .system
     var preferences = InteractionPreferences()
     var avatar: AvatarRecord = .demo
     var onboarding = OnboardingProgress()
