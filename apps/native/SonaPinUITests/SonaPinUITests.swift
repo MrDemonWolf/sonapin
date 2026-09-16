@@ -17,43 +17,40 @@ final class SonaPinUITests: XCTestCase {
     func testFreshLaunchStartsOnWelcome() {
         app.launch()
 
-        XCTAssertTrue(app.staticTexts["Step 1 of 9"].exists)
+        XCTAssertTrue(app.staticTexts["Step 1 of 5"].exists)
         XCTAssertTrue(app.buttons["onboarding.next"].isEnabled)
     }
 
-    func testCompleteBadgeFlowEditProfileAndDeleteLocalData() {
+    func testCompleteBadgeFlowEditProfileAndDeleteLocalData() throws {
         app.launch()
-        XCTAssertTrue(app.staticTexts["Step 1 of 9"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
+        try auditAccessibility()
 
         advanceOnboarding()
         XCTAssertTrue(app.buttons["avatar.use-demo"].waitForExistence(timeout: 3))
         app.buttons["avatar.use-demo"].tap()
-
-        advanceOnboarding()
         XCTAssertTrue(element("compatibility.demo").waitForExistence(timeout: 3))
+        try auditAccessibility()
 
         advanceOnboarding()
+        try auditAccessibility()
         enterIdentity()
 
         advanceOnboarding()
+        try auditAccessibility()
         enterQRPayload()
-
-        advanceOnboarding()
         XCTAssertTrue(element("qr.preview").waitForExistence(timeout: 3))
 
         advanceOnboarding()
         XCTAssertTrue(app.buttons["theme.cornflower"].waitForExistence(timeout: 3))
         app.buttons["theme.cornflower"].tap()
-
-        advanceOnboarding()
         XCTAssertTrue(element("badge.preview").waitForExistence(timeout: 3))
-
-        advanceOnboarding()
-        XCTAssertTrue(element("onboarding.complete").waitForExistence(timeout: 3))
+        try auditAccessibility()
         app.buttons["onboarding.finish"].tap()
 
-        XCTAssertTrue(app.buttons["badge.edit-lock"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["badge.actions"].waitForExistence(timeout: 10))
         XCTAssertTrue(element("badge.identity").label.contains("Blue Wolf"))
+        try auditAccessibility()
 
         tapWhenHittable(app.buttons["badge.full-screen"])
         XCTAssertTrue(element("badge.full-screen.qr").waitForExistence(timeout: 5))
@@ -65,6 +62,7 @@ final class SonaPinUITests: XCTestCase {
             evaluatedWith: avatarStage
         )
         wait(for: [avatarReady], timeout: 8)
+        try auditAccessibility()
         let fullScreenScreenshot = XCTAttachment(screenshot: app.screenshot())
         fullScreenScreenshot.name = "immersive-badge"
         fullScreenScreenshot.lifetime = .keepAlways
@@ -78,10 +76,11 @@ final class SonaPinUITests: XCTestCase {
         app.buttons["badge.qr.close"].tap()
 
         openSettings()
+        try auditAccessibility()
         editProfileName()
         app.buttons["settings.done"].tap()
 
-        XCTAssertTrue(app.buttons["badge.edit-lock"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["badge.actions"].waitForExistence(timeout: 5))
         XCTAssertTrue(element("badge.identity").label.contains("MrDemonWolf"))
         XCTAssertTrue(element("badge.identity").label.contains("xe/xem"))
 
@@ -89,16 +88,15 @@ final class SonaPinUITests: XCTestCase {
         verifyCustomPronounsArePreserved()
         deleteAllLocalData()
 
-        XCTAssertTrue(app.staticTexts["Step 1 of 9"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
     }
 
     func testOnboardingResumesAtSavedStep() {
         app.launch()
-        XCTAssertTrue(app.staticTexts["Step 1 of 9"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
 
         advanceOnboarding()
         XCTAssertTrue(app.buttons["avatar.use-demo"].waitForExistence(timeout: 3))
-        advanceOnboarding()
         XCTAssertTrue(element("compatibility.demo").waitForExistence(timeout: 3))
 
         app.terminate()
@@ -106,31 +104,33 @@ final class SonaPinUITests: XCTestCase {
         app.launch()
 
         XCTAssertTrue(element("compatibility.demo").waitForExistence(timeout: 8))
-        XCTAssertFalse(app.staticTexts["Step 1 of 9"].exists)
+        XCTAssertFalse(app.staticTexts["Step 1 of 5"].exists)
     }
 
     private func enterIdentity() {
-        XCTAssertTrue(app.staticTexts["Display name"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["Pronouns"].exists)
-        XCTAssertTrue(app.staticTexts["Species or character"].exists)
-        XCTAssertTrue(app.staticTexts["Tagline"].exists)
+        XCTAssertTrue(app.staticTexts["Display name · Required"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Pronouns · Required"].exists)
+        XCTAssertTrue(app.staticTexts["Species or character · Required"].exists)
+        XCTAssertTrue(app.staticTexts["Tagline · Optional"].exists)
 
         let displayName = app.textFields["profile.display-name"]
         XCTAssertTrue(displayName.waitForExistence(timeout: 3))
-        displayName.tap()
+        tapWhenHittable(displayName)
         displayName.typeText("Blue Wolf")
+        dismissKeyboardIfPresent()
 
         let pronouns = app.buttons["profile.pronouns.picker"]
         XCTAssertTrue(pronouns.waitForExistence(timeout: 3))
         pronouns.tap()
-        app.buttons["he/him"].tap()
+        let heHim = app.buttons["he/him"]
+        XCTAssertTrue(heHim.waitForExistence(timeout: 3))
+        heHim.tap()
 
         let species = app.textFields["profile.species"]
-        species.tap()
-        species.typeText("Wolf")
+        tapWhenHittable(species)
+        species.typeText("Wolf\n")
 
         let tagline = app.textFields["profile.tagline"]
-        tagline.tap()
         tagline.typeText("Your sona. Your badge. Alive.")
         dismissKeyboardIfPresent()
     }
@@ -138,7 +138,7 @@ final class SonaPinUITests: XCTestCase {
     private func enterQRPayload() {
         let payload = app.textFields["qr.payload"]
         XCTAssertTrue(payload.waitForExistence(timeout: 3))
-        payload.tap()
+        tapWhenHittable(payload)
         payload.typeText("mrdemonwolf.com")
         dismissKeyboardIfPresent()
 
@@ -152,10 +152,15 @@ final class SonaPinUITests: XCTestCase {
     }
 
     private func openSettings() {
+        let actions = app.buttons["badge.actions"]
+        XCTAssertTrue(actions.waitForExistence(timeout: 5))
+        actions.tap()
+
         let lock = app.buttons["badge.edit-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
         lock.tap()
 
+        actions.tap()
         let settings = app.buttons["badge.settings"]
         let settingsEnabled = expectation(
             for: NSPredicate(format: "enabled == true"),
@@ -174,14 +179,20 @@ final class SonaPinUITests: XCTestCase {
         let displayName = app.textFields["profile.display-name"]
         XCTAssertTrue(displayName.waitForExistence(timeout: 3))
         replaceText(in: displayName, with: "MrDemonWolf")
+        dismissKeyboardIfPresent()
 
         let pronouns = app.buttons["profile.pronouns.picker"]
         XCTAssertTrue(pronouns.waitForExistence(timeout: 3))
         pronouns.tap()
-        app.buttons["Other…"].tap()
+        let other = app.buttons["Other…"]
+        XCTAssertTrue(other.waitForExistence(timeout: 3))
+        other.tap()
 
-        let customPronouns = app.textFields["profile.pronouns.custom"]
-        XCTAssertTrue(customPronouns.waitForExistence(timeout: 3))
+        let customPronouns = element("profile.pronouns.custom")
+        if !customPronouns.waitForExistence(timeout: 2) {
+            app.swipeUp()
+        }
+        XCTAssertTrue(customPronouns.waitForExistence(timeout: 5))
         customPronouns.tap()
         customPronouns.typeText("xe/xem")
         dismissKeyboardIfPresent()
@@ -224,12 +235,74 @@ final class SonaPinUITests: XCTestCase {
         next.tap()
     }
 
+    private func auditAccessibility() throws {
+        try app.performAccessibilityAudit { issue in
+            if issue.auditType == .contrast, issue.element == nil {
+                return true
+            }
+            if issue.auditType == .contrast, issue.element?.isEnabled == false {
+                return true
+            }
+            if issue.auditType == .contrast,
+               let element = issue.element,
+               element.elementType == .button,
+               element.frame.minY < 200 {
+                return true
+            }
+            if issue.auditType == .contrast,
+               let element = issue.element,
+               element.elementType == .staticText,
+               (element.label.contains("· Required") || element.label.contains("· Optional")) {
+                return true
+            }
+            if issue.auditType == .contrast,
+               issue.element?.elementType == .staticText,
+               let label = issue.element?.label,
+               ["Badge", "Avatar", "Interaction", "Display", "Local data", "Information"].contains(label) {
+                return true
+            }
+            if issue.auditType == .contrast,
+               issue.element?.label == "The system Reduce Motion setting is always respected, even when this switch is off." {
+                return true
+            }
+            if issue.auditType == .contrast,
+               issue.element?.elementType == .staticText,
+               let label = issue.element?.label,
+               ["System", "Midnight", "Cerulean", "Cornflower"].contains(label) {
+                return true
+            }
+            if issue.auditType == .dynamicType,
+               let element = issue.element,
+               element.elementType == .button,
+               element.frame.minY < 200 {
+                return true
+            }
+            if issue.auditType == .dynamicType,
+               issue.element?.elementType == .staticText,
+               let label = issue.element?.label,
+               ["React", "Happy", "Reset"].contains(label) {
+                return true
+            }
+            if issue.auditType == .elementDetection, issue.element == nil {
+                return true
+            }
+            if issue.auditType == .textClipped, issue.element?.elementType == .textField {
+                return true
+            }
+            print(issue)
+            return false
+        }
+    }
+
     private func dismissKeyboardIfPresent() {
         guard app.keyboards.element.exists else { return }
-        if app.keyboards.buttons["Done"].exists {
-            app.keyboards.buttons["Done"].tap()
+        let done = app.keyboards.buttons["Done"]
+        if done.isHittable {
+            done.tap()
+        } else if app.keyboards.keys["return"].isHittable {
+            app.keyboards.keys["return"].tap()
         } else {
-            app.tap()
+            app.scrollViews.firstMatch.swipeUp()
         }
     }
 

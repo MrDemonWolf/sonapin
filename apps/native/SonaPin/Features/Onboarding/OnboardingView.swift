@@ -8,7 +8,7 @@ struct OnboardingView: View {
     @State private var navigationFeedback = 0
 
     private var step: OnboardingStep {
-        model.snapshot.onboarding.step
+        model.snapshot.onboarding.step.primaryStep
     }
 
     var body: some View {
@@ -21,18 +21,17 @@ struct OnboardingView: View {
                     VStack(alignment: .leading, spacing: 20) {
                         Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
                             .font(.subheadline.monospacedDigit())
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
 
                         Text(step.onboardingDetail)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                             .fixedSize(horizontal: false, vertical: true)
 
                         ProgressView(
                             value: Double(step.number),
                             total: Double(OnboardingStep.allCases.count)
                         )
-                        .accessibilityLabel("Onboarding progress")
-                        .accessibilityValue("Step \(step.number) of \(OnboardingStep.allCases.count)")
+                        .accessibilityHidden(true)
 
                         stepContent
                     }
@@ -63,10 +62,13 @@ struct OnboardingView: View {
         }
 
         ToolbarItem(placement: .primaryAction) {
-            Button(step == .complete ? "Enter Badge Mode" : "Continue", action: goForward)
+            Button(step == .badgePreview ? "Enter Badge Mode" : "Continue", action: goForward)
+                .buttonStyle(.borderedProminent)
+                .tint(.sonaNavy)
+                .foregroundStyle(.white)
                 .disabled(!canContinue)
                 .accessibilityHint(canContinue ? "Moves to the next setup step." : "Complete the required fields first.")
-                .accessibilityIdentifier(step == .complete ? "onboarding.finish" : "onboarding.next")
+                .accessibilityIdentifier(step == .badgePreview ? "onboarding.finish" : "onboarding.next")
         }
     }
 
@@ -75,27 +77,28 @@ struct OnboardingView: View {
         switch step {
         case .welcome:
             WelcomeStep()
-        case .avatar:
-            AvatarSourcePicker(model: model)
-        case .compatibility:
-            CompatibilityReportView(record: model.snapshot.avatar)
+        case .avatar, .compatibility:
+            VStack(alignment: .leading, spacing: 16) {
+                AvatarSourcePicker(model: model)
+                CompatibilityReportView(record: model.snapshot.avatar)
+            }
         case .identity:
             ProfileFields(profile: $model.snapshot.profile)
                 .sonaCard()
-        case .qrConfiguration:
-            QRConfigurationFields(
-                configuration: $model.snapshot.qrConfiguration,
-                highContrastPreference: $model.snapshot.preferences.highContrastQR
-            )
-            .sonaCard()
-        case .qrPreview:
-            QRPreviewStep(configuration: model.snapshot.qrConfiguration)
-        case .theme:
-            ThemePicker(selection: $model.snapshot.theme)
-        case .badgePreview:
-            BadgePreviewCard(snapshot: model.snapshot)
-        case .complete:
-            CompletionStep()
+        case .qrConfiguration, .qrPreview:
+            VStack(alignment: .leading, spacing: 16) {
+                QRConfigurationFields(
+                    configuration: $model.snapshot.qrConfiguration,
+                    highContrastPreference: $model.snapshot.preferences.highContrastQR
+                )
+                .sonaCard()
+                QRPreviewStep(configuration: model.snapshot.qrConfiguration)
+            }
+        case .theme, .badgePreview, .complete:
+            VStack(alignment: .leading, spacing: 16) {
+                ThemePicker(selection: $model.snapshot.theme)
+                BadgePreviewCard(snapshot: model.snapshot)
+            }
         }
     }
 
@@ -105,7 +108,7 @@ struct OnboardingView: View {
             return (try? ProfileValidator.validate(model.snapshot.profile)) != nil
         case .qrConfiguration, .qrPreview:
             return (try? QRPayloadValidator.validate(model.snapshot.qrConfiguration)) != nil
-        case .compatibility:
+        case .avatar, .compatibility:
             return model.snapshot.avatar.compatibility?.outcome != .unsupported
         default:
             return true
@@ -132,7 +135,7 @@ struct OnboardingView: View {
         }
 
         navigationFeedback += 1
-        if step == .complete {
+        if step == .badgePreview {
             Task { await model.completeOnboarding() }
             return
         }
@@ -145,17 +148,22 @@ struct OnboardingView: View {
 }
 
 private extension OnboardingStep {
+    var primaryStep: Self {
+        switch self {
+        case .compatibility: .avatar
+        case .qrPreview: .qrConfiguration
+        case .theme, .complete: .badgePreview
+        default: self
+        }
+    }
+
     var onboardingTitle: String {
         switch self {
-        case .welcome: "Your sona. Your badge. Alive."
-        case .avatar: "Choose your avatar"
-        case .compatibility: "Check compatibility"
-        case .identity: "Build your badge identity"
-        case .qrConfiguration: "Choose what people can scan"
-        case .qrPreview: "Test your QR preview"
-        case .theme: "Pick your colors"
-        case .badgePreview: "Review your badge"
-        case .complete: "Ready to meet the pack"
+        case .welcome: "Welcome to SonaPin"
+        case .avatar, .compatibility: "Choose an avatar"
+        case .identity: "Badge identity"
+        case .qrConfiguration, .qrPreview: "QR code"
+        case .theme, .badgePreview, .complete: "Review"
         }
     }
 
@@ -163,22 +171,14 @@ private extension OnboardingStep {
         switch self {
         case .welcome:
             "SonaPin is a private, local-only convention badge with an interactive 3D avatar. No account, ads, analytics, or tracking."
-        case .avatar:
-            "Start with the built-in blue wolf or choose a VRM model you have permission to display."
-        case .compatibility:
-            "Review what SonaPin can animate and any license details before continuing."
+        case .avatar, .compatibility:
+            "Choose an avatar, then review what SonaPin can animate and any license details."
         case .identity:
             "Add the details you want another person to see. Nothing leaves this device."
-        case .qrConfiguration:
-            "A QR code can point to your website, social profile, contact link, or plain text."
-        case .qrPreview:
-            "Keep the code unobstructed and test it with another physical phone before relying on it at an event."
-        case .theme:
-            "Choose a high-contrast theme for your badge."
-        case .badgePreview:
-            "Check the name, character details, and scannable code together. You can edit everything later."
-        case .complete:
-            "Your badge stays on this device and is ready for Badge Mode."
+        case .qrConfiguration, .qrPreview:
+            "Choose the content and confirm the live preview. Test it with another physical phone before an event."
+        case .theme, .badgePreview, .complete:
+            "Pick a readable theme and check the finished badge. You can edit everything later."
         }
     }
 }
@@ -200,7 +200,7 @@ private struct WelcomeStep: View {
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(point.title).font(.headline)
-                        Text(point.detail).foregroundStyle(.secondary)
+                        Text(point.detail).foregroundStyle(.primary)
                     }
                 }
                 .accessibilityElement(children: .combine)
@@ -222,7 +222,7 @@ private struct WelcomeStep: View {
 struct ProfileFields: View {
     @Binding var profile: BadgeProfile
     @FocusState private var focusedField: ProfileField?
-    @State private var isEnteringCustomPronouns: Bool
+    @State private var selectedPronounOption: String
 
     private static let pronounOptions = [
         "he/him",
@@ -239,8 +239,10 @@ struct ProfileFields: View {
     init(profile: Binding<BadgeProfile>) {
         _profile = profile
         let pronouns = profile.wrappedValue.pronouns
-        _isEnteringCustomPronouns = State(
-            initialValue: !pronouns.isEmpty && !Self.pronounOptions.contains(pronouns)
+        _selectedPronounOption = State(
+            initialValue: pronouns.isEmpty || Self.pronounOptions.contains(pronouns)
+                ? pronouns
+                : Self.customPronounsOption
         )
     }
 
@@ -271,14 +273,17 @@ struct ProfileFields: View {
                 limit: isEnteringCustomPronouns ? 80 : nil
             ) {
                 LabeledContent("Selection") {
-                    Picker("Pronouns", selection: pronounSelection) {
+                    Picker("Pronouns", selection: $selectedPronounOption) {
                         Text("Select pronouns").tag("")
+                        Text(Self.customPronounsOption).tag(Self.customPronounsOption)
                         ForEach(Self.pronounOptions, id: \.self) { option in
                             Text(option).tag(option)
                         }
-                        Text(Self.customPronounsOption).tag(Self.customPronounsOption)
                     }
                     .pickerStyle(.menu)
+                    .onChange(of: selectedPronounOption) { _, selection in
+                        updatePronouns(selection)
+                    }
                     .accessibilityHint("Choose a common option or Other to enter your own pronouns.")
                     .accessibilityIdentifier("profile.pronouns.picker")
                 }
@@ -336,25 +341,21 @@ struct ProfileFields: View {
         }
     }
 
-    private var pronounSelection: Binding<String> {
-        Binding {
-            if isEnteringCustomPronouns {
-                Self.customPronounsOption
-            } else if Self.pronounOptions.contains(profile.pronouns) {
-                profile.pronouns
-            } else {
-                ""
+    private var isEnteringCustomPronouns: Bool {
+        selectedPronounOption == Self.customPronounsOption
+    }
+
+    private func updatePronouns(_ selection: String) {
+        selectedPronounOption = selection
+        if selection == Self.customPronounsOption {
+            if Self.pronounOptions.contains(profile.pronouns) {
+                profile.pronouns = ""
             }
-        } set: { selection in
-            if selection == Self.customPronounsOption {
-                if Self.pronounOptions.contains(profile.pronouns) {
-                    profile.pronouns = ""
-                }
-                isEnteringCustomPronouns = true
-                Task { @MainActor in focusedField = .pronouns }
-            } else {
-                isEnteringCustomPronouns = false
-                profile.pronouns = selection
+            Task { @MainActor in focusedField = .pronouns }
+        } else {
+            profile.pronouns = selection
+            if !selection.isEmpty {
+                Task { @MainActor in focusedField = .species }
             }
         }
     }
@@ -393,14 +394,8 @@ private struct LabeledFormField<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(title)
-                    .font(.subheadline.weight(.semibold))
-                Spacer()
-                Text(isRequired ? "Required" : "Optional")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            Text("\(title) · \(isRequired ? "Required" : "Optional")")
+                .font(.subheadline.weight(.semibold))
 
             content
 
@@ -413,7 +408,7 @@ private struct LabeledFormField<Content: View>: View {
                 }
             }
             .font(.caption)
-            .foregroundStyle(isOverLimit ? Color.red : Color.secondary)
+            .foregroundStyle(isOverLimit ? Color.red : Color.primary)
         }
     }
 
@@ -481,7 +476,7 @@ struct QRConfigurationFields: View {
 
             Text("Recommended for convention lighting and printed screenshots.")
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
 
             InlineStatusView(
                 systemImage: "wifi.slash",
@@ -573,6 +568,7 @@ struct ThemePicker: View {
 
                         Text(theme.title)
                             .font(.headline)
+                            .foregroundStyle(.primary)
                         Spacer()
                         Image(systemName: selection == theme ? "checkmark.circle.fill" : "circle")
                             .font(.title2)
@@ -583,31 +579,13 @@ struct ThemePicker: View {
                     .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
+                .tint(Color(uiColor: .label))
                 .accessibilityLabel(theme.title)
                 .accessibilityValue(selection == theme ? "Selected" : "Not selected")
+                .accessibilityAddTraits(selection == theme ? .isSelected : [])
                 .accessibilityIdentifier("theme.\(theme.rawValue)")
             }
         }
         .sonaCard()
-    }
-}
-
-private struct CompletionStep: View {
-    var body: some View {
-        VStack(spacing: 18) {
-            Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 78))
-                .foregroundStyle(Color.accentColor)
-                .accessibilityHidden(true)
-            Text("Badge setup complete")
-                .font(.title2.bold())
-            Text("Tap Enter Badge Mode below. Unlock the edit control when you need settings; it starts locked to prevent accidental changes.")
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity)
-        .sonaCard()
-        .accessibilityElement(children: .combine)
-        .accessibilityIdentifier("onboarding.complete")
     }
 }

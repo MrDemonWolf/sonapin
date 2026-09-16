@@ -33,7 +33,11 @@ struct ProfileEditorView: View {
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Edit Profile")
         .navigationBarTitleDisplayMode(.inline)
+        .interactiveDismissDisabled(draft != model.snapshot.profile)
         .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") { dismiss() }
+            }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
                     save()
@@ -108,7 +112,14 @@ struct QRCodeEditorView: View {
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Edit QR Code")
         .navigationBarTitleDisplayMode(.inline)
+        .interactiveDismissDisabled(
+            draft != model.snapshot.qrConfiguration ||
+                highContrast != model.snapshot.preferences.highContrastQR
+        )
         .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") { dismiss() }
+            }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
                     save()

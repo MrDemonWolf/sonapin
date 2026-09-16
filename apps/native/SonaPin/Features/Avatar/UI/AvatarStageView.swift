@@ -209,6 +209,18 @@ struct AvatarStageView: View {
             .accessibilityAction(named: Text("Reset Avatar")) {
                 resetView()
             }
+            .accessibilityAction(named: Text("Rotate Left")) {
+                adjustView(yawDelta: -0.2)
+            }
+            .accessibilityAction(named: Text("Rotate Right")) {
+                adjustView(yawDelta: 0.2)
+            }
+            .accessibilityAction(named: Text("Zoom In")) {
+                adjustView(zoomDelta: 0.1)
+            }
+            .accessibilityAction(named: Text("Zoom Out")) {
+                adjustView(zoomDelta: -0.1)
+            }
 
             if showsControls {
                 ViewThatFits(in: .horizontal) {
@@ -219,6 +231,8 @@ struct AvatarStageView: View {
                         controls
                     }
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(.sonaNavy)
             }
         }
         .onChange(of: model.cameraResetToken) { _, _ in
@@ -247,7 +261,6 @@ struct AvatarStageView: View {
         Button("React", systemImage: "sparkles") {
             react(with: .surprised, animation: "reaction")
         }
-        .buttonStyle(.bordered)
         .frame(minHeight: 44)
         .accessibilityHint("Plays a friendly avatar reaction.")
         .accessibilityIdentifier("avatar.react")
@@ -255,7 +268,6 @@ struct AvatarStageView: View {
         Button("Happy", systemImage: "face.smiling") {
             react(with: .happy, animation: "happy")
         }
-        .buttonStyle(.bordered)
         .frame(minHeight: 44)
         .accessibilityHint("Changes the avatar to a happy expression when supported.")
         .accessibilityIdentifier("avatar.happy")
@@ -263,7 +275,6 @@ struct AvatarStageView: View {
         Button("Reset", systemImage: "arrow.counterclockwise") {
             resetView()
         }
-        .buttonStyle(.bordered)
         .frame(minHeight: 44)
         .accessibilityHint("Restores the avatar pose, rotation, and zoom.")
         .accessibilityIdentifier("avatar.reset")
@@ -286,6 +297,14 @@ struct AvatarStageView: View {
         renderer.resetCamera()
         applyTransform()
         reactionToken += 1
+    }
+
+    private func adjustView(yawDelta: Float = 0, zoomDelta: Float = 0) {
+        yaw = max(-1.5, min(1.5, yaw + yawDelta))
+        restingYaw = yaw
+        zoom = max(0.75, min(1.6, zoom + zoomDelta))
+        restingZoom = zoom
+        applyTransform()
     }
 
     private func applyTransform() {

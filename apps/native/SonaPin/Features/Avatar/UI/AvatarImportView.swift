@@ -24,6 +24,7 @@ struct AvatarSourcePicker: View {
                 )
             }
             .buttonStyle(.plain)
+            .sonaCard()
             .disabled(model.isImportingAvatar)
             .accessibilityAddTraits(model.snapshot.avatar.kind == .demo ? .isSelected : [])
             .accessibilityHint("Uses the built-in procedural demo avatar.")
@@ -36,6 +37,11 @@ struct AvatarSourcePicker: View {
                     systemImage: "square.and.arrow.down",
                     isSelected: model.snapshot.avatar.kind == .imported
                 )
+                .accessibilityLabel(
+                    model.snapshot.avatar.kind == .imported
+                        ? "Import a VRM, current avatar"
+                        : "Import a VRM"
+                )
 
                 Toggle(
                     "I have permission to use this model",
@@ -47,12 +53,13 @@ struct AvatarSourcePicker: View {
 
                 Text("Only import a model you own or have permission to display.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
 
                 Button("Choose VRM…", systemImage: "folder") {
                     presentsImporter = true
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(.sonaNavy)
                 .disabled(!acknowledgesRights || model.isImportingAvatar)
                 .frame(minHeight: 44)
                 .accessibilityHint("Opens the system file picker for a dot V R M file.")
@@ -64,8 +71,6 @@ struct AvatarSourcePicker: View {
                 }
             }
             .sonaCard()
-            .accessibilityValue(model.snapshot.avatar.kind == .imported ? "Selected" : "Not selected")
-            .accessibilityAddTraits(model.snapshot.avatar.kind == .imported ? .isSelected : [])
         }
         .fileImporter(isPresented: $presentsImporter, allowedContentTypes: [vrmType]) { result in
             switch result {
@@ -100,7 +105,7 @@ private struct AvatarChoiceLabel: View {
                     .foregroundStyle(.primary)
                 Text(detail)
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
             }
 
             Spacer(minLength: 8)
@@ -108,10 +113,9 @@ private struct AvatarChoiceLabel: View {
             Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                 .font(.title2)
                 .foregroundStyle(isSelected ? Color.accentColor : .secondary)
-                .accessibilityLabel(isSelected ? "Selected" : "Not selected")
+                .accessibilityHidden(true)
         }
         .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)
-        .sonaCard()
         .accessibilityElement(children: .combine)
     }
 }
@@ -127,7 +131,7 @@ struct CompatibilityReportView: View {
                     text: "Built-in demo is fully supported"
                 )
                 Text("Expressions, idle animation, look-at, boop reactions, drag rotation, pinch zoom, and reset controls are available.")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
             }
             .sonaCard()
             .accessibilityIdentifier("compatibility.demo")
@@ -199,7 +203,7 @@ private struct ReportLine: View {
             LabeledContent(label, value: value)
         } else {
             LabeledContent(label, value: "Not specified")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
         }
     }
 }

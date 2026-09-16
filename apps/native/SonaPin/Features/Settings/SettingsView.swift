@@ -7,6 +7,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var confirmsResetOnboarding = false
     @State private var confirmsDeleteAll = false
+    @State private var activeEditor: SettingsEditor?
 
     var body: some View {
         NavigationStack {
@@ -55,13 +56,23 @@ struct SettingsView: View {
             } message: {
                 Text("This removes your profile, QR settings, imported avatar, preferences, and onboarding progress from this device. This cannot be undone.")
             }
+            .sheet(item: $activeEditor) { editor in
+                NavigationStack {
+                    switch editor {
+                    case .profile:
+                        ProfileEditorView(model: model)
+                    case .qrCode:
+                        QRCodeEditorView(model: model)
+                    }
+                }
+            }
         }
     }
 
     private var identitySection: some View {
         Section("Badge") {
-            NavigationLink {
-                ProfileEditorView(model: model)
+            Button {
+                activeEditor = .profile
             } label: {
                 SettingsRow(
                     title: "Profile",
@@ -69,10 +80,11 @@ struct SettingsView: View {
                     systemImage: "person.text.rectangle"
                 )
             }
+            .buttonStyle(.plain)
             .accessibilityIdentifier("settings.profile")
 
-            NavigationLink {
-                QRCodeEditorView(model: model)
+            Button {
+                activeEditor = .qrCode
             } label: {
                 SettingsRow(
                     title: "QR code",
@@ -80,6 +92,7 @@ struct SettingsView: View {
                     systemImage: "qrcode"
                 )
             }
+            .buttonStyle(.plain)
             .accessibilityIdentifier("settings.qr")
         }
     }
@@ -122,7 +135,7 @@ struct SettingsView: View {
                     Text("Interaction sensitivity")
                     Spacer()
                     Text("\(sensitivityTitle) · \(model.snapshot.preferences.interactionSensitivity, format: .number.precision(.fractionLength(1)))×")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                         .monospacedDigit()
                 }
 
@@ -216,6 +229,13 @@ struct SettingsView: View {
     }
 }
 
+private enum SettingsEditor: String, Identifiable {
+    case profile
+    case qrCode
+
+    var id: Self { self }
+}
+
 private extension AvatarExpression {
     var settingsTitle: String {
         switch self {
@@ -247,6 +267,8 @@ private struct SettingsRow: View {
             Image(systemName: systemImage)
                 .foregroundStyle(Color.accentColor)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
 }
 

@@ -148,7 +148,7 @@ struct InlineStatusView: View {
     var body: some View {
         Label(text, systemImage: systemImage)
             .font(.callout.weight(.semibold))
-            .foregroundStyle(tint)
+            .foregroundStyle(.primary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(12)
             .background(tint.opacity(0.12))

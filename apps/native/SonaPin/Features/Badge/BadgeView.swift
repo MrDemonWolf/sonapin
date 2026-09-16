@@ -5,6 +5,7 @@ import UIKit
 struct BadgeView: View {
     @Bindable var model: AppModel
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.scenePhase) private var scenePhase
     @State private var activeSheet: BadgeSheet?
     @State private var presentsFullScreen = false
@@ -18,7 +19,8 @@ struct BadgeView: View {
                     SonaPinBackground(theme: model.snapshot.theme)
 
                     if !presentsFullScreen {
-                        if proxy.size.width > proxy.size.height {
+                        if proxy.size.width > proxy.size.height,
+                           !dynamicTypeSize.isAccessibilitySize {
                             LandscapeBadgePresentation(model: model) {
                                 activeSheet = .enlargedQR
                             }
@@ -42,30 +44,29 @@ struct BadgeView: View {
                     .accessibilityHint("Shows an immersive badge with your avatar presenting the QR code.")
                     .accessibilityIdentifier("badge.full-screen")
 
-                    Button {
-                        isEditLocked.toggle()
-                    } label: {
-                        Label(
-                            isEditLocked ? "Unlock editing" : "Lock editing",
-                            systemImage: isEditLocked ? "lock.fill" : "lock.open.fill"
-                        )
-                    }
-                    .accessibilityLabel(isEditLocked ? "Unlock badge editing" : "Lock badge editing")
-                    .accessibilityHint("Controls access to badge settings so they cannot open accidentally.")
-                    .accessibilityIdentifier("badge.edit-lock")
+                    Menu {
+                        Button {
+                            isEditLocked.toggle()
+                        } label: {
+                            Label(
+                                isEditLocked ? "Unlock editing" : "Lock editing",
+                                systemImage: isEditLocked ? "lock.fill" : "lock.open.fill"
+                            )
+                        }
+                        .accessibilityIdentifier("badge.edit-lock")
 
-                    Button {
-                        activeSheet = .settings
+                        Button {
+                            activeSheet = .settings
+                        } label: {
+                            Label("Settings", systemImage: "gearshape.fill")
+                        }
+                        .disabled(isEditLocked)
+                        .accessibilityIdentifier("badge.settings")
                     } label: {
-                        Label("Settings", systemImage: "gearshape.fill")
+                        Label("Badge actions", systemImage: "ellipsis")
                     }
-                    .disabled(isEditLocked)
-                    .accessibilityHint(
-                        isEditLocked
-                            ? "Unlock badge editing first."
-                            : "Opens your profile, QR, avatar, and display settings."
-                    )
-                    .accessibilityIdentifier("badge.settings")
+                    .accessibilityHint("Contains editing lock and settings actions.")
+                    .accessibilityIdentifier("badge.actions")
                 }
             }
         }
