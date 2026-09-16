@@ -222,6 +222,27 @@ private struct WelcomeStep: View {
 struct ProfileFields: View {
     @Binding var profile: BadgeProfile
     @FocusState private var focusedField: ProfileField?
+    @State private var isEnteringCustomPronouns: Bool
+
+    private static let pronounOptions = [
+        "he/him",
+        "she/her",
+        "they/them",
+        "he/they",
+        "she/they",
+        "it/its",
+        "any pronouns",
+        "ask me",
+    ]
+    private static let customPronounsOption = "Other…"
+
+    init(profile: Binding<BadgeProfile>) {
+        _profile = profile
+        let pronouns = profile.wrappedValue.pronouns
+        _isEnteringCustomPronouns = State(
+            initialValue: !pronouns.isEmpty && !Self.pronounOptions.contains(pronouns)
+        )
+    }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -229,17 +250,31 @@ struct ProfileFields: View {
                 .textContentType(.name)
                 .submitLabel(.next)
                 .focused($focusedField, equals: .displayName)
-                .onSubmit { focusedField = .pronouns }
+                .onSubmit { focusedField = nil }
                 .accessibilityHint("Required. Up to 80 characters.")
                 .accessibilityIdentifier("profile.display-name")
 
-            TextField("Pronouns", text: $profile.pronouns)
-                .textInputAutocapitalization(.never)
-                .submitLabel(.next)
-                .focused($focusedField, equals: .pronouns)
-                .onSubmit { focusedField = .species }
-                .accessibilityHint("Required. For example, they slash them.")
-                .accessibilityIdentifier("profile.pronouns")
+            Picker("Pronouns", selection: pronounSelection) {
+                Text("Select pronouns").tag("")
+                ForEach(Self.pronounOptions, id: \.self) { option in
+                    Text(option).tag(option)
+                }
+                Text(Self.customPronounsOption).tag(Self.customPronounsOption)
+            }
+            .pickerStyle(.menu)
+            .frame(minHeight: 44)
+            .accessibilityHint("Choose a common option or Other to enter your own pronouns.")
+            .accessibilityIdentifier("profile.pronouns.picker")
+
+            if isEnteringCustomPronouns {
+                TextField("Custom pronouns", text: $profile.pronouns)
+                    .textInputAutocapitalization(.never)
+                    .submitLabel(.next)
+                    .focused($focusedField, equals: .pronouns)
+                    .onSubmit { focusedField = .species }
+                    .accessibilityHint("Required. Enter pronouns exactly as you want them shown, up to 80 characters.")
+                    .accessibilityIdentifier("profile.pronouns.custom")
+            }
 
             TextField("Species or character type", text: $profile.species)
                 .submitLabel(.next)
@@ -258,6 +293,28 @@ struct ProfileFields: View {
         }
         .textFieldStyle(.roundedBorder)
         .sonaCard()
+    }
+
+    private var pronounSelection: Binding<String> {
+        Binding {
+            if isEnteringCustomPronouns {
+                Self.customPronounsOption
+            } else if Self.pronounOptions.contains(profile.pronouns) {
+                profile.pronouns
+            } else {
+                ""
+            }
+        } set: { selection in
+            if selection == Self.customPronounsOption {
+                if Self.pronounOptions.contains(profile.pronouns) {
+                    profile.pronouns = ""
+                }
+                isEnteringCustomPronouns = true
+            } else {
+                isEnteringCustomPronouns = false
+                profile.pronouns = selection
+            }
+        }
     }
 }
 

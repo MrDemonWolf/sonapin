@@ -83,8 +83,10 @@ final class SonaPinUITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["badge.edit-lock"].waitForExistence(timeout: 5))
         XCTAssertTrue(element("badge.identity").label.contains("MrDemonWolf"))
+        XCTAssertTrue(element("badge.identity").label.contains("xe/xem"))
 
         openSettings()
+        verifyCustomPronounsArePreserved()
         deleteAllLocalData()
 
         XCTAssertTrue(app.staticTexts["Step 1 of 9"].waitForExistence(timeout: 8))
@@ -113,9 +115,10 @@ final class SonaPinUITests: XCTestCase {
         displayName.tap()
         displayName.typeText("Blue Wolf")
 
-        let pronouns = app.textFields["profile.pronouns"]
+        let pronouns = app.buttons["profile.pronouns.picker"]
+        XCTAssertTrue(pronouns.waitForExistence(timeout: 3))
         pronouns.tap()
-        pronouns.typeText("he/him")
+        app.buttons["he/him"].tap()
 
         let species = app.textFields["profile.species"]
         species.tap()
@@ -154,7 +157,33 @@ final class SonaPinUITests: XCTestCase {
         let displayName = app.textFields["profile.display-name"]
         XCTAssertTrue(displayName.waitForExistence(timeout: 3))
         replaceText(in: displayName, with: "MrDemonWolf")
+
+        let pronouns = app.buttons["profile.pronouns.picker"]
+        XCTAssertTrue(pronouns.waitForExistence(timeout: 3))
+        pronouns.tap()
+        app.buttons["Other…"].tap()
+
+        let customPronouns = app.textFields["profile.pronouns.custom"]
+        XCTAssertTrue(customPronouns.waitForExistence(timeout: 3))
+        customPronouns.tap()
+        customPronouns.typeText("xe/xem")
         dismissKeyboardIfPresent()
+        app.buttons["profile.save"].tap()
+
+        XCTAssertTrue(app.buttons["settings.done"].waitForExistence(timeout: 3))
+    }
+
+    private func verifyCustomPronounsArePreserved() {
+        app.buttons["settings.profile"].tap()
+
+        let pronouns = app.buttons["profile.pronouns.picker"]
+        XCTAssertTrue(pronouns.waitForExistence(timeout: 3))
+        pronouns.tap()
+        app.buttons["Other…"].tap()
+
+        let customPronouns = app.textFields["profile.pronouns.custom"]
+        XCTAssertTrue(customPronouns.waitForExistence(timeout: 3))
+        XCTAssertEqual(customPronouns.value as? String, "xe/xem")
         app.buttons["profile.save"].tap()
 
         XCTAssertTrue(app.buttons["settings.done"].waitForExistence(timeout: 3))
