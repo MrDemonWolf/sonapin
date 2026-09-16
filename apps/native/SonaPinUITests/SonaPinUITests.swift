@@ -110,6 +110,11 @@ final class SonaPinUITests: XCTestCase {
     }
 
     private func enterIdentity() {
+        XCTAssertTrue(app.staticTexts["Display name"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Pronouns"].exists)
+        XCTAssertTrue(app.staticTexts["Species or character"].exists)
+        XCTAssertTrue(app.staticTexts["Tagline"].exists)
+
         let displayName = app.textFields["profile.display-name"]
         XCTAssertTrue(displayName.waitForExistence(timeout: 3))
         displayName.tap()
@@ -134,8 +139,16 @@ final class SonaPinUITests: XCTestCase {
         let payload = app.textFields["qr.payload"]
         XCTAssertTrue(payload.waitForExistence(timeout: 3))
         payload.tap()
-        payload.typeText("https://mrdemonwolf.com")
+        payload.typeText("mrdemonwolf.com")
         dismissKeyboardIfPresent()
+
+        let validation = element("qr.validation")
+        XCTAssertTrue(validation.waitForExistence(timeout: 3))
+        XCTAssertFalse(validation.label.contains("Ready to scan"))
+
+        replaceText(in: payload, with: "https://mrdemonwolf.com")
+        dismissKeyboardIfPresent()
+        XCTAssertTrue(validation.label.contains("Ready to scan"))
     }
 
     private func openSettings() {
@@ -144,7 +157,11 @@ final class SonaPinUITests: XCTestCase {
         lock.tap()
 
         let settings = app.buttons["badge.settings"]
-        XCTAssertTrue(settings.isEnabled)
+        let settingsEnabled = expectation(
+            for: NSPredicate(format: "enabled == true"),
+            evaluatedWith: settings
+        )
+        wait(for: [settingsEnabled], timeout: 3)
         settings.tap()
         XCTAssertTrue(app.buttons["settings.done"].waitForExistence(timeout: 5))
     }

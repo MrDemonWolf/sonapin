@@ -102,6 +102,7 @@ struct SettingsView: View {
                     Text(expression.settingsTitle).tag(expression)
                 }
             }
+            .pickerStyle(.menu)
             .accessibilityHint("Applies this expression when the avatar supports it. Unsupported expressions use a safe fallback.")
             .accessibilityIdentifier("settings.default-expression")
 
@@ -120,7 +121,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Interaction sensitivity")
                     Spacer()
-                    Text(model.snapshot.preferences.interactionSensitivity, format: .number.precision(.fractionLength(1)))
+                    Text("\(sensitivityTitle) · \(model.snapshot.preferences.interactionSensitivity, format: .number.precision(.fractionLength(1)))×")
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
                 }
@@ -138,6 +139,7 @@ struct SettingsView: View {
                     Image(systemName: "hare")
                         .accessibilityLabel("More sensitive")
                 }
+                .accessibilityValue("\(sensitivityTitle), \(model.snapshot.preferences.interactionSensitivity.formatted(.number.precision(.fractionLength(1)))) times")
                 .accessibilityIdentifier("settings.sensitivity")
             }
 
@@ -159,12 +161,15 @@ struct SettingsView: View {
         Section("Display") {
             Picker("Badge theme", selection: $model.snapshot.theme) {
                 ForEach(BadgeTheme.allCases, id: \.rawValue) { theme in
-                    Text(theme.title).tag(theme)
+                    Label(theme.title, systemImage: "circle.fill")
+                        .foregroundStyle(theme.accentColor)
+                        .tag(theme)
                 }
             }
+            .pickerStyle(.menu)
             .accessibilityIdentifier("settings.theme")
 
-            Toggle("Extra-high QR contrast", isOn: $model.snapshot.preferences.highContrastQR)
+            Toggle("Maximize QR contrast", isOn: $model.snapshot.preferences.highContrastQR)
                 .accessibilityHint("Keeps the QR code dark on a plain white background.")
                 .accessibilityIdentifier("settings.qr-contrast")
                 .onChange(of: model.snapshot.preferences.highContrastQR) { _, value in
@@ -199,6 +204,14 @@ struct SettingsView: View {
                 .accessibilityIdentifier("settings.privacy")
             NavigationLink("Acknowledgments", value: SettingsInformationPage.acknowledgments)
                 .accessibilityIdentifier("settings.acknowledgments")
+        }
+    }
+
+    private var sensitivityTitle: String {
+        switch model.snapshot.preferences.interactionSensitivity {
+        case ..<0.9: "Gentle"
+        case ...1.2: "Standard"
+        default: "Lively"
         }
     }
 }

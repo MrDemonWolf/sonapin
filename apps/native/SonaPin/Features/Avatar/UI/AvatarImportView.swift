@@ -24,6 +24,8 @@ struct AvatarSourcePicker: View {
                 )
             }
             .buttonStyle(.plain)
+            .disabled(model.isImportingAvatar)
+            .accessibilityAddTraits(model.snapshot.avatar.kind == .demo ? .isSelected : [])
             .accessibilityHint("Uses the built-in procedural demo avatar.")
             .accessibilityIdentifier("avatar.use-demo")
 
@@ -36,13 +38,18 @@ struct AvatarSourcePicker: View {
                 )
 
                 Toggle(
-                    "I have permission to use and display the model I select.",
+                    "I have permission to use this model",
                     isOn: $acknowledgesRights
                 )
                 .font(.callout)
+                .accessibilityHint("Confirm that you own the model or have permission to display it.")
                 .accessibilityIdentifier("avatar.rights")
 
-                Button("Choose VRM File", systemImage: "folder") {
+                Text("Only import a model you own or have permission to display.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Button("Choose VRM…", systemImage: "folder") {
                     presentsImporter = true
                 }
                 .buttonStyle(.borderedProminent)
@@ -57,13 +64,17 @@ struct AvatarSourcePicker: View {
                 }
             }
             .sonaCard()
+            .accessibilityValue(model.snapshot.avatar.kind == .imported ? "Selected" : "Not selected")
+            .accessibilityAddTraits(model.snapshot.avatar.kind == .imported ? .isSelected : [])
         }
         .fileImporter(isPresented: $presentsImporter, allowedContentTypes: [vrmType]) { result in
             switch result {
             case let .success(url):
                 Task { await model.importAvatar(from: url) }
             case let .failure(error):
-                model.notice = AppNotice(title: "File not selected", message: error.localizedDescription)
+                if (error as NSError).code != NSUserCancelledError {
+                    model.notice = AppNotice(title: "Could not choose file", message: error.localizedDescription)
+                }
             }
         }
     }

@@ -21,7 +21,7 @@ struct ProfileEditorView: View {
             } header: {
                 Text("Badge identity")
             } footer: {
-                Text("Display name, pronouns, and species are required. Your tagline is optional.")
+                Text("These details appear on your badge and stay on this device.")
             }
 
             Section("Preview") {
@@ -30,6 +30,7 @@ struct ProfileEditorView: View {
                     .listRowBackground(model.snapshot.theme.surfaceColor)
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Edit Profile")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -37,9 +38,14 @@ struct ProfileEditorView: View {
                 Button("Save") {
                     save()
                 }
+                .disabled(!canSave)
                 .accessibilityIdentifier("profile.save")
             }
         }
+    }
+
+    private var canSave: Bool {
+        (try? ProfileValidator.validate(draft)) != nil
     }
 
     private func save() {
@@ -80,9 +86,17 @@ struct QRCodeEditorView: View {
             }
 
             Section("Preview") {
-                QRCodeView(configuration: draft, maximumDimension: 340, showsPayload: true)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
+                if canSave {
+                    QRCodeView(configuration: draft, maximumDimension: 340, showsPayload: true)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                } else {
+                    ContentUnavailableView(
+                        "Enter valid content to preview",
+                        systemImage: "qrcode",
+                        description: Text("The preview appears after the required QR content is valid.")
+                    )
+                }
             }
 
             Section {
@@ -91,6 +105,7 @@ struct QRCodeEditorView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Edit QR Code")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -98,9 +113,14 @@ struct QRCodeEditorView: View {
                 Button("Save") {
                     save()
                 }
+                .disabled(!canSave)
                 .accessibilityIdentifier("qr.save")
             }
         }
+    }
+
+    private var canSave: Bool {
+        (try? QRPayloadValidator.validate(draft)) != nil
     }
 
     private func save() {

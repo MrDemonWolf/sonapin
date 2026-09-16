@@ -81,11 +81,13 @@ struct OnboardingView: View {
             CompatibilityReportView(record: model.snapshot.avatar)
         case .identity:
             ProfileFields(profile: $model.snapshot.profile)
+                .sonaCard()
         case .qrConfiguration:
             QRConfigurationFields(
                 configuration: $model.snapshot.qrConfiguration,
                 highContrastPreference: $model.snapshot.preferences.highContrastQR
             )
+            .sonaCard()
         case .qrPreview:
             QRPreviewStep(configuration: model.snapshot.qrConfiguration)
         case .theme:
@@ -100,9 +102,7 @@ struct OnboardingView: View {
     private var canContinue: Bool {
         switch step {
         case .identity:
-            return !model.snapshot.profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                && !model.snapshot.profile.pronouns.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                && !model.snapshot.profile.species.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            return (try? ProfileValidator.validate(model.snapshot.profile)) != nil
         case .qrConfiguration, .qrPreview:
             return (try? QRPayloadValidator.validate(model.snapshot.qrConfiguration)) != nil
         case .compatibility:
@@ -245,29 +245,48 @@ struct ProfileFields: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            TextField("Display name", text: $profile.displayName)
-                .textContentType(.name)
-                .submitLabel(.next)
-                .focused($focusedField, equals: .displayName)
-                .onSubmit { focusedField = nil }
-                .accessibilityHint("Required. Up to 80 characters.")
-                .accessibilityIdentifier("profile.display-name")
-
-            Picker("Pronouns", selection: pronounSelection) {
-                Text("Select pronouns").tag("")
-                ForEach(Self.pronounOptions, id: \.self) { option in
-                    Text(option).tag(option)
-                }
-                Text(Self.customPronounsOption).tag(Self.customPronounsOption)
+        VStack(alignment: .leading, spacing: 20) {
+            LabeledFormField(
+                title: "Display name",
+                help: "The name people will notice first on your badge.",
+                count: profile.displayName.count,
+                limit: 80
+            ) {
+                TextField("MrDemonWolf", text: $profile.displayName)
+                    .textContentType(.name)
+                    .submitLabel(.next)
+                    .focused($focusedField, equals: .displayName)
+                    .onSubmit {
+                        focusedField = isEnteringCustomPronouns ? .pronouns : .species
+                    }
+                    .accessibilityLabel("Display name")
+                    .accessibilityHint("Required. Up to 80 characters.")
+                    .accessibilityIdentifier("profile.display-name")
             }
-            .pickerStyle(.menu)
-            .frame(minHeight: 44)
-            .accessibilityHint("Choose a common option or Other to enter your own pronouns.")
-            .accessibilityIdentifier("profile.pronouns.picker")
+
+            LabeledFormField(
+                title: "Pronouns",
+                help: "Choose a common option or add your own.",
+                count: isEnteringCustomPronouns ? profile.pronouns.count : nil,
+                limit: isEnteringCustomPronouns ? 80 : nil
+            ) {
+                LabeledContent("Selection") {
+                    Picker("Pronouns", selection: pronounSelection) {
+                        Text("Select pronouns").tag("")
+                        ForEach(Self.pronounOptions, id: \.self) { option in
+                            Text(option).tag(option)
+                        }
+                        Text(Self.customPronounsOption).tag(Self.customPronounsOption)
+                    }
+                    .pickerStyle(.menu)
+                    .accessibilityHint("Choose a common option or Other to enter your own pronouns.")
+                    .accessibilityIdentifier("profile.pronouns.picker")
+                }
+                .frame(minHeight: 44)
+            }
 
             if isEnteringCustomPronouns {
-                TextField("Custom pronouns", text: $profile.pronouns)
+                TextField("Enter your pronouns", text: $profile.pronouns)
                     .textInputAutocapitalization(.never)
                     .submitLabel(.next)
                     .focused($focusedField, equals: .pronouns)
@@ -276,23 +295,45 @@ struct ProfileFields: View {
                     .accessibilityIdentifier("profile.pronouns.custom")
             }
 
-            TextField("Species or character type", text: $profile.species)
-                .submitLabel(.next)
-                .focused($focusedField, equals: .species)
-                .onSubmit { focusedField = .tagline }
-                .accessibilityHint("Required. For example, blue wolf.")
-                .accessibilityIdentifier("profile.species")
+            LabeledFormField(
+                title: "Species or character",
+                help: "For example, blue wolf, dragon, or original character.",
+                count: profile.species.count,
+                limit: 80
+            ) {
+                TextField("Blue wolf", text: $profile.species)
+                    .submitLabel(.next)
+                    .focused($focusedField, equals: .species)
+                    .onSubmit { focusedField = .tagline }
+                    .accessibilityLabel("Species or character")
+                    .accessibilityHint("Required. Up to 80 characters.")
+                    .accessibilityIdentifier("profile.species")
+            }
 
-            TextField("Short tagline (optional)", text: $profile.tagline, axis: .vertical)
-                .lineLimit(2 ... 4)
-                .submitLabel(.done)
-                .focused($focusedField, equals: .tagline)
-                .onSubmit { focusedField = nil }
-                .accessibilityHint("Optional. Up to 140 characters.")
-                .accessibilityIdentifier("profile.tagline")
+            LabeledFormField(
+                title: "Tagline",
+                isRequired: false,
+                help: "One short line people can read at a glance.",
+                count: profile.tagline.count,
+                limit: 140
+            ) {
+                TextField("Friendly wolf roaming the con floor", text: $profile.tagline, axis: .vertical)
+                    .lineLimit(2 ... 4)
+                    .submitLabel(.done)
+                    .focused($focusedField, equals: .tagline)
+                    .onSubmit { focusedField = nil }
+                    .accessibilityLabel("Tagline")
+                    .accessibilityHint("Optional. Up to 140 characters.")
+                    .accessibilityIdentifier("profile.tagline")
+            }
         }
         .textFieldStyle(.roundedBorder)
-        .sonaCard()
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") { focusedField = nil }
+            }
+        }
     }
 
     private var pronounSelection: Binding<String> {
@@ -310,6 +351,7 @@ struct ProfileFields: View {
                     profile.pronouns = ""
                 }
                 isEnteringCustomPronouns = true
+                Task { @MainActor in focusedField = .pronouns }
             } else {
                 isEnteringCustomPronouns = false
                 profile.pronouns = selection
@@ -325,47 +367,166 @@ private enum ProfileField: Hashable {
     case tagline
 }
 
+private struct LabeledFormField<Content: View>: View {
+    let title: String
+    let isRequired: Bool
+    let help: String
+    let count: Int?
+    let limit: Int?
+    let content: Content
+
+    init(
+        title: String,
+        isRequired: Bool = true,
+        help: String,
+        count: Int? = nil,
+        limit: Int? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.title = title
+        self.isRequired = isRequired
+        self.help = help
+        self.count = count
+        self.limit = limit
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                Spacer()
+                Text(isRequired ? "Required" : "Optional")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            content
+
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text(isOverLimit ? "Shorten this value before continuing." : help)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if let count, let limit {
+                    Text("\(count)/\(limit)")
+                        .monospacedDigit()
+                }
+            }
+            .font(.caption)
+            .foregroundStyle(isOverLimit ? Color.red : Color.secondary)
+        }
+    }
+
+    private var isOverLimit: Bool {
+        guard let count, let limit else { return false }
+        return count > limit
+    }
+}
+
 struct QRConfigurationFields: View {
     @Binding var configuration: QRConfiguration
     @Binding var highContrastPreference: Bool
     @FocusState private var isPayloadFocused: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            Picker("QR content type", selection: $configuration.kind) {
-                ForEach(QRPayloadKind.allCases, id: \.rawValue) { kind in
-                    Label(kind.title, systemImage: kind.systemImage)
-                        .tag(kind)
+        VStack(alignment: .leading, spacing: 20) {
+            LabeledFormField(
+                title: "QR content type",
+                help: "Choose what someone receives after scanning."
+            ) {
+                LabeledContent("Type") {
+                    Picker("QR content type", selection: $configuration.kind) {
+                        ForEach(QRPayloadKind.allCases, id: \.rawValue) { kind in
+                            Label(kind.title, systemImage: kind.systemImage)
+                                .tag(kind)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .accessibilityIdentifier("qr.kind")
                 }
+                .frame(minHeight: 44)
             }
-            .pickerStyle(.menu)
-            .accessibilityIdentifier("qr.kind")
 
-            TextField(configuration.kind.prompt, text: $configuration.payload, axis: .vertical)
-                .textInputAutocapitalization(
-                    configuration.kind == .customText ? .sentences : .never
-                )
-                .autocorrectionDisabled(configuration.kind != .customText)
-                .keyboardType(configuration.kind == .customText ? .default : .URL)
-                .lineLimit(2 ... 5)
-                .submitLabel(.done)
-                .focused($isPayloadFocused)
-                .onSubmit { isPayloadFocused = false }
-                .textFieldStyle(.roundedBorder)
-                .accessibilityLabel("QR content")
-                .accessibilityHint("Required. Enter the complete content another person should receive.")
-                .accessibilityIdentifier("qr.payload")
+            LabeledFormField(
+                title: payloadTitle,
+                help: payloadHelp
+            ) {
+                TextField(configuration.kind.prompt, text: $configuration.payload, axis: .vertical)
+                    .textInputAutocapitalization(
+                        configuration.kind == .customText ? .sentences : .never
+                    )
+                    .autocorrectionDisabled(configuration.kind != .customText)
+                    .keyboardType(configuration.kind == .customText ? .default : .URL)
+                    .textContentType(configuration.kind == .customText ? nil : .URL)
+                    .lineLimit(2 ... 5)
+                    .submitLabel(.done)
+                    .focused($isPayloadFocused)
+                    .onSubmit { isPayloadFocused = false }
+                    .textFieldStyle(.roundedBorder)
+                    .accessibilityLabel(payloadTitle)
+                    .accessibilityHint("Required. Enter the complete content another person should receive.")
+                    .accessibilityIdentifier("qr.payload")
+            }
 
-            Toggle("Extra-high QR contrast", isOn: $highContrastPreference)
+            if let validationStatus {
+                Label(validationStatus.message, systemImage: validationStatus.systemImage)
+                    .font(.caption)
+                    .foregroundStyle(validationStatus.color)
+                    .accessibilityIdentifier("qr.validation")
+            }
+
+            Toggle("Maximize QR contrast", isOn: $highContrastPreference)
                 .accessibilityHint("Keeps the QR code dark on a plain white background.")
                 .accessibilityIdentifier("qr.high-contrast")
+
+            Text("Recommended for convention lighting and printed screenshots.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
 
             InlineStatusView(
                 systemImage: "wifi.slash",
                 text: "Validation happens on this device. SonaPin does not open or upload this content."
             )
         }
-        .sonaCard()
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") { isPayloadFocused = false }
+            }
+        }
+    }
+
+    private var payloadTitle: String {
+        switch configuration.kind {
+        case .website: "Website URL"
+        case .socialProfile: "Social profile URL"
+        case .contact: "Contact link"
+        case .customText: "Message"
+        }
+    }
+
+    private var payloadHelp: String {
+        switch configuration.kind {
+        case .website, .socialProfile:
+            "Include https:// so phones know where to open it."
+        case .contact:
+            "Use a complete web, mailto:, tel:, or sms: link."
+        case .customText:
+            "Keep it short so the QR code stays easy to scan."
+        }
+    }
+
+    private var validationStatus: (message: String, systemImage: String, color: Color)? {
+        guard !configuration.payload.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return nil
+        }
+
+        do {
+            _ = try QRPayloadValidator.validate(configuration)
+            return ("Ready to scan", "checkmark.circle.fill", .green)
+        } catch {
+            return (error.localizedDescription, "exclamationmark.circle.fill", .red)
+        }
     }
 }
 
