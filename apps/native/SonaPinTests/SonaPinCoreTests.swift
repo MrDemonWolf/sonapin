@@ -455,8 +455,14 @@ struct AvatarRendererTests {
         let posedLowerArmY = leftLowerArm.position(relativeTo: avatar).y
         #expect(posedLowerArmY < leftUpperArm.position(relativeTo: avatar).y - 0.05)
 
+        let rightUpperArm = try #require(avatar.humanoid.node(for: .rightUpperArm))
+        let rightLowerArm = try #require(avatar.humanoid.node(for: .rightLowerArm))
+        let posedRightLowerArmY = rightLowerArm.position(relativeTo: avatar).y
+        #expect(posedRightLowerArmY < rightUpperArm.position(relativeTo: avatar).y - 0.05)
+
         renderer.resetPose()
         #expect(abs(leftLowerArm.position(relativeTo: avatar).y - posedLowerArmY) < 0.001)
+        #expect(abs(rightLowerArm.position(relativeTo: avatar).y - posedRightLowerArmY) < 0.001)
         renderer.unload()
         #expect(renderer.rootEntity.children.isEmpty)
     }

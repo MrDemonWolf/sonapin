@@ -72,61 +72,47 @@ private struct ImmersiveBadgeOverlay: View {
     let theme: BadgeTheme
     let size: CGSize
     let isLandscape: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
+    @ViewBuilder
     var body: some View {
-        ViewThatFits(in: .vertical) {
-            VStack {
-                Spacer()
-                layout
-            }
-            .padding(20)
-
+        if dynamicTypeSize.isAccessibilitySize {
             ScrollView {
-                layout
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 72)
-                    .padding(.bottom, 20)
+                VStack(spacing: 12) {
+                    identityCard
+                    qrCard
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
+                .padding(.top, max(size.height * 0.42, 180))
+                .padding(.bottom, 20)
             }
             .scrollIndicators(.hidden)
+        } else {
+            ZStack(alignment: .bottom) {
+                identityCard
+                    .frame(maxWidth: isLandscape ? 380 : 300)
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: isLandscape ? .leading : .center
+                    )
+
+                qrCard
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+                    .offset(y: isLandscape ? -size.height * 0.04 : -size.height * 0.10)
+            }
+            .padding(20)
         }
     }
 
-    @ViewBuilder
-    private var layout: some View {
-        if isLandscape {
-            HStack(alignment: .bottom, spacing: 20) {
-                identityCard
-                    .frame(maxWidth: 380)
-                Spacer(minLength: 12)
-                PresentedQRCodeCard(
-                    configuration: configuration,
-                    theme: theme,
-                    maximumDimension: min(size.height * 0.42, 220)
-                )
-            }
-        } else {
-            ViewThatFits(in: .horizontal) {
-                HStack(alignment: .bottom, spacing: 12) {
-                    identityCard
-                        .frame(width: max(min(size.width * 0.46, 220), 170))
-                    PresentedQRCodeCard(
-                        configuration: configuration,
-                        theme: theme,
-                        maximumDimension: min(size.width * 0.30, 150)
-                    )
-                }
-
-                VStack(spacing: 12) {
-                    identityCard
-                    PresentedQRCodeCard(
-                        configuration: configuration,
-                        theme: theme,
-                        maximumDimension: min(size.width * 0.42, 190)
-                    )
-                }
-            }
-        }
+    private var qrCard: some View {
+        PresentedQRCodeCard(
+            configuration: configuration,
+            theme: theme,
+            maximumDimension: isLandscape
+                ? min(size.height * 0.40, 220)
+                : min(size.width * 0.34, 150)
+        )
     }
 
     private var identityCard: some View {
