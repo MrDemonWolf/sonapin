@@ -469,6 +469,7 @@ final class VRMKitAvatarRenderer: AvatarRendering {
                 head.addChild(hitTarget)
             }
 
+            Self.prepareForPresentation(candidate)
             let candidateRestTransforms = Self.captureTransforms(in: candidate)
             avatarEntity?.stopAnimations()
             removeChildren(from: rootEntity)
@@ -529,6 +530,7 @@ final class VRMKitAvatarRenderer: AvatarRendering {
         guard let avatarEntity else { return }
         avatarEntity.stopAnimations()
         Self.restoreTransforms(in: avatarEntity, from: restTransforms)
+        avatarEntity.invalidateSkinPose()
         let neutralWeights = Dictionary(
             uniqueKeysWithValues: avatarEntity.availableExpressions.map { ($0.key, CGFloat.zero) }
         )
@@ -567,6 +569,38 @@ final class VRMKitAvatarRenderer: AvatarRendering {
         default:
             return false
         }
+    }
+
+    private static func prepareForPresentation(_ avatar: VRMEntity) {
+        if avatar.frontDirection.z < 0 {
+            avatar.transform.rotation = simd_quatf(angle: .pi, axis: SIMD3(0, 1, 0))
+                * avatar.transform.rotation
+        }
+
+        lowerArm(.leftUpperArm, toward: .leftLowerArm, in: avatar)
+        lowerArm(.rightUpperArm, toward: .rightLowerArm, in: avatar)
+        avatar.invalidateSkinPose()
+        avatar.resetSpringBones()
+    }
+
+    private static func lowerArm(
+        _ upperBone: HumanoidBone,
+        toward lowerBone: HumanoidBone,
+        in avatar: VRMEntity
+    ) {
+        guard let upperArm = avatar.humanoid.node(for: upperBone),
+              let lowerArm = avatar.humanoid.node(for: lowerBone),
+              let parent = upperArm.parent else { return }
+
+        let horizontalDirection = lowerArm.position(relativeTo: avatar).x
+            - upperArm.position(relativeTo: avatar).x
+        guard abs(horizontalDirection) > 0.001 else { return }
+
+        let angle = copysign(40 * .pi / 180, -horizontalDirection)
+        let normalizedDelta = simd_quatf(angle: angle, axis: SIMD3(0, 0, 1))
+        let parentRestRotation = parent.orientation(relativeTo: avatar)
+        let boneRestRotation = upperArm.orientation(relativeTo: avatar)
+        upperArm.transform.rotation = parentRestRotation.inverse * normalizedDelta * boneRestRotation
     }
 
     private static func captureTransforms(in root: Entity) -> [ObjectIdentifier: Transform] {

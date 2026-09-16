@@ -2,6 +2,7 @@ import CoreGraphics
 import Foundation
 import RealityKit
 import Testing
+import VRMRealityKit
 @testable import SonaPin
 
 @Suite("Profile and QR validation")
@@ -445,8 +446,17 @@ struct AvatarRendererTests {
         let renderer = VRMKitAvatarRenderer()
         try await renderer.load(.imported(fileURL: fixture))
 
-        #expect(!renderer.rootEntity.children.isEmpty)
+        let avatar = try #require(renderer.rootEntity.children.first as? VRMEntity)
+        let presentedForward = avatar.orientation(relativeTo: renderer.rootEntity).act(avatar.frontDirection)
+        #expect(presentedForward.z > 0.99)
+
+        let leftUpperArm = try #require(avatar.humanoid.node(for: .leftUpperArm))
+        let leftLowerArm = try #require(avatar.humanoid.node(for: .leftLowerArm))
+        let posedLowerArmY = leftLowerArm.position(relativeTo: avatar).y
+        #expect(posedLowerArmY < leftUpperArm.position(relativeTo: avatar).y - 0.05)
+
         renderer.resetPose()
+        #expect(abs(leftLowerArm.position(relativeTo: avatar).y - posedLowerArmY) < 0.001)
         renderer.unload()
         #expect(renderer.rootEntity.children.isEmpty)
     }
