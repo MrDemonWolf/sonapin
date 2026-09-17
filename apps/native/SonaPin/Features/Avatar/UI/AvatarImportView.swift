@@ -4,8 +4,8 @@ import UniformTypeIdentifiers
 @MainActor
 struct AvatarSourcePicker: View {
     @Bindable var model: AppModel
-    @State private var acknowledgesRights = false
     @State private var presentsImporter = false
+    @State private var pendingImportURL: URL?
 
     private var vrmType: UTType {
         UTType(filenameExtension: "vrm") ?? .data
@@ -43,24 +43,12 @@ struct AvatarSourcePicker: View {
                         : "Import a VRM"
                 )
 
-                Toggle(
-                    "I have permission to use this model",
-                    isOn: $acknowledgesRights
-                )
-                .font(.callout)
-                .accessibilityHint("Confirm that you own the model or have permission to display it.")
-                .accessibilityIdentifier("avatar.rights")
-
-                Text("Only import a model you own or have permission to display.")
-                    .font(.caption)
-                    .foregroundStyle(.primary)
-
                 Button("Choose VRM…", systemImage: "folder") {
                     presentsImporter = true
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.sonaNavy)
-                .disabled(!acknowledgesRights || model.isImportingAvatar)
+                .disabled(model.isImportingAvatar)
                 .frame(minHeight: 44)
                 .accessibilityHint("Opens the system file picker for a dot V R M file.")
                 .accessibilityIdentifier("avatar.import")
@@ -75,12 +63,33 @@ struct AvatarSourcePicker: View {
         .fileImporter(isPresented: $presentsImporter, allowedContentTypes: [vrmType]) { result in
             switch result {
             case let .success(url):
-                Task { await model.importAvatar(from: url) }
+                pendingImportURL = url
             case let .failure(error):
                 if (error as NSError).code != NSUserCancelledError {
                     model.notice = AppNotice(title: "Could not choose file", message: error.localizedDescription)
                 }
             }
+        }
+        .alert(
+            "Do you have permission to use this model?",
+            isPresented: Binding(
+                get: { pendingImportURL != nil },
+                set: { if !$0 { pendingImportURL = nil } }
+            )
+        ) {
+            Button("Cancel", role: .cancel) {
+                pendingImportURL = nil
+            }
+            .accessibilityIdentifier("avatar.permission.cancel")
+
+            Button("Yes, Import") {
+                guard let url = pendingImportURL else { return }
+                pendingImportURL = nil
+                Task { await model.importAvatar(from: url) }
+            }
+            .accessibilityIdentifier("avatar.permission.confirm")
+        } message: {
+            Text("Only import a model you own or have permission to display.")
         }
     }
 }
