@@ -36,9 +36,12 @@ enum VRMKitRenderValidator {
 
 private struct DemoAvatarMotionComponent: Component {
     var elapsed: TimeInterval = 0
-    var idleEnabled = true
+    var idleEnabled = false
     var reactionDuration: TimeInterval = 0
     var reactionRemaining: TimeInterval = 0
+    var reactionTilt: Float = 0
+    var reactionWiggles: Float = 1
+    var baseTransform: Transform = .identity
 }
 
 private struct DemoAvatarMotionSystem: System {
@@ -54,18 +57,77 @@ private struct DemoAvatarMotionSystem: System {
             let idleOffset: Float = motion.idleEnabled ? Float(sin(motion.elapsed * 1.7)) * 0.018 : 0
             let idleTilt: Float = motion.idleEnabled ? Float(sin(motion.elapsed * 0.85)) * 0.018 : 0
             var reactionScale: Float = 1
+            var reactionTilt: Float = 0
             if motion.reactionRemaining > 0, motion.reactionDuration > 0 {
                 let progress = 1 - (motion.reactionRemaining / motion.reactionDuration)
                 reactionScale += Float(sin(progress * .pi)) * 0.08
+                reactionTilt = Float(sin(progress * .pi * Double(motion.reactionWiggles))) * motion.reactionTilt
                 motion.reactionRemaining = max(0, motion.reactionRemaining - context.deltaTime)
             }
 
-            entity.position.y = idleOffset
-            entity.orientation = simd_quatf(angle: idleTilt, axis: SIMD3<Float>(0, 0, 1))
-            entity.scale = SIMD3<Float>(repeating: reactionScale)
+            entity.position = motion.baseTransform.translation + SIMD3<Float>(0, idleOffset, 0)
+            entity.orientation = motion.baseTransform.rotation
+                * simd_quatf(angle: idleTilt + reactionTilt, axis: SIMD3<Float>(0, 0, 1))
+            entity.scale = motion.baseTransform.scale * SIMD3<Float>(repeating: reactionScale)
             entity.components.set(motion)
         }
     }
+}
+
+@MainActor private let registerAvatarMotionRuntime: Void = {
+    DemoAvatarMotionComponent.registerComponent()
+    DemoAvatarMotionSystem.registerSystem()
+}()
+
+@MainActor
+private func playFallbackMotion(_ animation: AvatarAnimation, on entity: Entity) throws {
+    guard var motion = entity.components[DemoAvatarMotionComponent.self] else {
+        throw AvatarRendererError.avatarNotLoaded
+    }
+
+    switch animation.name.lowercased() {
+    case "idle":
+        motion.idleEnabled = true
+    case "left-paw":
+        (motion.reactionDuration, motion.reactionRemaining, motion.reactionTilt, motion.reactionWiggles) = (0.55, 0.55, 0.16, 1)
+    case "right-paw":
+        (motion.reactionDuration, motion.reactionRemaining, motion.reactionTilt, motion.reactionWiggles) = (0.55, 0.55, -0.16, 1)
+    case "wiggle":
+        (motion.reactionDuration, motion.reactionRemaining, motion.reactionTilt, motion.reactionWiggles) = (0.7, 0.7, 0.12, 4)
+    case "boop", "happy", "reaction", "tap":
+        (motion.reactionDuration, motion.reactionRemaining, motion.reactionTilt, motion.reactionWiggles) = (0.65, 0.65, 0, 1)
+    default:
+        throw AvatarRendererError.animationUnavailable(animation.name)
+    }
+    entity.components.set(motion)
+}
+
+@MainActor
+private func resetFallbackMotion(on entity: Entity) {
+    guard var motion = entity.components[DemoAvatarMotionComponent.self] else { return }
+    motion.elapsed = 0
+    motion.idleEnabled = false
+    motion.reactionDuration = 0
+    motion.reactionRemaining = 0
+    motion.reactionTilt = 0
+    motion.reactionWiggles = 1
+    entity.transform = motion.baseTransform
+    entity.components.set(motion)
+}
+
+@MainActor
+private func addHitTarget(
+    named name: String,
+    shape: ShapeResource,
+    position: SIMD3<Float> = .zero,
+    to parent: Entity
+) {
+    let target = Entity()
+    target.name = name
+    target.position = position
+    target.components.set(InputTargetComponent())
+    target.components.set(CollisionComponent(shapes: [shape]))
+    parent.addChild(target)
 }
 
 private struct PreparedVRMModel: Sendable {
@@ -98,13 +160,8 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
     private var leftEar: ModelEntity?
     private var rightEar: ModelEntity?
 
-    private static let registerRuntime: Void = {
-        DemoAvatarMotionComponent.registerComponent()
-        DemoAvatarMotionSystem.registerSystem()
-    }()
-
     init() {
-        _ = Self.registerRuntime
+        _ = registerAvatarMotionRuntime
         let root = Entity()
         root.name = "SonaPinDemoRoot"
         rootEntity = root
@@ -173,21 +230,8 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
     }
 
     func play(_ animation: AvatarAnimation, looping: Bool) throws {
-        guard let motionEntity, var motion = motionEntity.components[DemoAvatarMotionComponent.self] else {
-            throw AvatarRendererError.avatarNotLoaded
-        }
-
-        switch animation.name.lowercased() {
-        case "idle":
-            motion.idleEnabled = true
-        case "boop", "happy", "reaction", "tap":
-            motion.reactionDuration = 0.65
-            motion.reactionRemaining = motion.reactionDuration
-            setExpression(.happy, weight: 1)
-        default:
-            throw AvatarRendererError.animationUnavailable(animation.name)
-        }
-        motionEntity.components.set(motion)
+        guard let motionEntity else { throw AvatarRendererError.avatarNotLoaded }
+        try playFallbackMotion(animation, on: motionEntity)
     }
 
     func look(at target: SIMD3<Float>?) {
@@ -199,15 +243,8 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
     }
 
     func resetPose() {
-        guard let motionEntity, var motion = motionEntity.components[DemoAvatarMotionComponent.self] else { return }
-        motion.elapsed = 0
-        motion.idleEnabled = true
-        motion.reactionDuration = 0
-        motion.reactionRemaining = 0
-        motionEntity.position = .zero
-        motionEntity.orientation = simd_quatf()
-        motionEntity.scale = .one
-        motionEntity.components.set(motion)
+        guard let motionEntity else { return }
+        resetFallbackMotion(on: motionEntity)
         setExpression(.neutral, weight: 1)
         look(at: nil)
     }
@@ -239,12 +276,14 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         motion.components.set(DemoAvatarMotionComponent())
 
         let body = sphere(
-            name: "Body",
+            name: "SonaPinBodyHitTarget",
             radius: 0.5,
             material: navy,
             position: SIMD3<Float>(0, 0.72, 0),
             scale: SIMD3<Float>(0.72, 1.0, 0.56)
         )
+        body.components.set(InputTargetComponent())
+        body.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.5)]))
         motion.addChild(body)
 
         let belly = sphere(
@@ -358,12 +397,14 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         }
         for (name, x) in [("LeftPaw", -0.23 as Float), ("RightPaw", 0.23 as Float)] {
             let paw = sphere(
-                name: name,
+                name: name == "LeftPaw" ? "SonaPinLeftPawHitTarget" : "SonaPinRightPawHitTarget",
                 radius: 0.25,
                 material: cyan,
                 position: SIMD3<Float>(x, 0.15, 0.02),
                 scale: SIMD3<Float>(0.75, 1.15, 0.9)
             )
+            paw.components.set(InputTargetComponent())
+            paw.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.25)]))
             motion.addChild(paw)
         }
 
@@ -442,6 +483,7 @@ final class VRMKitAvatarRenderer: AvatarRendering {
     private var restTransforms: [ObjectIdentifier: Transform] = [:]
 
     init() {
+        _ = registerAvatarMotionRuntime
         let root = Entity()
         root.name = "SonaPinImportedAvatarRoot"
         rootEntity = root
@@ -460,16 +502,21 @@ final class VRMKitAvatarRenderer: AvatarRendering {
             try Task.checkCancellation()
             let candidateCapabilities = Self.capabilities(for: candidate, report: prepared.report)
 
-            if candidateCapabilities.contains(.headHitTarget),
-               let head = candidate.humanoid.node(for: .head) {
-                let hitTarget = Entity()
-                hitTarget.name = "SonaPinHeadHitTarget"
-                hitTarget.components.set(InputTargetComponent())
-                hitTarget.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.12)]))
-                head.addChild(hitTarget)
+            if candidateCapabilities.contains(.headHitTarget), let head = candidate.humanoid.node(for: .head) {
+                addHitTarget(named: "SonaPinHeadHitTarget", shape: .generateSphere(radius: 0.13), to: head)
+            }
+            if let chest = candidate.humanoid.node(for: .chest) ?? candidate.humanoid.node(for: .upperChest) {
+                addHitTarget(named: "SonaPinBodyHitTarget", shape: .generateSphere(radius: 0.2), to: chest)
+            }
+            if let leftHand = candidate.humanoid.node(for: .leftHand) {
+                addHitTarget(named: "SonaPinLeftPawHitTarget", shape: .generateSphere(radius: 0.09), to: leftHand)
+            }
+            if let rightHand = candidate.humanoid.node(for: .rightHand) {
+                addHitTarget(named: "SonaPinRightPawHitTarget", shape: .generateSphere(radius: 0.09), to: rightHand)
             }
 
             Self.prepareForPresentation(candidate)
+            candidate.components.set(DemoAvatarMotionComponent(baseTransform: candidate.transform))
             let candidateRestTransforms = Self.captureTransforms(in: candidate)
             avatarEntity?.stopAnimations()
             removeChildren(from: rootEntity)
@@ -513,12 +560,13 @@ final class VRMKitAvatarRenderer: AvatarRendering {
 
     func play(_ animation: AvatarAnimation, looping: Bool) throws {
         guard let avatarEntity else { throw AvatarRendererError.avatarNotLoaded }
-        guard let match = avatarEntity.animations.first(where: {
+        if let match = avatarEntity.animations.first(where: {
             $0.name?.caseInsensitiveCompare(animation.name) == .orderedSame
-        }) else {
-            throw AvatarRendererError.animationUnavailable(animation.name)
+        }) {
+            try avatarEntity.playAnimation(at: match.index, loops: looping)
+        } else {
+            try playFallbackMotion(animation, on: avatarEntity)
         }
-        try avatarEntity.playAnimation(at: match.index, loops: looping)
     }
 
     func look(at target: SIMD3<Float>?) {
@@ -530,6 +578,7 @@ final class VRMKitAvatarRenderer: AvatarRendering {
         guard let avatarEntity else { return }
         avatarEntity.stopAnimations()
         Self.restoreTransforms(in: avatarEntity, from: restTransforms)
+        resetFallbackMotion(on: avatarEntity)
         avatarEntity.invalidateSkinPose()
         let neutralWeights = Dictionary(
             uniqueKeysWithValues: avatarEntity.availableExpressions.map { ($0.key, CGFloat.zero) }

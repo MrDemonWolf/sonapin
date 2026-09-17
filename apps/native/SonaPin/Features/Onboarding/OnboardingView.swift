@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 @MainActor
 struct OnboardingView: View {
@@ -6,6 +7,7 @@ struct OnboardingView: View {
 
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @State private var navigationFeedback = 0
+    @State private var isKeyboardVisible = false
 
     private var step: OnboardingStep {
         model.snapshot.onboarding.step.primaryStep
@@ -19,19 +21,21 @@ struct OnboardingView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
-                            .font(.subheadline.monospacedDigit())
-                            .foregroundStyle(.primary)
+                        if !isKeyboardVisible {
+                            Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
+                                .font(.subheadline.monospacedDigit())
+                                .foregroundStyle(.primary)
 
-                        Text(step.onboardingDetail)
-                            .foregroundStyle(.primary)
-                            .fixedSize(horizontal: false, vertical: true)
+                            Text(step.onboardingDetail)
+                                .foregroundStyle(.primary)
+                                .fixedSize(horizontal: false, vertical: true)
 
-                        ProgressView(
-                            value: Double(step.number),
-                            total: Double(OnboardingStep.allCases.count)
-                        )
-                        .accessibilityHidden(true)
+                            ProgressView(
+                                value: Double(step.number),
+                                total: Double(OnboardingStep.allCases.count)
+                            )
+                            .accessibilityHidden(true)
+                        }
 
                         stepContent
                     }
@@ -42,8 +46,31 @@ struct OnboardingView: View {
                 .scrollDismissesKeyboard(.interactively)
             }
             .navigationTitle(step.onboardingTitle)
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(isKeyboardVisible ? .inline : .large)
             .toolbar { onboardingToolbar }
+            .safeAreaInset(edge: .bottom) {
+                if !isKeyboardVisible {
+                    Button(action: goForward) {
+                        Text(step == .badgePreview ? "Enter Badge Mode" : "Continue")
+                            .frame(maxWidth: .infinity)
+                    }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .tint(.sonaNavy)
+                        .frame(maxWidth: 720)
+                        .accessibilityHint(canContinue ? "Moves to the next setup step." : "Checks this step and shows what needs attention.")
+                        .accessibilityIdentifier(step == .badgePreview ? "onboarding.finish" : "onboarding.next")
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 12)
+                        .background(.bar)
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                isKeyboardVisible = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                isKeyboardVisible = false
+            }
         }
         .sensoryFeedback(.selection, trigger: navigationFeedback) { _, _ in
             model.snapshot.preferences.hapticsEnabled && !systemReduceMotion
@@ -61,22 +88,13 @@ struct OnboardingView: View {
             }
         }
 
-        ToolbarItem(placement: .primaryAction) {
-            Button(step == .badgePreview ? "Enter Badge Mode" : "Continue", action: goForward)
-                .buttonStyle(.borderedProminent)
-                .tint(.sonaNavy)
-                .foregroundStyle(.white)
-                .disabled(!canContinue)
-                .accessibilityHint(canContinue ? "Moves to the next setup step." : "Complete the required fields first.")
-                .accessibilityIdentifier(step == .badgePreview ? "onboarding.finish" : "onboarding.next")
-        }
     }
 
     @ViewBuilder
     private var stepContent: some View {
         switch step {
         case .welcome:
-            WelcomeStep()
+            WelcomeStep(model: model)
         case .avatar, .compatibility:
             VStack(alignment: .leading, spacing: 16) {
                 AvatarSourcePicker(model: model)
@@ -184,12 +202,13 @@ private extension OnboardingStep {
 }
 
 private struct WelcomeStep: View {
+    let model: AppModel
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Image(systemName: "pawprint.fill")
-                .font(.system(size: 76))
-                .foregroundStyle(Color.accentColor)
-                .accessibilityHidden(true)
+            AvatarStageHost(model: model, showsControls: false, minimumHeight: 220)
+                .frame(maxWidth: .infinity)
+                .accessibilityLabel("Preview of your interactive badge avatar")
 
             ForEach(welcomePoints, id: \.title) { point in
                 HStack(alignment: .top, spacing: 14) {
@@ -446,7 +465,7 @@ struct QRConfigurationFields: View {
                 title: payloadTitle,
                 help: payloadHelp
             ) {
-                TextField(configuration.kind.prompt, text: $configuration.payload, axis: .vertical)
+                TextField("", text: $configuration.payload, axis: .vertical)
                     .textInputAutocapitalization(
                         configuration.kind == .customText ? .sentences : .never
                     )
@@ -461,6 +480,16 @@ struct QRConfigurationFields: View {
                     .accessibilityLabel(payloadTitle)
                     .accessibilityHint("Required. Enter the complete content another person should receive.")
                     .accessibilityIdentifier("qr.payload")
+                    .overlay(alignment: .topLeading) {
+                        if configuration.payload.isEmpty {
+                            Text(configuration.kind.prompt)
+                                .foregroundStyle(.primary)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 8)
+                                .allowsHitTesting(false)
+                                .accessibilityHidden(true)
+                        }
+                    }
             }
 
             if let validationStatus {

@@ -211,11 +211,17 @@ struct SettingsView: View {
 
     private var informationSection: some View {
         Section("Information") {
-            NavigationLink("About SonaPin", value: SettingsInformationPage.about)
+            NavigationLink(value: SettingsInformationPage.about) {
+                SettingsRow(title: "About SonaPin", detail: "App details and version", systemImage: "info.circle")
+            }
                 .accessibilityIdentifier("settings.about")
-            NavigationLink("Privacy", value: SettingsInformationPage.privacy)
+            NavigationLink(value: SettingsInformationPage.privacy) {
+                SettingsRow(title: "Privacy", detail: "How local data is handled", systemImage: "hand.raised")
+            }
                 .accessibilityIdentifier("settings.privacy")
-            NavigationLink("Acknowledgments", value: SettingsInformationPage.acknowledgments)
+            NavigationLink(value: SettingsInformationPage.acknowledgments) {
+                SettingsRow(title: "Acknowledgments", detail: "Open-source software", systemImage: "heart")
+            }
                 .accessibilityIdentifier("settings.acknowledgments")
         }
     }
@@ -265,7 +271,7 @@ private struct SettingsRow: View {
             }
         } icon: {
             Image(systemName: systemImage)
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(.primary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
@@ -290,49 +296,69 @@ private struct SettingsInformationView: View {
     let page: SettingsInformationPage
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                content
+        List {
+            if page == .about {
+                Section {
+                    VStack(spacing: 10) {
+                        Image(systemName: "pawprint.fill")
+                            .font(.system(size: 48, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(width: 88, height: 88)
+                            .background(Color.sonaNavy.gradient, in: .rect(cornerRadius: 20))
+                            .accessibilityHidden(true)
+                        Text("SonaPin")
+                            .font(.title2.bold())
+                        Text("Your sona. Your badge. Alive.")
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .accessibilityElement(children: .combine)
+                }
             }
-            .frame(maxWidth: 680, alignment: .leading)
-            .padding(24)
+
+            content
         }
         .navigationTitle(page.title)
         .navigationBarTitleDisplayMode(.inline)
+        .tint(Color(uiColor: .link))
         .accessibilityIdentifier("settings.information.\(page.rawValue)")
-    }
-
-    private var icon: String {
-        switch page {
-        case .about: "pawprint.fill"
-        case .privacy: "hand.raised.fill"
-        case .acknowledgments: "heart.fill"
-        }
     }
 
     @ViewBuilder
     private var content: some View {
         switch page {
         case .about:
-            Text("Your sona. Your badge. Alive.")
-                .font(.title2.bold())
-            Text("SonaPin is a public native iOS app for an interactive, local digital convention badge. It combines a VRM avatar, badge identity, and scannable QR code without becoming a social network.")
-            LabeledContent("Version", value: appVersion)
-            Text("Made by MrDemonWolf, Inc. with a little blue-wolf energy.")
-                .foregroundStyle(.secondary)
+            Section("About") {
+                Text("An interactive, local digital convention badge with your VRM avatar, identity, and scannable QR code.")
+                LabeledContent("Version", value: appVersion)
+                LabeledContent("Developer", value: "MrDemonWolf, Inc.")
+            }
+            Section("Resources") {
+                Link(destination: URL(string: "https://github.com/MrDemonWolf/sonapin-ios")!) {
+                    Label("SonaPin on GitHub", systemImage: "chevron.left.forwardslash.chevron.right")
+                }
+                Link(destination: URL(string: "https://mrdemonwolf.com")!) {
+                    Label("MrDemonWolf website", systemImage: "safari")
+                }
+            }
         case .privacy:
-            Text("Local by design")
-                .font(.title2.bold())
-            Text("Your imported avatar, badge fields, QR settings, and preferences remain on this device. SonaPin version 1 has no account, login, backend, analytics, advertising, or tracking.")
-            Text("SonaPin does not open your QR link or upload its content. Other people can receive the content only when they scan the QR code you display. A future system share feature would require your explicit action.")
-            Text("Deleting all local data in Settings removes the saved profile and imported model from SonaPin.")
+            Section("Local by design") {
+                Text("Your imported avatar, badge fields, QR settings, and preferences remain on this device. SonaPin version 1 has no account, login, backend, analytics, advertising, or tracking.")
+                Text("SonaPin does not open or upload your QR content. Someone receives it only when they scan the QR code you display.")
+            }
+            Section("Your control") {
+                Text("Delete All Local Data in Settings removes the saved profile and imported model from SonaPin.")
+            }
         case .acknowledgments:
-            Text("Open-source software")
-                .font(.title2.bold())
-            Text("SonaPin uses VRMKit and Apple system frameworks to import and present compatible VRM avatars.")
-            Link("VRMKit source and license", destination: URL(string: "https://github.com/tattn/VRMKit")!)
-            Text("VRM and related names are associated with their respective projects and rights holders. Imported model rights remain the user’s responsibility.")
-                .foregroundStyle(.secondary)
+            Section("Open-source software") {
+                Text("SonaPin uses VRMKit and Apple system frameworks to import and present compatible VRM avatars.")
+                Link("VRMKit source and license", destination: URL(string: "https://github.com/tattn/VRMKit")!)
+            }
+            Section {
+                Text("VRM and related names belong to their respective projects and rights holders. Imported model rights remain the user’s responsibility.")
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 

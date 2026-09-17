@@ -400,7 +400,7 @@ struct AvatarTests {
 @Suite("Avatar renderers")
 @MainActor
 struct AvatarRendererTests {
-    @Test("Procedural demo loads with a stable root and explicit head target")
+    @Test("Procedural demo loads with interactive regions and fallback motions")
     func proceduralDemoLoads() async throws {
         let renderer = ProceduralDemoAvatarRenderer()
         let stableRoot = renderer.rootEntity
@@ -410,12 +410,20 @@ struct AvatarRendererTests {
         #expect(renderer.rootEntity === stableRoot)
         #expect(!renderer.rootEntity.children.isEmpty)
         #expect(renderer.rootEntity.findEntity(named: "SonaPinHeadHitTarget") != nil)
+        #expect(renderer.rootEntity.findEntity(named: "SonaPinBodyHitTarget") != nil)
+        #expect(renderer.rootEntity.findEntity(named: "SonaPinLeftPawHitTarget") != nil)
+        #expect(renderer.rootEntity.findEntity(named: "SonaPinRightPawHitTarget") != nil)
         #expect(renderer.capabilities == .proceduralDemo)
 
         renderer.setExpression(.happy, weight: 1)
         renderer.look(at: SIMD3<Float>(1, 1, 1))
-        try renderer.play(AvatarAnimation(name: "boop"), looping: false)
+        for animation in ["idle", "boop", "left-paw", "right-paw", "wiggle"] {
+            try renderer.play(AvatarAnimation(name: animation), looping: animation == "idle")
+        }
+        let motionEntity = try #require(renderer.rootEntity.children.first)
+        motionEntity.position = SIMD3<Float>(1, 1, 1)
         renderer.resetPose()
+        #expect(motionEntity.position == .zero)
         renderer.resetCamera()
 
         renderer.unload()
@@ -547,6 +555,26 @@ private func makeVRM(
     data.appendLittleEndian(0x4E4F534A)
     data.append(json)
     return data
+}
+
+@Suite("Avatar touch reactions")
+struct AvatarTouchReactionTests {
+    @Test("Named avatar regions choose distinct reactions", arguments: [
+        ("SonaPinHeadHitTarget", AvatarExpression.happy, "boop"),
+        ("SonaPinLeftPawHitTarget", AvatarExpression.happy, "left-paw"),
+        ("SonaPinRightPawHitTarget", AvatarExpression.happy, "right-paw"),
+        ("SonaPinBodyHitTarget", AvatarExpression.surprised, "wiggle"),
+    ])
+    func touchReaction(name: String, expression: AvatarExpression, animation: String) throws {
+        let reaction = try #require(AvatarTouchReaction.reaction(for: name))
+        #expect(reaction.expression == expression)
+        #expect(reaction.animation == animation)
+    }
+
+    @Test("Unknown scene entities do not react")
+    func ignoresUnknownEntity() {
+        #expect(AvatarTouchReaction.reaction(for: "Background") == nil)
+    }
 }
 
 private func imageBytes(_ image: CGImage) throws -> Data {

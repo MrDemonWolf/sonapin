@@ -2,6 +2,26 @@ import RealityKit
 import SwiftUI
 import simd
 
+struct AvatarTouchReaction: Equatable {
+    let expression: AvatarExpression
+    let animation: String
+
+    static func reaction(for entityName: String) -> Self? {
+        switch entityName {
+        case "SonaPinHeadHitTarget":
+            Self(expression: .happy, animation: "boop")
+        case "SonaPinLeftPawHitTarget":
+            Self(expression: .happy, animation: "left-paw")
+        case "SonaPinRightPawHitTarget":
+            Self(expression: .happy, animation: "right-paw")
+        case "SonaPinBodyHitTarget":
+            Self(expression: .surprised, animation: "wiggle")
+        default:
+            nil
+        }
+    }
+}
+
 @MainActor
 struct AvatarStageHost: View {
     let model: AppModel
@@ -151,16 +171,11 @@ struct AvatarStageView: View {
                 }
             )
             .simultaneousGesture(
-                TapGesture().onEnded {
-                    react(with: .surprised, animation: "reaction")
-                }
-            )
-            .simultaneousGesture(
                 TapGesture()
                     .targetedToAnyEntity()
                     .onEnded { value in
-                        guard value.entity.name == "SonaPinHeadHitTarget" else { return }
-                        react(with: .happy, animation: "boop")
+                        guard let reaction = AvatarTouchReaction.reaction(for: value.entity.name) else { return }
+                        react(with: reaction.expression, animation: reaction.animation)
                     }
             )
             .simultaneousGesture(
@@ -205,6 +220,15 @@ struct AvatarStageView: View {
             .accessibilityIdentifier(showsControls ? "avatar.stage" : "badge.full-screen.avatar")
             .accessibilityAction(.default) {
                 react(with: .surprised, animation: "reaction")
+            }
+            .accessibilityAction(named: Text("Boop Nose")) {
+                react(with: .happy, animation: "boop")
+            }
+            .accessibilityAction(named: Text("Touch Paw")) {
+                react(with: .happy, animation: "left-paw")
+            }
+            .accessibilityAction(named: Text("Tickle")) {
+                react(with: .surprised, animation: "wiggle")
             }
             .accessibilityAction(named: Text("Reset Avatar")) {
                 resetView()
