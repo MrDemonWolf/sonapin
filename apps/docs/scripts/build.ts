@@ -67,5 +67,5 @@ const renderedFiles = await renderHtml(outputDirectory, new Map([
   ["__REPOSITORY_URL__", repositoryUrl],
 ]));
 
-assert(renderedFiles >= 5, "Expected the landing page and four supporting pages");
+assert(renderedFiles >= 6, "Expected the landing page and five supporting pages");
 console.log(`Built ${renderedFiles} pages at ${basePath}`);

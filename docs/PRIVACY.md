@@ -1,7 +1,9 @@
-# SonaPin privacy policy draft
+# SonaPin privacy policy
 
-**Effective date:** Not yet published  
-**Last updated:** 2026-09-12
+**Effective date:** September 18, 2026
+**Last updated:** 2026-09-18
+
+The canonical public policy is published at `https://mrdemonwolf.github.io/sonapin/privacy/`. It also covers the documentation website and support correspondence.
 
 SonaPin is a local-first iOS app from MrDemonWolf, Inc. Version 1 does not collect personal data from the app.
 
@@ -42,7 +44,4 @@ If a later version adds networking, sharing, analytics, accounts, or another dat
 
 ## Contact
 
-Privacy questions can be sent through the support contact published at `https://mrdemonwolf.github.io/sonapin-ios/support/`.
-
-This draft must be updated with a direct privacy email or mailing contact and published at a stable HTTPS URL before App Store submission.
-
+Privacy questions and data-rights requests can be sent to `legal@mrdemonwolf.com` or mailed to MrDemonWolf, Inc., 645 3rd St, Beloit, WI 53511, USA. General support is published at `https://mrdemonwolf.github.io/sonapin/support/`.

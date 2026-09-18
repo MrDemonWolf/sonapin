@@ -14,7 +14,7 @@ Use these working identifiers unless an existing project already has production 
 - **App Store display name:** `SonaPin`
 - **App Store subtitle:** `Interactive Fursona Badge`
 - **Tagline:** `Your sona. Your badge. Alive.`
-- **Repository:** `sonapin-ios`
+- **Repository:** `MrDemonWolf/sonapin`
 - **Xcode project:** `SonaPin.xcodeproj`
 - **Primary scheme:** `SonaPin`
 - **Bundle identifier:** `com.mrdemonwolf.sonapin`

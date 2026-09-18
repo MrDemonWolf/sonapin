@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#091533">
-    <meta name="description" content="Pre-release support and troubleshooting guidance for SonaPin.">
-    <title>Support draft — SonaPin</title>
+    <meta name="description" content="Support, troubleshooting, and contact information for the SonaPin iOS app.">
+    <title>Support — SonaPin</title>
     <link rel="icon" href="__BASE_PATH__brand/sonapin-mascot.png" type="image/png">
     <link rel="stylesheet" href="__BASE_PATH__styles.css">
   </head>
@@ -22,6 +22,7 @@
           <ul>
             <li><a href="__BASE_PATH__#features">Features</a></li>
             <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
+            <li><a href="__BASE_PATH__terms/">Terms</a></li>
             <li><a href="__BASE_PATH__support/" aria-current="page">Support</a></li>
             <li><a href="__BASE_PATH__acknowledgments/">Credits</a></li>
           </ul>
@@ -31,72 +32,95 @@
 
     <main id="main">
       <header class="page-hero">
-        <p class="eyebrow">Support draft · Pre-release</p>
-        <h1>Keep your badge on track.</h1>
+        <p class="eyebrow">SonaPin Support</p>
+        <h1>Get your badge back on track.</h1>
         <p>
-          SonaPin has not shipped yet. These planned troubleshooting steps will be verified against the release build, and the final support contact will be added before App Store submission.
+          Start with the quick fixes below. If the problem stays, email the team with your SonaPin and iOS versions.
         </p>
       </header>
 
       <article class="prose">
-        <p class="notice">
-          <strong>Need support today?</strong> There is no public app build yet. Follow development in the <a href="__REPOSITORY_URL__">source repository</a> or visit the <a href="https://mrdemonwolf.com/">MrDemonWolf website</a>. A dedicated contact channel is still being finalized.
-        </p>
+        <div class="support-contact">
+          <div>
+            <p class="eyebrow">Contact support</p>
+            <h2>Talk to a real person.</h2>
+            <p>Email <a href="mailto:hello@mrdemonwolf.com?subject=SonaPin%20Support">hello@mrdemonwolf.com</a>.</p>
+          </div>
+          <a class="button button--primary" href="mailto:hello@mrdemonwolf.com?subject=SonaPin%20Support">Email support</a>
+        </div>
 
+        <h2>Quick fixes</h2>
         <div class="support-grid">
           <section class="support-card">
-            <h2>QR code will not scan</h2>
-            <p>Enlarge the code, use the high-contrast option, raise screen brightness, and reduce glare. Keep the entire white quiet zone visible.</p>
+            <h3>QR code will not scan</h3>
+            <p>Open the full-screen badge, raise screen brightness, avoid glare, and keep the entire white border visible. Try the high-contrast QR option in Settings.</p>
           </section>
 
           <section class="support-card">
-            <h2>Avatar import shows warnings</h2>
-            <p>Review the compatibility report before replacing your current avatar. Unsupported model features should appear as actionable warnings rather than a raw parser error.</p>
+            <h3>Avatar import shows a warning</h3>
+            <p>Confirm the file is a VRM model, then read the compatibility report. SonaPin supports compatible VRM 0.x and VRM 1.0 models, but some extensions or animations may use a fallback.</p>
           </section>
 
           <section class="support-card">
-            <h2>Motion feels uncomfortable</h2>
-            <p>Enable Reduce Motion in iOS or SonaPin settings and lower interaction sensitivity. The release build is planned to respect the system preference.</p>
+            <h3>Avatar faces the wrong way</h3>
+            <p>Use the avatar stage controls to rotate, center, and reset the view. If Reset does not restore a usable view, include the model’s VRM version in your report.</p>
           </section>
 
           <section class="support-card">
-            <h2>Badge settings changed</h2>
-            <p>Use the accidental-edit lock before handing your phone to someone. Onboarding, camera, and local app data reset controls are planned for Settings.</p>
+            <h3>Motion feels uncomfortable</h3>
+            <p>Enable Reduce Motion in iOS or SonaPin, lower interaction sensitivity, or turn off avatar interactions. SonaPin follows the system Reduce Motion setting.</p>
+          </section>
+
+          <section class="support-card">
+            <h3>Badge details are wrong</h3>
+            <p>Open Settings, choose Edit Profile or Edit QR Code, make the correction, and return to the badge. Your changes save locally.</p>
+          </section>
+
+          <section class="support-card">
+            <h3>Start over</h3>
+            <p>Settings → Delete All Local Data removes SonaPin’s saved profile, QR settings, preferences, and app-managed avatar, then returns to onboarding.</p>
           </section>
         </div>
 
-        <h2>Before reporting a problem</h2>
-        <ol>
-          <li>Record the SonaPin version shown in Settings.</li>
-          <li>Record your iPhone model and iOS version.</li>
-          <li>Write the smallest sequence of steps that reproduces the problem.</li>
-          <li>Note whether the built-in demo avatar has the same problem.</li>
-          <li>Add a screenshot only if it does not expose personal information.</li>
-        </ol>
-
-        <h2>Protect private data</h2>
-        <p>
-          Do not post private QR payloads, contact links, local file paths, or an avatar file you do not have permission to redistribute. A compatibility report is safer than sharing the original model, but review it before posting.
+        <h2>What to include in a report</h2>
+        <ul>
+          <li>SonaPin version and build from Settings → About SonaPin.</li>
+          <li>iPhone model and iOS version.</li>
+          <li>What you expected, what happened, and steps that reproduce it.</li>
+          <li>A screenshot or screen recording when it is safe to share.</li>
+          <li>For avatar issues, the VRM specification version and the compatibility warning text.</li>
+        </ul>
+        <p class="notice">
+          <strong>Protect your sona:</strong> Do not email a private VRM file, QR payload, or other sensitive information unless support asks for it and you are comfortable sharing it. A screenshot can expose the QR content.
         </p>
 
-        <h2>Imported model rights</h2>
+        <h2>Model rights</h2>
         <p>
-          Only import and display a model you have permission to use. SonaPin may summarize embedded license metadata, but it cannot grant rights or determine whether your use is allowed.
+          Only import and display a model you own or have permission to use. SonaPin can summarize embedded license metadata, but it cannot grant rights or decide whether a specific use is allowed. See the <a href="__BASE_PATH__terms/">Terms of Use</a>.
         </p>
 
         <h2>Accessibility support</h2>
         <p>
-          The release target includes VoiceOver labels, Dynamic Type, Reduce Motion behavior, high-contrast QR presentation, and usable touch targets. Please include the accessibility setting involved when reporting a problem.
+          SonaPin supports VoiceOver labels, Dynamic Type, Reduce Motion, high-contrast QR presentation, and native touch targets. Include the relevant accessibility setting when reporting a problem.
         </p>
+
+        <h2>Privacy, legal, and source</h2>
+        <ul class="resource-list">
+          <li><a href="__BASE_PATH__privacy/">Privacy Policy</a></li>
+          <li><a href="__BASE_PATH__terms/">Terms of Use</a></li>
+          <li><a href="mailto:legal@mrdemonwolf.com?subject=SonaPin">Legal and privacy contact</a></li>
+          <li><a href="__REPOSITORY_URL__">SonaPin source repository</a></li>
+        </ul>
       </article>
     </main>
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <p>Support content remains a pre-release draft.</p>
+        <p>© 2026 MrDemonWolf, Inc. Support for the official SonaPin app.</p>
         <ul class="footer-links">
           <li><a href="__BASE_PATH__">Home</a></li>
           <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
+          <li><a href="__BASE_PATH__terms/">Terms</a></li>
           <li><a href="__BASE_PATH__acknowledgments/">Acknowledgments</a></li>
         </ul>
       </div>

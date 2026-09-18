@@ -10,9 +10,10 @@ This is submission copy, not a submitted listing. Recheck character counts and U
 - **Keywords:** `vrm,avatar,furry,character,profile,convention,cosplay,qr,contact,identity,3d,offline`
 - **Proposed primary category:** Lifestyle
 - **Proposed secondary category:** Entertainment
-- **Marketing URL:** `https://mrdemonwolf.github.io/sonapin-ios/`
-- **Support URL:** `https://mrdemonwolf.github.io/sonapin-ios/support/`
-- **Privacy URL:** `https://mrdemonwolf.github.io/sonapin-ios/privacy/`
+- **Marketing URL:** `https://mrdemonwolf.github.io/sonapin/`
+- **Support URL:** `https://mrdemonwolf.github.io/sonapin/support/`
+- **Privacy URL:** `https://mrdemonwolf.github.io/sonapin/privacy/`
+- **Terms URL:** `https://mrdemonwolf.github.io/sonapin/terms/`
 
 The URLs assume GitHub Pages publishes the repository at the standard project-site path. Verify the deployed URLs before submission.
 
