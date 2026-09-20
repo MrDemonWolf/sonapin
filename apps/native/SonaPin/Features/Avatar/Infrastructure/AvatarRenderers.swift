@@ -34,7 +34,7 @@ enum VRMKitRenderValidator {
     }
 }
 
-private struct DemoAvatarMotionComponent: Component {
+struct DemoAvatarMotionComponent: Component {
     var elapsed: TimeInterval = 0
     var idleEnabled = false
     var reactionDuration: TimeInterval = 0

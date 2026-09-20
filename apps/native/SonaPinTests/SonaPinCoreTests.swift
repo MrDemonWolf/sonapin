@@ -415,15 +415,27 @@ struct AvatarRendererTests {
         #expect(renderer.rootEntity.findEntity(named: "SonaPinRightPawHitTarget") != nil)
         #expect(renderer.capabilities == .proceduralDemo)
 
+        let motionEntity = try #require(renderer.rootEntity.children.first)
+        let restingMotion = try #require(motionEntity.components[DemoAvatarMotionComponent.self])
+        #expect(!restingMotion.idleEnabled)
+
         renderer.setExpression(.happy, weight: 1)
         renderer.look(at: SIMD3<Float>(1, 1, 1))
         for animation in ["idle", "boop", "left-paw", "right-paw", "wiggle"] {
             try renderer.play(AvatarAnimation(name: animation), looping: animation == "idle")
         }
-        let motionEntity = try #require(renderer.rootEntity.children.first)
+        let activeMotion = try #require(motionEntity.components[DemoAvatarMotionComponent.self])
+        #expect(activeMotion.idleEnabled)
+        #expect(activeMotion.reactionRemaining > 0)
         motionEntity.position = SIMD3<Float>(1, 1, 1)
         renderer.resetPose()
         #expect(motionEntity.position == .zero)
+        let resetMotion = try #require(motionEntity.components[DemoAvatarMotionComponent.self])
+        #expect(!resetMotion.idleEnabled)
+        #expect(resetMotion.reactionDuration == 0)
+        #expect(resetMotion.reactionRemaining == 0)
+        #expect(resetMotion.reactionTilt == 0)
+        #expect(resetMotion.reactionWiggles == 1)
         renderer.resetCamera()
 
         renderer.unload()
@@ -455,6 +467,8 @@ struct AvatarRendererTests {
         try await renderer.load(.imported(fileURL: fixture))
 
         let avatar = try #require(renderer.rootEntity.children.first as? VRMEntity)
+        let restingMotion = try #require(avatar.components[DemoAvatarMotionComponent.self])
+        #expect(!restingMotion.idleEnabled)
         let presentedForward = avatar.orientation(relativeTo: renderer.rootEntity).act(avatar.frontDirection)
         #expect(presentedForward.z > 0.99)
 

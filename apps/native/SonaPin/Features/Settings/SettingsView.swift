@@ -219,6 +219,14 @@ struct SettingsView: View {
                 SettingsRow(title: "Privacy", detail: "How local data is handled", systemImage: "hand.raised")
             }
                 .accessibilityIdentifier("settings.privacy")
+            Link(destination: URL(string: "https://mrdemonwolf.github.io/sonapin/terms/")!) {
+                SettingsRow(title: "Terms of Use", detail: "Rules for using SonaPin", systemImage: "doc.text")
+            }
+                .accessibilityIdentifier("settings.terms")
+            Link(destination: URL(string: "https://mrdemonwolf.github.io/sonapin/support/")!) {
+                SettingsRow(title: "Support", detail: "Help and contact information", systemImage: "questionmark.circle")
+            }
+                .accessibilityIdentifier("settings.support")
             NavigationLink(value: SettingsInformationPage.acknowledgments) {
                 SettingsRow(title: "Acknowledgments", detail: "Open-source software", systemImage: "heart")
             }
@@ -266,7 +274,7 @@ private struct SettingsRow: View {
                 if !detail.isEmpty {
                     Text(detail)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
             }
         } icon: {
@@ -335,8 +343,11 @@ private struct SettingsInformationView: View {
                 LabeledContent("Developer", value: "MrDemonWolf, Inc.")
             }
             Section("Resources") {
-                Link(destination: URL(string: "https://github.com/MrDemonWolf/sonapin-ios")!) {
+                Link(destination: URL(string: "https://github.com/MrDemonWolf/sonapin")!) {
                     Label("SonaPin on GitHub", systemImage: "chevron.left.forwardslash.chevron.right")
+                }
+                Link(destination: URL(string: "https://mrdemonwolf.github.io/sonapin/support/")!) {
+                    Label("Support", systemImage: "questionmark.circle")
                 }
                 Link(destination: URL(string: "https://mrdemonwolf.com")!) {
                     Label("MrDemonWolf website", systemImage: "safari")
@@ -350,10 +361,22 @@ private struct SettingsInformationView: View {
             Section("Your control") {
                 Text("Delete All Local Data in Settings removes the saved profile and imported model from SonaPin.")
             }
+            Section("Full policy") {
+                Link(destination: URL(string: "https://mrdemonwolf.github.io/sonapin/privacy/")!) {
+                    Label("Read Privacy Policy", systemImage: "safari")
+                }
+                Link(destination: URL(string: "https://mrdemonwolf.github.io/sonapin/terms/")!) {
+                    Label("Read Terms of Use", systemImage: "doc.text")
+                }
+            }
         case .acknowledgments:
-            Section("Open-source software") {
-                Text("SonaPin uses VRMKit and Apple system frameworks to import and present compatible VRM avatars.")
-                Link("VRMKit source and license", destination: URL(string: "https://github.com/tattn/VRMKit")!)
+            Section("Third-party software") {
+                Link(destination: URL(string: "https://github.com/tattn/VRMKit")!) {
+                    LabeledContent("VRMKit", value: "0.10.0 · MIT")
+                }
+                Text("VRM parsing and RealityKit rendering by Tatsuya Tanaka.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
             Section {
                 Text("VRM and related names belong to their respective projects and rights holders. Imported model rights remain the user’s responsibility.")

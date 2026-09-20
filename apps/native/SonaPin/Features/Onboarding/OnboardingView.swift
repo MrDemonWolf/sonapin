@@ -50,19 +50,46 @@ struct OnboardingView: View {
             .toolbar { onboardingToolbar }
             .safeAreaInset(edge: .bottom) {
                 if !isKeyboardVisible {
-                    Button(action: goForward) {
-                        Text(step == .badgePreview ? "Enter Badge Mode" : "Continue")
+                    VStack(spacing: 8) {
+                        if step == .welcome {
+                            VStack(spacing: 4) {
+                                Text("By continuing, you agree to the Terms of Use and acknowledge the Privacy Policy.")
+                                    .font(.footnote)
+                                    .accessibilityIdentifier("onboarding.legal.notice")
+
+                                HStack(spacing: 16) {
+                                    Link("Terms of Use", destination: URL(string: "https://mrdemonwolf.github.io/sonapin/terms/")!)
+                                    .buttonStyle(.bordered)
+                                    .frame(minHeight: 44)
+                                    .accessibilityIdentifier("onboarding.legal.terms")
+                                    Link("Privacy Policy", destination: URL(string: "https://mrdemonwolf.github.io/sonapin/privacy/")!)
+                                    .buttonStyle(.bordered)
+                                    .frame(minHeight: 44)
+                                    .accessibilityIdentifier("onboarding.legal.privacy")
+                                }
+                                .font(.footnote.weight(.semibold))
+                                .tint(.primary)
+                            }
+                                .foregroundStyle(.primary)
+                                .multilineTextAlignment(.center)
+                        }
+
+                        Button(action: goForward) {
+                            Text(primaryActionTitle)
+                                .frame(maxWidth: .infinity)
+                        }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+                            .tint(.sonaNavy)
                             .frame(maxWidth: .infinity)
+                            .accessibilityHint(canContinue ? "Moves to the next setup step." : "Checks this step and shows what needs attention.")
+                            .accessibilityIdentifier(step == .badgePreview ? "onboarding.finish" : "onboarding.next")
                     }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .tint(.sonaNavy)
-                        .frame(maxWidth: 720)
-                        .accessibilityHint(canContinue ? "Moves to the next setup step." : "Checks this step and shows what needs attention.")
-                        .accessibilityIdentifier(step == .badgePreview ? "onboarding.finish" : "onboarding.next")
-                        .padding(.horizontal, 22)
-                        .padding(.vertical, 12)
-                        .background(.bar)
+                    .frame(maxWidth: 720)
+                    .padding(.horizontal, 22)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
+                    .background(.bar)
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
@@ -130,6 +157,17 @@ struct OnboardingView: View {
             return model.snapshot.avatar.compatibility?.outcome != .unsupported
         default:
             return true
+        }
+    }
+
+    private var primaryActionTitle: String {
+        switch step {
+        case .welcome:
+            "Agree & Continue"
+        case .badgePreview:
+            "Enter Badge Mode"
+        default:
+            "Continue"
         }
     }
 
