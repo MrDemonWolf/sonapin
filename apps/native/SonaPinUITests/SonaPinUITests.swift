@@ -356,16 +356,25 @@ final class SonaPinUITests: XCTestCase {
 
     private func dismissKeyboardIfPresent() {
         guard app.keyboards.element.exists else { return }
-        let done = app.keyboards.buttons["Done"]
-        if done.isHittable {
+        let done = app.buttons
+            .matching(NSPredicate(format: "label == %@", "Done"))
+            .allElementsBoundByIndex
+            .first { $0.isHittable }
+        if let done {
             done.tap()
-        } else if app.buttons["Done"].firstMatch.isHittable {
-            app.buttons["Done"].firstMatch.tap()
         } else if app.keyboards.keys["return"].isHittable {
             app.keyboards.keys["return"].tap()
+        } else if app.scrollViews.firstMatch.exists {
+            app.scrollViews.firstMatch.swipeDown()
         } else {
             app.swipeDown()
         }
+
+        let keyboardHidden = expectation(
+            for: NSPredicate(format: "exists == false"),
+            evaluatedWith: app.keyboards.element
+        )
+        wait(for: [keyboardHidden], timeout: 4)
     }
 
     private func replaceText(in field: XCUIElement, with newValue: String) {
