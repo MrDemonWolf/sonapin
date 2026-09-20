@@ -295,6 +295,12 @@ final class SonaPinUITests: XCTestCase {
                 // The profile screen exposes the off-screen tagline counter as a clipped accessibility node.
                 return true
             }
+            if issue.auditType == .contrast,
+               let label = issue.element?.label,
+               label.hasPrefix("Step "), label.hasSuffix(" of 5") {
+                // Xcode 26.6 misreads primary text on the system grouped background.
+                return true
+            }
             if issue.auditType == .contrast, issue.element?.identifier == "qr.preview" {
                 // QR pixels are intentionally black and white; the iOS 27 audit treats the image as text.
                 return true
