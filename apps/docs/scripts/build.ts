@@ -67,5 +67,14 @@ const renderedFiles = await renderHtml(outputDirectory, new Map([
   ["__REPOSITORY_URL__", repositoryUrl],
 ]));
 
+const moodScript = await Bun.build({
+  entrypoints: [join(sourceDirectory, "moods.ts")],
+  outdir: outputDirectory,
+  target: "browser",
+  minify: true,
+});
+assert(moodScript.success, "Failed to build the landing-page interaction");
+await rm(join(outputDirectory, "moods.ts"));
+
 assert(renderedFiles >= 6, "Expected the landing page and five supporting pages");
 console.log(`Built ${renderedFiles} pages at ${basePath}`);

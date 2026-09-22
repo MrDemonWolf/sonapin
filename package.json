@@ -7,6 +7,10 @@
   ],
   "scripts": {
     "build": "bun run --filter @sonapin/docs build",
-    "build:docs": "bun run --cwd apps/docs build"
+    "build:docs": "bun run --cwd apps/docs build",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
   }
 }
