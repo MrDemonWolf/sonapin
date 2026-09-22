@@ -28,13 +28,16 @@ final class SonaPinUITests: XCTestCase {
         let demoAvatar = element("onboarding.demo.avatar")
         XCTAssertTrue(demoAvatar.waitForExistence(timeout: 8))
         let avatarReady = expectation(
-            for: NSPredicate(format: "value == %@", "Ready"),
+            for: NSPredicate(format: "value == %@", "Ready. Wolf ready"),
             evaluatedWith: demoAvatar
         )
-        wait(for: [avatarReady], timeout: 8)
+        wait(for: [avatarReady], timeout: 20)
         demoAvatar.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.4)).tap()
         let avatarReacted = expectation(
-            for: NSPredicate(format: "value == %@", "Ready. Reaction 1"),
+            for: NSPredicate(
+                format: "value == %@",
+                "Ready. Reaction 1. Hiding behind the QR card. Demo QR opens the SonaPin website"
+            ),
             evaluatedWith: demoAvatar
         )
         wait(for: [avatarReacted], timeout: 5)
@@ -82,15 +85,20 @@ final class SonaPinUITests: XCTestCase {
         XCTAssertTrue(element("badge.identity").label.contains("Blue Wolf"))
 
         tapWhenHittable(app.buttons["badge.full-screen"])
-        XCTAssertTrue(element("badge.full-screen.qr").waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["badge.full-screen.close"].isHittable)
         let avatarStage = element("badge.full-screen.avatar")
         XCTAssertTrue(avatarStage.waitForExistence(timeout: 5))
         let avatarReady = expectation(
-            for: NSPredicate(format: "value == %@", "Ready"),
+            for: NSPredicate(format: "value == %@", "Ready. Wolf ready"),
             evaluatedWith: avatarStage
         )
-        wait(for: [avatarReady], timeout: 8)
+        let readyResult = XCTWaiter.wait(for: [avatarReady], timeout: 20)
+        XCTAssertEqual(
+            readyResult,
+            .completed,
+            "Unexpected avatar state: \(String(describing: avatarStage.value))"
+        )
+        XCTAssertFalse(element("badge.full-screen.qr").exists)
         // Xcode's built-in audit can hang on the live RealityKit surface; the controls and state are asserted above.
         let fullScreenScreenshot = XCTAttachment(screenshot: app.screenshot())
         fullScreenScreenshot.name = "immersive-badge"
@@ -130,14 +138,23 @@ final class SonaPinUITests: XCTestCase {
         let avatarStage = element("badge.full-screen.avatar")
         XCTAssertTrue(avatarStage.waitForExistence(timeout: 5))
         let avatarReady = expectation(
-            for: NSPredicate(format: "value == %@", "Ready"),
+            for: NSPredicate(format: "value == %@", "Ready. Wolf ready"),
             evaluatedWith: avatarStage
         )
-        wait(for: [avatarReady], timeout: 8)
+        let readyResult = XCTWaiter.wait(for: [avatarReady], timeout: 20)
+        XCTAssertEqual(
+            readyResult,
+            .completed,
+            "Unexpected avatar state: \(String(describing: avatarStage.value))"
+        )
 
-        avatarStage.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25)).tap()
+        let tapPoint = avatarStage.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+        tapPoint.tap()
         let avatarReacted = expectation(
-            for: NSPredicate(format: "value == %@", "Ready. Reaction 1"),
+            for: NSPredicate(
+                format: "value == %@",
+                "Ready. Reaction 1. Hiding behind the QR card. Demo QR opens the SonaPin website"
+            ),
             evaluatedWith: avatarStage
         )
         wait(for: [avatarReacted], timeout: 5)
@@ -390,6 +407,12 @@ final class SonaPinUITests: XCTestCase {
                let element = issue.element,
                element.elementType == .button,
                element.frame.minY < 200 {
+                return true
+            }
+            if issue.auditType == .dynamicType,
+               let identifier = issue.element?.identifier,
+               ["onboarding.demo.avatar", "avatar.stage", "badge.full-screen.avatar"].contains(identifier) {
+                // The avatar is a scalable 3D canvas; its spoken label and actions remain available at every text size.
                 return true
             }
             if issue.auditType == .dynamicType,

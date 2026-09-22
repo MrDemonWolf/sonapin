@@ -222,22 +222,12 @@ private struct WelcomeStep: View {
                 .accessibilityLabel("Demo avatar")
                 .accessibilityHint("Double-tap to make the avatar react.")
 
-            ViewThatFits {
-                HStack(spacing: 16) { featureLabels }
-                VStack(alignment: .leading, spacing: 8) { featureLabels }
-            }
+            Text("Tap to interact • Private • Works offline")
             .font(.caption.weight(.semibold))
             .foregroundStyle(.primary)
-            .accessibilityElement(children: .combine)
+            .multilineTextAlignment(.center)
         }
         .sonaCard()
-    }
-
-    @ViewBuilder
-    private var featureLabels: some View {
-        Label("Interactive", systemImage: "hand.tap")
-        Label("Private", systemImage: "lock.shield")
-        Label("Offline", systemImage: "wifi.slash")
     }
 }
 

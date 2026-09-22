@@ -586,17 +586,44 @@ private func makeVRM(
 
 @Suite("Avatar touch reactions")
 struct AvatarTouchReactionTests {
-    @Test("Repeated touches cycle visible emotions", arguments: [
+    @Test("Repeated touches cycle screenshot-style emotions", arguments: [
         (0, AvatarExpression.surprised),
-        (1, AvatarExpression.relaxed),
-        (2, AvatarExpression.happy),
-        (3, AvatarExpression.surprised),
+        (1, AvatarExpression.blink),
+        (2, AvatarExpression.relaxed),
+        (3, AvatarExpression.happy),
+        (4, AvatarExpression.neutral),
+        (5, AvatarExpression.surprised),
         (-1, AvatarExpression.surprised),
     ])
     func emotionCycle(tapCount: Int, expression: AvatarExpression) {
         let reaction = AvatarTouchReaction.reaction(tapCount: tapCount)
         #expect(reaction.expression == expression)
         #expect(reaction.animation == "reaction")
+    }
+
+    @Test("Imported avatars keep the compact emotion cycle", arguments: [
+        (0, AvatarExpression.surprised),
+        (1, AvatarExpression.relaxed),
+        (2, AvatarExpression.happy),
+        (3, AvatarExpression.surprised),
+        (-1, AvatarExpression.surprised),
+    ])
+    func importedEmotionCycle(tapCount: Int, expression: AvatarExpression) {
+        let reaction = AvatarTouchReaction.reaction(tapCount: tapCount, includesPlacard: false)
+        #expect(reaction.expression == expression)
+    }
+
+    @Test("Repeated touches cycle QR card choreography", arguments: [
+        (0, DemoBadgeReactionPhase.idle),
+        (1, DemoBadgeReactionPhase.hiding),
+        (2, DemoBadgeReactionPhase.peeking),
+        (3, DemoBadgeReactionPhase.ducking),
+        (4, DemoBadgeReactionPhase.revealing),
+        (5, DemoBadgeReactionPhase.idle),
+        (-1, DemoBadgeReactionPhase.idle),
+    ])
+    func placardCycle(tapCount: Int, phase: DemoBadgeReactionPhase) {
+        #expect(DemoBadgeReactionPhase.phase(tapCount: tapCount) == phase)
     }
 
 }

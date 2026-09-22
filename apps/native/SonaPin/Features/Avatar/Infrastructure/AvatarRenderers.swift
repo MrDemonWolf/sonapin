@@ -52,6 +52,7 @@ private struct DemoAvatarMotionSystem: System {
     func update(context: SceneUpdateContext) {
         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
             guard var motion = entity.components[DemoAvatarMotionComponent.self] else { continue }
+            guard motion.idleEnabled || motion.reactionRemaining > 0 else { continue }
             motion.elapsed += context.deltaTime
 
             let idleOffset: Float = motion.idleEnabled ? Float(sin(motion.elapsed * 1.7)) * 0.018 : 0
@@ -63,6 +64,10 @@ private struct DemoAvatarMotionSystem: System {
                 reactionScale += Float(sin(progress * .pi)) * 0.08
                 reactionTilt = Float(sin(progress * .pi * Double(motion.reactionWiggles))) * motion.reactionTilt
                 motion.reactionRemaining = max(0, motion.reactionRemaining - context.deltaTime)
+                if motion.reactionRemaining == 0 {
+                    reactionScale = 1
+                    reactionTilt = 0
+                }
             }
 
             entity.position = motion.baseTransform.translation + SIMD3<Float>(0, idleOffset, 0)
