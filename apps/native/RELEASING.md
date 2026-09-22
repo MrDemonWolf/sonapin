@@ -7,9 +7,9 @@ SonaPin uses local Xcode archives and Apple's Transporter app, matching the ConP
 - App name: `SonaPin`
 - Primary language: `English (U.S.)`
 - Bundle ID: `com.mrdemonwolf.sonapin`
-- SKU: `sonapin-ios`
+- SKU: `MDW-SonaPin`
 - User access: Full Access
-- Internal TestFlight group: `SonaPin Internal`
+- Internal TestFlight group: `SonaPin Private Beta`
 - Feedback email: `hello@mrdemonwolf.com`
 
 Use the listing, beta copy, URLs, and screenshot plan in `../../docs/APP_STORE_LISTING.md`. Use the reviewer walkthrough in `../../docs/APP_REVIEW_NOTES.md`.
@@ -17,11 +17,11 @@ Use the listing, beta copy, URLs, and screenshot plan in `../../docs/APP_STORE_L
 ## Build and upload
 
 1. Start from a clean commit that passed CI.
-2. Confirm `MARKETING_VERSION` and increment `CURRENT_PROJECT_VERSION` in `project.yml`. Never reuse an uploaded build number.
+2. Confirm `MARKETING_VERSION` in `project.yml`. The repository's build, simulator, test, and archive commands increment `CURRENT_PROJECT_VERSION` before compiling. Commit the changed build number with the release. Never reuse an uploaded build number.
 3. Run `make export` from the repository root.
 4. Confirm `artifacts/release/export/SonaPin.ipa` exists.
 5. Open Transporter, sign in with an App Store Connect account, add the IPA, and select Deliver.
-6. Wait for processing, then add the build to `SonaPin Internal` in TestFlight.
+6. Wait for processing, then confirm the build appears in `SonaPin Private Beta` in TestFlight.
 
 The first archive may ask Xcode to create or download an Apple Distribution certificate and provisioning profile. Signing credentials stay in the developer account and Keychain; never commit certificates, profiles, API keys, or passwords.
 

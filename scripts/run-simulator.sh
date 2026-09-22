@@ -17,7 +17,7 @@ if [[ "$simulator_state" != "Booted" ]]; then
 fi
 xcrun simctl bootstatus "$simulator_udid" -b
 
-make -C "$repo_root" project resolve
+make -C "$repo_root" bump-build resolve
 
 build_command=(
   xcodebuild

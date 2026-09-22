@@ -23,7 +23,7 @@ if [[ "$simulator_state" != "Booted" ]]; then
 fi
 xcrun simctl bootstatus "$simulator_udid" -b
 
-make -C "$repo_root" project resolve
+make -C "$repo_root" bump-build resolve
 result_bundle="$artifacts_dir/$result_name.xcresult"
 [[ ! -e "$result_bundle" ]] || rm -rf "$result_bundle"
 
@@ -45,4 +45,3 @@ fi
 
 print -r -- "Simulator: $simulator_name ($runtime_id, $simulator_udid)" | tee "$artifacts_dir/$result_name.log"
 "${build_command[@]}" 2>&1 | tee -a "$artifacts_dir/$result_name.log"
-
