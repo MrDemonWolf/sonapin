@@ -296,12 +296,14 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         motion.addChild(belly)
 
         let head = sphere(
-            name: "Head",
+            name: "SonaPinHeadHitTarget",
             radius: 0.46,
             material: navy,
             position: SIMD3<Float>(0, 1.48, 0),
             scale: SIMD3<Float>(1, 0.92, 0.9)
         )
+        head.components.set(InputTargetComponent())
+        head.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.46)]))
         motion.addChild(head)
 
         let leftEar = box(
@@ -366,14 +368,12 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         rightEye.addChild(rightPupil)
 
         let nose = sphere(
-            name: "SonaPinHeadHitTarget",
+            name: "Nose",
             radius: 0.12,
             material: dark,
             position: SIMD3<Float>(0, -0.05, 0.52),
             scale: SIMD3<Float>(1.1, 0.78, 0.7)
         )
-        nose.components.set(InputTargetComponent())
-        nose.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.14)]))
         head.addChild(nose)
 
         let mouth = sphere(

@@ -409,7 +409,9 @@ struct AvatarRendererTests {
 
         #expect(renderer.rootEntity === stableRoot)
         #expect(!renderer.rootEntity.children.isEmpty)
-        #expect(renderer.rootEntity.findEntity(named: "SonaPinHeadHitTarget") != nil)
+        let headTarget = try #require(renderer.rootEntity.findEntity(named: "SonaPinHeadHitTarget"))
+        #expect(headTarget.components[InputTargetComponent.self] != nil)
+        #expect(headTarget.components[CollisionComponent.self] != nil)
         #expect(renderer.rootEntity.findEntity(named: "SonaPinBodyHitTarget") != nil)
         #expect(renderer.rootEntity.findEntity(named: "SonaPinLeftPawHitTarget") != nil)
         #expect(renderer.rootEntity.findEntity(named: "SonaPinRightPawHitTarget") != nil)

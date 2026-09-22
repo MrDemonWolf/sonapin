@@ -28,6 +28,7 @@ struct ImmersiveBadgeView: View {
                     size: proxy.size,
                     isLandscape: isLandscape
                 )
+                .allowsHitTesting(false)
 
                 closeButton
             }
