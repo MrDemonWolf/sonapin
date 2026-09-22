@@ -1,6 +1,6 @@
 # SonaPin — Native iOS Master Build Brief
 
-> **Purpose:** This file is the single source of truth for researching, designing, implementing, testing, running, and preparing the first public iOS release of SonaPin.
+> **Archive:** Original build brief. SonaPin 1.0 is released as source. For current status, use [README.md](README.md) and [release checklist](docs/IMPLEMENTATION_CHECKLIST.md). The instructions below record the initial build plan.
 >
 > **Execution instruction:** Work through this document from top to bottom. Do not stop after scaffolding. Continue until the app builds, unit and UI tests pass, the app launches in an iOS Simulator, and the required evidence and documentation are committed. When something cannot be validated in Simulator, finish everything else and create an exact physical-device test checklist instead of pretending it was verified.
 

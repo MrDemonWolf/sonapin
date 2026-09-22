@@ -1,4 +1,4 @@
-# App Review notes draft
+# SonaPin 1.0 App Review notes
 
 ## Review summary
 

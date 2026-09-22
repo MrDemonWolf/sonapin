@@ -1,6 +1,6 @@
-# App Store listing draft
+# SonaPin 1.0 App Store listing copy
 
-This is submission copy, not a submitted listing. Recheck character counts and URLs in App Store Connect before release.
+This describes the released source app. The App Store listing has not been confirmed live. Recheck character counts and URLs in App Store Connect before submission.
 
 ## Metadata
 
@@ -82,7 +82,7 @@ Use only rights-cleared avatar art in screenshots. Do not place a real personal 
 
 ## Age-rating notes
 
-- No developer-provided violence, sexual content, gambling, substances, profanity, advertising, payments, chat, feed, or public user-generated-content system is planned for version 1.
+- Version 1 includes no developer-provided violence, sexual content, gambling, substances, profanity, advertising, payments, chat, feed, or public user-generated-content system.
 - Users can import files they already possess. Answer App Store Connect's current questionnaire based on the shipped app and sample content; do not assume a rating solely from this draft.
 - The likely result is the lowest general-audience tier if the final binary and supplied assets remain as described, but App Store Connect determines the displayed rating.
 
