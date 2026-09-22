@@ -29,15 +29,19 @@ struct ValidationTests {
         #expect(result.tagline == "Friendly sona")
     }
 
-    @Test("Required profile fields fail", arguments: [
-        BadgeProfile(displayName: "", pronouns: "they/them", species: "Wolf"),
-        BadgeProfile(displayName: "Nova", pronouns: "", species: "Wolf"),
-        BadgeProfile(displayName: "Nova", pronouns: "they/them", species: ""),
-    ])
-    func requiredProfileFields(_ profile: BadgeProfile) {
+    @Test("Badge name is required")
+    func badgeNameIsRequired() {
         #expect(throws: ValidationError.self) {
-            try ProfileValidator.validate(profile)
+            try ProfileValidator.validate(BadgeProfile())
         }
+    }
+
+    @Test("Optional profile details may be empty")
+    func optionalProfileDetailsMayBeEmpty() throws {
+        let profile = try ProfileValidator.validate(BadgeProfile(displayName: "Nova"))
+        #expect(profile.displayName == "Nova")
+        #expect(profile.pronouns.isEmpty)
+        #expect(profile.species.isEmpty)
     }
 
     @Test("Supported QR payloads pass", arguments: [

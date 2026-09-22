@@ -86,8 +86,8 @@ enum OnboardingStep: String, Codable, CaseIterable, Sendable {
     case badgePreview
     case complete
 
-    // Keep legacy cases decodable while presenting the shorter Apple-style setup flow.
-    static let allCases: [Self] = [.welcome, .avatar, .identity, .qrConfiguration, .badgePreview]
+    // Keep legacy cases decodable while presenting the three-step guided demo.
+    static let allCases: [Self] = [.welcome, .identity, .badgePreview]
 }
 
 struct OnboardingProgress: Codable, Equatable, Sendable {

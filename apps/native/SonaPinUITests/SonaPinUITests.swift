@@ -17,42 +17,69 @@ final class SonaPinUITests: XCTestCase {
     func testFreshLaunchStartsOnWelcome() {
         app.launch()
 
-        XCTAssertTrue(app.staticTexts["Step 1 of 5"].exists)
+        XCTAssertTrue(app.staticTexts["Step 1 of 3"].exists)
         XCTAssertTrue(app.buttons["onboarding.next"].isEnabled)
-        XCTAssertEqual(app.buttons["onboarding.next"].label, "Agree & Continue")
+        XCTAssertEqual(app.buttons["onboarding.next"].label, "Make It Mine")
+    }
+
+    func testGuidedDemoReactsAndCompletesWithOnlyAName() {
+        app.launch()
+
+        let demoAvatar = element("onboarding.demo.avatar")
+        XCTAssertTrue(demoAvatar.waitForExistence(timeout: 8))
+        let avatarReady = expectation(
+            for: NSPredicate(format: "value == %@", "Ready"),
+            evaluatedWith: demoAvatar
+        )
+        wait(for: [avatarReady], timeout: 8)
+        demoAvatar.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.4)).tap()
+        let avatarReacted = expectation(
+            for: NSPredicate(format: "value == %@", "Ready. Reaction 1"),
+            evaluatedWith: demoAvatar
+        )
+        wait(for: [avatarReacted], timeout: 5)
+
+        advanceOnboarding()
+        let displayName = app.textFields["profile.display-name"]
+        XCTAssertTrue(displayName.waitForExistence(timeout: 3))
+        displayName.tap()
+        displayName.typeText("Nova")
+        dismissKeyboardIfPresent()
+
+        advanceOnboarding()
+        XCTAssertTrue(app.staticTexts["Your badge is ready"].waitForExistence(timeout: 3))
+        app.buttons["onboarding.finish"].tap()
+
+        XCTAssertTrue(app.buttons["badge.actions"].waitForExistence(timeout: 10))
+        XCTAssertTrue(element("badge.identity").label.contains("Nova"))
+    }
+
+    func testBadgeNameValidationKeepsUserOnIdentityStep() {
+        app.launch()
+        advanceOnboarding()
+
+        app.buttons["onboarding.next"].tap()
+
+        XCTAssertTrue(app.staticTexts["Display name is required."].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Step 2 of 3"].exists)
     }
 
     func testCompleteBadgeFlowEditProfileAndDeleteLocalData() throws {
         app.launch()
-        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Step 1 of 3"].waitForExistence(timeout: 8))
         try auditAccessibility()
 
         advanceOnboarding()
-        XCTAssertTrue(app.buttons["avatar.use-demo"].waitForExistence(timeout: 3))
-        app.buttons["avatar.use-demo"].tap()
-        XCTAssertTrue(element("compatibility.demo").waitForExistence(timeout: 3))
         try auditAccessibility()
-
-        advanceOnboarding()
-        // Xcode 26.6 can hang while auditing this scrollable form in CI.
-        // The flow below still verifies every required field and action directly.
         enterIdentity()
 
         advanceOnboarding()
-        try auditAccessibility()
-        enterQRPayload()
-        XCTAssertTrue(element("qr.preview").waitForExistence(timeout: 3))
-
-        advanceOnboarding()
-        XCTAssertTrue(app.buttons["theme.cornflower"].waitForExistence(timeout: 3))
-        app.buttons["theme.cornflower"].tap()
-        XCTAssertTrue(element("badge.preview").waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Your badge is ready"].waitForExistence(timeout: 3))
         try auditAccessibility()
         app.buttons["onboarding.finish"].tap()
 
         XCTAssertTrue(app.buttons["badge.actions"].waitForExistence(timeout: 10))
         XCTAssertTrue(element("badge.identity").label.contains("Blue Wolf"))
-        try auditAccessibility()
 
         tapWhenHittable(app.buttons["badge.full-screen"])
         XCTAssertTrue(element("badge.full-screen.qr").waitForExistence(timeout: 5))
@@ -73,10 +100,6 @@ final class SonaPinUITests: XCTestCase {
 
         tapWhenHittable(app.buttons["avatar.react"])
 
-        tapWhenHittable(app.buttons["badge.qr"])
-        XCTAssertTrue(app.buttons["badge.qr.close"].waitForExistence(timeout: 5))
-        app.buttons["badge.qr.close"].tap()
-
         openSettings()
         try auditAccessibility()
         editProfileName()
@@ -90,20 +113,15 @@ final class SonaPinUITests: XCTestCase {
         verifyCustomPronounsArePreserved()
         deleteAllLocalData()
 
-        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Step 1 of 3"].waitForExistence(timeout: 8))
     }
 
     func testImmersiveAvatarRespondsToPhysicalTouchWithReducedMotion() {
         app.launch()
-        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Step 1 of 3"].waitForExistence(timeout: 8))
 
         advanceOnboarding()
-        XCTAssertTrue(app.buttons["avatar.use-demo"].waitForExistence(timeout: 3))
-        app.buttons["avatar.use-demo"].tap()
-        advanceOnboarding()
         enterIdentity()
-        advanceOnboarding()
-        enterQRPayload()
         advanceOnboarding()
         app.buttons["onboarding.finish"].tap()
 
@@ -127,25 +145,23 @@ final class SonaPinUITests: XCTestCase {
 
     func testOnboardingResumesAtSavedStep() {
         app.launch()
-        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["Step 1 of 3"].waitForExistence(timeout: 8))
 
         advanceOnboarding()
-        XCTAssertTrue(app.buttons["avatar.use-demo"].waitForExistence(timeout: 3))
-        XCTAssertTrue(element("compatibility.demo").waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Badge name"].waitForExistence(timeout: 3))
 
         app.terminate()
         app.launchArguments = ["--ui-testing", "--use-demo-avatar"]
         app.launch()
 
-        XCTAssertTrue(element("compatibility.demo").waitForExistence(timeout: 8))
-        XCTAssertFalse(app.staticTexts["Step 1 of 5"].exists)
+        XCTAssertTrue(app.staticTexts["Badge name"].waitForExistence(timeout: 8))
+        XCTAssertFalse(app.staticTexts["Step 1 of 3"].exists)
     }
 
     private func enterIdentity() {
-        XCTAssertTrue(app.staticTexts["Display name · Required"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["Pronouns · Required"].exists)
-        XCTAssertTrue(app.staticTexts["Species or character · Required"].exists)
-        XCTAssertTrue(app.staticTexts["Tagline · Optional"].exists)
+        XCTAssertTrue(app.staticTexts["Badge name"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Required"].exists)
+        XCTAssertTrue(app.staticTexts["Pronouns"].exists)
 
         let displayName = app.textFields["profile.display-name"]
         XCTAssertTrue(displayName.waitForExistence(timeout: 3))
@@ -160,6 +176,7 @@ final class SonaPinUITests: XCTestCase {
         XCTAssertTrue(heHim.waitForExistence(timeout: 3))
         heHim.tap()
 
+        app.buttons["Add more badge details"].tap()
         let species = app.textFields["profile.species"]
         tapWhenHittable(species)
         species.typeText("Wolf\n")

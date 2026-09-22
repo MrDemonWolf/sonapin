@@ -42,12 +42,8 @@ enum ProfileValidator {
             tagline: profile.tagline.trimmingCharacters(in: .whitespacesAndNewlines)
         )
 
-        for (field, text) in [
-            ("Display name", value.displayName),
-            ("Pronouns", value.pronouns),
-            ("Species", value.species),
-        ] where text.isEmpty {
-            throw ValidationError.required(field: field)
+        guard !value.displayName.isEmpty else {
+            throw ValidationError.required(field: "Display name")
         }
 
         for (field, text) in [
@@ -106,6 +102,9 @@ enum QRPayloadValidator {
     }
 
     static func accessibilityDescription(for configuration: QRConfiguration) -> String {
+        guard !configuration.payload.isEmpty else {
+            return "No QR code configured"
+        }
         let label: String = switch configuration.kind {
         case .website: "Website"
         case .socialProfile: "Social profile"

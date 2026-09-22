@@ -41,12 +41,21 @@ struct QRCodeView: View {
                     .accessibilityValue(QRPayloadValidator.accessibilityDescription(for: configuration))
                     .accessibilityHint("Ask another person to scan this code with their camera.")
             } else {
-                ContentUnavailableView(
-                    "QR preview unavailable",
-                    systemImage: "qrcode",
-                    description: Text(errorMessage ?? "Enter valid QR content to make a preview.")
-                )
+                VStack(spacing: 10) {
+                    Image(systemName: "qrcode")
+                        .font(.system(size: 42, weight: .semibold))
+                        .accessibilityHidden(true)
+                    Text(configuration.payload.isEmpty ? "No QR code yet" : "QR preview unavailable")
+                        .font(.headline)
+                    Text(configuration.payload.isEmpty
+                         ? "Add one later from Edit Badge."
+                         : (errorMessage ?? "Enter valid QR content to make a preview."))
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+                }
+                .foregroundStyle(.primary)
                 .frame(maxWidth: maximumDimension, minHeight: 220)
+                .accessibilityElement(children: .combine)
             }
 
             if showsPayload, !configuration.payload.isEmpty {

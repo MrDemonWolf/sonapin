@@ -20,21 +20,15 @@ struct OnboardingView: View {
                     .ignoresSafeArea()
 
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 16) {
                         if !isKeyboardVisible {
-                            Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
-                                .font(.subheadline.monospacedDigit())
-                                .foregroundStyle(.primary)
-
-                            Text(step.onboardingDetail)
-                                .foregroundStyle(.primary)
-                                .fixedSize(horizontal: false, vertical: true)
-
-                            ProgressView(
-                                value: Double(step.number),
-                                total: Double(OnboardingStep.allCases.count)
-                            )
-                            .accessibilityHidden(true)
+                            HStack(spacing: 10) {
+                                Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
+                                    .font(.subheadline.weight(.semibold).monospacedDigit())
+                                ProgressView(value: Double(step.number), total: Double(OnboardingStep.allCases.count))
+                                    .tint(.sonaCyan)
+                                    .accessibilityHidden(true)
+                            }
                         }
 
                         stepContent
@@ -51,29 +45,6 @@ struct OnboardingView: View {
             .safeAreaInset(edge: .bottom) {
                 if !isKeyboardVisible {
                     VStack(spacing: 8) {
-                        if step == .welcome {
-                            VStack(spacing: 4) {
-                                Text("By continuing, you agree to the Terms of Use and acknowledge the Privacy Policy.")
-                                    .font(.footnote)
-                                    .accessibilityIdentifier("onboarding.legal.notice")
-
-                                HStack(spacing: 16) {
-                                    Link("Terms of Use", destination: URL(string: "https://mrdemonwolf.github.io/sonapin/terms/")!)
-                                    .buttonStyle(.bordered)
-                                    .frame(minHeight: 44)
-                                    .accessibilityIdentifier("onboarding.legal.terms")
-                                    Link("Privacy Policy", destination: URL(string: "https://mrdemonwolf.github.io/sonapin/privacy/")!)
-                                    .buttonStyle(.bordered)
-                                    .frame(minHeight: 44)
-                                    .accessibilityIdentifier("onboarding.legal.privacy")
-                                }
-                                .font(.footnote.weight(.semibold))
-                                .tint(.primary)
-                            }
-                                .foregroundStyle(.primary)
-                                .multilineTextAlignment(.center)
-                        }
-
                         Button(action: goForward) {
                             Text(primaryActionTitle)
                                 .frame(maxWidth: .infinity)
@@ -84,6 +55,32 @@ struct OnboardingView: View {
                             .frame(maxWidth: .infinity)
                             .accessibilityHint(canContinue ? "Moves to the next setup step." : "Checks this step and shows what needs attention.")
                             .accessibilityIdentifier(step == .badgePreview ? "onboarding.finish" : "onboarding.next")
+
+                        if step == .welcome {
+                            VStack(spacing: 2) {
+                                Text("By continuing, you agree to the Terms and acknowledge the Privacy Policy.")
+                                    .font(.caption)
+                                    .multilineTextAlignment(.center)
+
+                                HStack(spacing: 14) {
+                                    Link(destination: URL(string: "https://mrdemonwolf.github.io/sonapin/terms/")!) {
+                                        Text("Terms")
+                                            .frame(minWidth: 44, minHeight: 44)
+                                            .contentShape(Rectangle())
+                                    }
+                                        .accessibilityIdentifier("onboarding.legal.terms")
+                                    Link(destination: URL(string: "https://mrdemonwolf.github.io/sonapin/privacy/")!) {
+                                        Text("Privacy")
+                                            .frame(minWidth: 44, minHeight: 44)
+                                            .contentShape(Rectangle())
+                                    }
+                                        .accessibilityIdentifier("onboarding.legal.privacy")
+                                }
+                            }
+                            .font(.footnote.weight(.semibold))
+                            .tint(.primary)
+                            .frame(maxWidth: .infinity)
+                        }
                     }
                     .frame(maxWidth: 720)
                     .padding(.horizontal, 22)
@@ -123,27 +120,14 @@ struct OnboardingView: View {
         case .welcome:
             WelcomeStep(model: model)
         case .avatar, .compatibility:
-            VStack(alignment: .leading, spacing: 16) {
-                AvatarSourcePicker(model: model)
-                CompatibilityReportView(record: model.snapshot.avatar)
-            }
+            WelcomeStep(model: model)
         case .identity:
             ProfileFields(profile: $model.snapshot.profile)
                 .sonaCard()
         case .qrConfiguration, .qrPreview:
-            VStack(alignment: .leading, spacing: 16) {
-                QRConfigurationFields(
-                    configuration: $model.snapshot.qrConfiguration,
-                    highContrastPreference: $model.snapshot.preferences.highContrastQR
-                )
-                .sonaCard()
-                QRPreviewStep(configuration: model.snapshot.qrConfiguration)
-            }
+            ReadyStep(model: model)
         case .theme, .badgePreview, .complete:
-            VStack(alignment: .leading, spacing: 16) {
-                ThemePicker(selection: $model.snapshot.theme)
-                BadgePreviewCard(snapshot: model.snapshot)
-            }
+            ReadyStep(model: model)
         }
     }
 
@@ -151,10 +135,6 @@ struct OnboardingView: View {
         switch step {
         case .identity:
             return (try? ProfileValidator.validate(model.snapshot.profile)) != nil
-        case .qrConfiguration, .qrPreview:
-            return (try? QRPayloadValidator.validate(model.snapshot.qrConfiguration)) != nil
-        case .avatar, .compatibility:
-            return model.snapshot.avatar.compatibility?.outcome != .unsupported
         default:
             return true
         }
@@ -163,7 +143,9 @@ struct OnboardingView: View {
     private var primaryActionTitle: String {
         switch step {
         case .welcome:
-            "Agree & Continue"
+            "Make It Mine"
+        case .identity:
+            "Preview My Badge"
         case .badgePreview:
             "Enter Badge Mode"
         default:
@@ -182,8 +164,6 @@ struct OnboardingView: View {
         do {
             if step == .identity {
                 try model.validateCurrentProfile()
-            } else if step == .qrConfiguration || step == .qrPreview {
-                try model.validateCurrentQR()
             }
         } catch {
             model.notice = AppNotice(title: "Check this step", message: error.localizedDescription)
@@ -206,73 +186,94 @@ struct OnboardingView: View {
 private extension OnboardingStep {
     var primaryStep: Self {
         switch self {
-        case .compatibility: .avatar
-        case .qrPreview: .qrConfiguration
-        case .theme, .complete: .badgePreview
+        case .avatar, .compatibility: .welcome
+        case .qrConfiguration, .qrPreview, .theme, .complete: .badgePreview
         default: self
         }
     }
 
     var onboardingTitle: String {
         switch self {
-        case .welcome: "Welcome to SonaPin"
-        case .avatar, .compatibility: "Choose an avatar"
-        case .identity: "Badge identity"
-        case .qrConfiguration, .qrPreview: "QR code"
-        case .theme, .badgePreview, .complete: "Review"
+        case .welcome, .avatar, .compatibility: "Try your badge"
+        case .identity: "Make it yours"
+        case .qrConfiguration, .qrPreview, .theme, .badgePreview, .complete: "Your badge is ready"
         }
     }
 
-    var onboardingDetail: String {
-        switch self {
-        case .welcome:
-            "SonaPin is a private, local-only convention badge with an interactive 3D avatar. No account, ads, analytics, or tracking."
-        case .avatar, .compatibility:
-            "Choose an avatar, then review what SonaPin can animate and any license details."
-        case .identity:
-            "Add the details you want another person to see. Nothing leaves this device."
-        case .qrConfiguration, .qrPreview:
-            "Choose the content and confirm the live preview. Test it with another physical phone before an event."
-        case .theme, .badgePreview, .complete:
-            "Pick a readable theme and check the finished badge. You can edit everything later."
-        }
-    }
 }
 
 private struct WelcomeStep: View {
     let model: AppModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            AvatarStageHost(model: model, showsControls: false, minimumHeight: 220)
-                .frame(maxWidth: .infinity)
-                .accessibilityLabel("Preview of your interactive badge avatar")
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Tap the wolf")
+                .font(.title3.weight(.bold))
+            Text("It reacts here exactly as it will in Badge Mode.")
+                .foregroundStyle(.primary)
 
-            ForEach(welcomePoints, id: \.title) { point in
-                HStack(alignment: .top, spacing: 14) {
-                    Image(systemName: point.icon)
-                        .font(.title2)
-                        .foregroundStyle(Color.accentColor)
-                        .frame(width: 34)
-                        .accessibilityHidden(true)
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(point.title).font(.headline)
-                        Text(point.detail).foregroundStyle(.primary)
-                    }
-                }
-                .accessibilityElement(children: .combine)
+            AvatarStageHost(
+                model: model,
+                showsControls: false,
+                minimumHeight: 260,
+                stageAccessibilityIdentifier: "onboarding.demo.avatar"
+            )
+                .frame(maxWidth: .infinity)
+                .accessibilityLabel("Demo avatar")
+                .accessibilityHint("Double-tap to make the avatar react.")
+
+            ViewThatFits {
+                HStack(spacing: 16) { featureLabels }
+                VStack(alignment: .leading, spacing: 8) { featureLabels }
             }
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.primary)
+            .accessibilityElement(children: .combine)
         }
         .sonaCard()
-        .accessibilityIdentifier("onboarding.welcome")
     }
 
-    private var welcomePoints: [(icon: String, title: String, detail: String)] {
-        [
-            ("person.crop.square", "A living badge", "Show your avatar and identity in one friendly, full-screen view."),
-            ("qrcode", "Easy connections", "Let someone scan the link or message you choose."),
-            ("lock.shield", "Yours alone", "SonaPin works without an account, network service, or tracker."),
-        ]
+    @ViewBuilder
+    private var featureLabels: some View {
+        Label("Interactive", systemImage: "hand.tap")
+        Label("Private", systemImage: "lock.shield")
+        Label("Offline", systemImage: "wifi.slash")
+    }
+}
+
+private struct ReadyStep: View {
+    let model: AppModel
+
+    var body: some View {
+        VStack(spacing: 14) {
+            ZStack(alignment: .top) {
+                AvatarStageHost(
+                    model: model,
+                    showsControls: false,
+                    minimumHeight: 300,
+                    stageAccessibilityIdentifier: "onboarding.ready.avatar"
+                )
+                    .accessibilityLabel("Your interactive badge avatar")
+                    .accessibilityHint("Double-tap to make the avatar react.")
+
+                Label("Tap to try it", systemImage: "hand.tap.fill")
+                    .font(.subheadline.weight(.bold))
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(.regularMaterial, in: Capsule())
+                    .padding(.top, 12)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+            }
+
+            BadgeIdentityView(profile: model.snapshot.profile, theme: model.snapshot.theme)
+
+            Text("Avatar, QR code, colors, and interactions can all be changed later.")
+                .font(.footnote)
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.center)
+        }
+        .sonaCard()
     }
 }
 
@@ -280,6 +281,7 @@ struct ProfileFields: View {
     @Binding var profile: BadgeProfile
     @FocusState private var focusedField: ProfileField?
     @State private var selectedPronounOption: String
+    @State private var showsMoreDetails: Bool
 
     private static let pronounOptions = [
         "he/him",
@@ -301,37 +303,50 @@ struct ProfileFields: View {
                 ? pronouns
                 : Self.customPronounsOption
         )
+        _showsMoreDetails = State(
+            initialValue: !profile.wrappedValue.species.isEmpty || !profile.wrappedValue.tagline.isEmpty
+        )
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Start with a name. Everything else can wait.")
+                .font(.subheadline)
+                .foregroundStyle(.primary)
+
             LabeledFormField(
-                title: "Display name",
-                help: "The name people will notice first on your badge.",
+                title: "Badge name",
+                help: "Shown in the largest type on your badge.",
                 count: profile.displayName.count,
                 limit: 80
             ) {
-                TextField("MrDemonWolf", text: $profile.displayName)
-                    .textContentType(.name)
-                    .submitLabel(.next)
-                    .focused($focusedField, equals: .displayName)
-                    .onSubmit {
-                        focusedField = isEnteringCustomPronouns ? .pronouns : .species
-                    }
-                    .accessibilityLabel("Display name")
-                    .accessibilityHint("Required. Up to 80 characters.")
-                    .accessibilityIdentifier("profile.display-name")
+                HStack(spacing: 10) {
+                    Image(systemName: "person.fill")
+                        .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
+                    TextField("JayU", text: $profile.displayName)
+                        .textContentType(.name)
+                        .submitLabel(.done)
+                        .focused($focusedField, equals: .displayName)
+                        .onSubmit { focusedField = nil }
+                        .accessibilityLabel("Display name")
+                        .accessibilityHint("Required. Up to 80 characters.")
+                        .accessibilityIdentifier("profile.display-name")
+                }
             }
 
             LabeledFormField(
                 title: "Pronouns",
+                isRequired: false,
                 help: "Choose a common option or add your own.",
                 count: isEnteringCustomPronouns ? profile.pronouns.count : nil,
                 limit: isEnteringCustomPronouns ? 80 : nil
             ) {
-                LabeledContent("Selection") {
+                HStack {
+                    Image(systemName: "text.bubble.fill")
+                        .foregroundStyle(.secondary)
                     Picker("Pronouns", selection: $selectedPronounOption) {
-                        Text("Select pronouns").tag("")
+                        Text("Choose pronouns").tag("")
                         Text(Self.customPronounsOption).tag(Self.customPronounsOption)
                         ForEach(Self.pronounOptions, id: \.self) { option in
                             Text(option).tag(option)
@@ -343,6 +358,7 @@ struct ProfileFields: View {
                     }
                     .accessibilityHint("Choose a common option or Other to enter your own pronouns.")
                     .accessibilityIdentifier("profile.pronouns.picker")
+                    Spacer()
                 }
                 .frame(minHeight: 44)
             }
@@ -350,46 +366,59 @@ struct ProfileFields: View {
             if isEnteringCustomPronouns {
                 TextField("Enter your pronouns", text: $profile.pronouns)
                     .textInputAutocapitalization(.never)
-                    .submitLabel(.next)
+                    .submitLabel(.done)
                     .focused($focusedField, equals: .pronouns)
-                    .onSubmit { focusedField = .species }
-                    .accessibilityHint("Required. Enter pronouns exactly as you want them shown, up to 80 characters.")
+                    .onSubmit { focusedField = nil }
+                    .padding(14)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .accessibilityHint("Optional. Enter pronouns exactly as you want them shown, up to 80 characters.")
                     .accessibilityIdentifier("profile.pronouns.custom")
             }
 
-            LabeledFormField(
-                title: "Species or character",
-                help: "For example, blue wolf, dragon, or original character.",
-                count: profile.species.count,
-                limit: 80
-            ) {
-                TextField("Blue wolf", text: $profile.species)
-                    .submitLabel(.next)
-                    .focused($focusedField, equals: .species)
-                    .onSubmit { focusedField = .tagline }
-                    .accessibilityLabel("Species or character")
-                    .accessibilityHint("Required. Up to 80 characters.")
-                    .accessibilityIdentifier("profile.species")
-            }
+            DisclosureGroup("Add more badge details", isExpanded: $showsMoreDetails) {
+                VStack(alignment: .leading, spacing: 16) {
+                    LabeledFormField(
+                        title: "Species or character",
+                        isRequired: false,
+                        help: "For example, blue wolf, dragon, or original character.",
+                        count: profile.species.count,
+                        limit: 80
+                    ) {
+                        TextField("Blue wolf", text: $profile.species)
+                            .submitLabel(.next)
+                            .focused($focusedField, equals: .species)
+                            .onSubmit { focusedField = .tagline }
+                            .accessibilityLabel("Species or character")
+                            .accessibilityHint("Optional. Up to 80 characters.")
+                            .accessibilityIdentifier("profile.species")
+                    }
 
-            LabeledFormField(
-                title: "Tagline",
-                isRequired: false,
-                help: "One short line people can read at a glance.",
-                count: profile.tagline.count,
-                limit: 140
-            ) {
-                TextField("Friendly wolf roaming the con floor", text: $profile.tagline, axis: .vertical)
-                    .lineLimit(2 ... 4)
-                    .submitLabel(.done)
-                    .focused($focusedField, equals: .tagline)
-                    .onSubmit { focusedField = nil }
-                    .accessibilityLabel("Tagline")
-                    .accessibilityHint("Optional. Up to 140 characters.")
-                    .accessibilityIdentifier("profile.tagline")
+                    LabeledFormField(
+                        title: "Tagline",
+                        isRequired: false,
+                        help: "One short line people can read at a glance.",
+                        count: profile.tagline.count,
+                        limit: 140
+                    ) {
+                        TextField("Say hi if you spot me!", text: $profile.tagline, axis: .vertical)
+                            .lineLimit(2 ... 3)
+                            .submitLabel(.done)
+                            .focused($focusedField, equals: .tagline)
+                            .onSubmit { focusedField = nil }
+                            .accessibilityLabel("Tagline")
+                            .accessibilityHint("Optional. Up to 140 characters.")
+                            .accessibilityIdentifier("profile.tagline")
+                    }
+                }
+                .padding(.top, 12)
             }
+            .fontWeight(.semibold)
+
+            Label("Saved only on this iPhone", systemImage: "lock.fill")
+                .font(.footnote)
+                .foregroundStyle(.primary)
         }
-        .textFieldStyle(.roundedBorder)
+        .textFieldStyle(.plain)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -411,9 +440,7 @@ struct ProfileFields: View {
             Task { @MainActor in focusedField = .pronouns }
         } else {
             profile.pronouns = selection
-            if !selection.isEmpty {
-                Task { @MainActor in focusedField = .species }
-            }
+            if !selection.isEmpty { focusedField = nil }
         }
     }
 }
@@ -450,16 +477,28 @@ private struct LabeledFormField<Content: View>: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 7) {
-            Text("\(title) · \(isRequired ? "Required" : "Optional")")
-                .font(.subheadline.weight(.semibold))
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                Text(isRequired ? "Required" : "Optional")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.primary)
+            }
 
             content
+                .frame(minHeight: 28)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .background(
+                    Color(uiColor: .secondarySystemGroupedBackground),
+                    in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                )
 
             HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Text(isOverLimit ? "Shorten this value before continuing." : help)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                if let count, let limit {
+                if shouldShowCount, let count, let limit {
                     Text("\(count)/\(limit)")
                         .monospacedDigit()
                 }
@@ -472,6 +511,11 @@ private struct LabeledFormField<Content: View>: View {
     private var isOverLimit: Bool {
         guard let count, let limit else { return false }
         return count > limit
+    }
+
+    private var shouldShowCount: Bool {
+        guard let count, let limit else { return false }
+        return count >= limit - 20
     }
 }
 

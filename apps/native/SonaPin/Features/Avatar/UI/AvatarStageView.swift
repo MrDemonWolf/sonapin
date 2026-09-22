@@ -20,6 +20,7 @@ struct AvatarStageHost: View {
     let model: AppModel
     var showsControls = true
     var minimumHeight: CGFloat = 280
+    var stageAccessibilityIdentifier: String?
 
     @State private var importedURL: URL?
 
@@ -31,7 +32,8 @@ struct AvatarStageHost: View {
                     source: .proceduralDemo,
                     model: model,
                     showsControls: showsControls,
-                    minimumHeight: minimumHeight
+                    minimumHeight: minimumHeight,
+                    stageAccessibilityIdentifier: stageAccessibilityIdentifier
                 )
                     .id("demo-avatar")
             case .imported:
@@ -40,7 +42,8 @@ struct AvatarStageHost: View {
                         source: .imported(fileURL: importedURL),
                         model: model,
                         showsControls: showsControls,
-                        minimumHeight: minimumHeight
+                        minimumHeight: minimumHeight,
+                        stageAccessibilityIdentifier: stageAccessibilityIdentifier
                     )
                     .id(model.snapshot.avatar.checksum ?? importedURL.path)
                 } else {
@@ -64,6 +67,7 @@ struct AvatarStageView: View {
     let model: AppModel
     let showsControls: Bool
     let minimumHeight: CGFloat
+    let stageAccessibilityIdentifier: String?
 
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @State private var renderer: any AvatarRendering
@@ -80,12 +84,14 @@ struct AvatarStageView: View {
         source: AvatarSource,
         model: AppModel,
         showsControls: Bool = true,
-        minimumHeight: CGFloat = 280
+        minimumHeight: CGFloat = 280,
+        stageAccessibilityIdentifier: String? = nil
     ) {
         self.source = source
         self.model = model
         self.showsControls = showsControls
         self.minimumHeight = minimumHeight
+        self.stageAccessibilityIdentifier = stageAccessibilityIdentifier
         let initialRenderer: any AvatarRendering
         switch source {
         case .proceduralDemo:
@@ -212,7 +218,9 @@ struct AvatarStageView: View {
                     ? "Tap the avatar to change its expression. Use the buttons below for accessible avatar controls."
                     : "Tap the avatar to change its expression. More actions include Reset Avatar."
             )
-            .accessibilityIdentifier(showsControls ? "avatar.stage" : "badge.full-screen.avatar")
+            .accessibilityIdentifier(
+                stageAccessibilityIdentifier ?? (showsControls ? "avatar.stage" : "badge.full-screen.avatar")
+            )
             .accessibilityAction(.default) {
                 react(with: .surprised, animation: "reaction")
             }
