@@ -16,8 +16,7 @@ resolve: project
 bump-build:
 	./scripts/bump-build-number.sh
 
-build: bump-build
-	$(MAKE) resolve
+build: resolve
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath $(DERIVED_DATA) CODE_SIGNING_ALLOWED=NO build
 
 test:
@@ -29,8 +28,7 @@ ui-test:
 sim:
 	./scripts/run-simulator.sh
 
-archive: bump-build
-	$(MAKE) project
+archive: project
 	mkdir -p artifacts/release
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Release -destination 'generic/platform=iOS' -archivePath $(ARCHIVE_PATH) -allowProvisioningUpdates archive
 
@@ -38,8 +36,7 @@ export: archive
 	rm -rf $(EXPORT_PATH)
 	xcodebuild -exportArchive -archivePath $(ARCHIVE_PATH) -exportPath $(EXPORT_PATH) -exportOptionsPlist $(NATIVE_DIR)/ExportOptions.plist -allowProvisioningUpdates
 
-lint-check: bump-build
-	$(MAKE) project
+lint-check: project
 	./scripts/lint-check.sh
 
 docs-build:

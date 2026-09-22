@@ -23,7 +23,7 @@ if [[ "$simulator_state" != "Booted" ]]; then
 fi
 xcrun simctl bootstatus "$simulator_udid" -b
 
-make -C "$repo_root" bump-build resolve
+make -C "$repo_root" project resolve
 result_bundle="$artifacts_dir/$result_name.xcresult"
 [[ ! -e "$result_bundle" ]] || rm -rf "$result_bundle"
 

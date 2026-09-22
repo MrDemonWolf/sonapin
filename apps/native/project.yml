@@ -25,6 +25,9 @@ targets:
   SonaPin:
     type: application
     platform: iOS
+    configFiles:
+      Debug: BuildNumber.xcconfig
+      Release: BuildNumber.xcconfig
     sources:
       - path: SonaPin
         excludes:
@@ -42,7 +45,6 @@ targets:
         PRODUCT_NAME: SonaPin
         SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "2"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: HBB7T99U79
         GENERATE_INFOPLIST_FILE: YES
@@ -92,6 +94,10 @@ schemes:
         SonaPin: all
         SonaPinTests: [test]
         SonaPinUITests: [test]
+      preActions:
+        - name: Increment build number
+          settingsTarget: SonaPin
+          script: '"$PROJECT_DIR/../../scripts/bump-build-number.sh"'
     run:
       config: Debug
     test:

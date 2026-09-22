@@ -75,6 +75,7 @@
 		6852DD19055F9D638AB64EFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		8630CB9270C057AFC717F5E3 /* AppDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDiagnostics.swift; sourceTree = "<group>"; };
+		8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildNumber.xcconfig; sourceTree = "<group>"; };
 		8EA69EAF63F6F44C65F8E2A9 /* AvatarDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarDomain.swift; sourceTree = "<group>"; };
 		95299040DF6255C733F933C1 /* SonaPinUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SonaPinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA46D22E901862DF6D6F9E6D /* SonaPin.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SonaPin.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +103,7 @@
 		08C57AF6BDEAAB932AC2246E = {
 			isa = PBXGroup;
 			children = (
+				7A73067FBFB1CC57646039C2 /* native */,
 				6B3FCA683D74713A3F1F9AD9 /* Resources */,
 				B56E6E86CEE2BF8C1E4628F5 /* SonaPin */,
 				CA7384103EFCDA5F05DDBF22 /* SonaPinTests */,
@@ -165,6 +167,15 @@
 				22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */,
 			);
 			path = SonaPinUITests;
+			sourceTree = "<group>";
+		};
+		7A73067FBFB1CC57646039C2 /* native */ = {
+			isa = PBXGroup;
+			children = (
+				8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */,
+			);
+			name = native;
+			path = .;
 			sourceTree = "<group>";
 		};
 		81E2E61268DB6AF694D545C1 /* Utilities */ = {
@@ -599,12 +610,12 @@
 		};
 		76BF8F9E3530DAB8A8C8D59A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = HBB7T99U79;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SonaPin;
@@ -725,12 +736,12 @@
 		};
 		E857F963D77006AFD2E902A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = HBB7T99U79;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SonaPin;

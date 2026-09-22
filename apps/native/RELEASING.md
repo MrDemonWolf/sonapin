@@ -17,7 +17,7 @@ Use the listing, beta copy, URLs, and screenshot plan in `../../docs/APP_STORE_L
 ## Build and upload
 
 1. Start from a clean commit that passed CI.
-2. Confirm `MARKETING_VERSION` in `project.yml`. The repository's build, simulator, test, and archive commands increment `CURRENT_PROJECT_VERSION` before compiling. Commit the changed build number with the release. Never reuse an uploaded build number.
+2. Confirm `MARKETING_VERSION` in `project.yml`. The Xcode scheme increments `CURRENT_PROJECT_VERSION` in `BuildNumber.xcconfig` before compiling, whether launched from Xcode or the repository commands. Commit the changed build number with the release. Never reuse an uploaded build number.
 3. Run `make export` from the repository root.
 4. Confirm `artifacts/release/export/SonaPin.ipa` exists.
 5. Open Transporter, sign in with an App Store Connect account, add the IPA, and select Deliver.
