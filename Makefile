@@ -2,8 +2,10 @@ NATIVE_DIR := apps/native
 PROJECT := $(NATIVE_DIR)/SonaPin.xcodeproj
 SCHEME := SonaPin
 DERIVED_DATA := $(NATIVE_DIR)/.derived-data
+ARCHIVE_PATH := artifacts/release/SonaPin.xcarchive
+EXPORT_PATH := artifacts/release/export
 
-.PHONY: project resolve build test ui-test sim clean lint-check docs-build
+.PHONY: project resolve build test ui-test sim archive export clean lint-check docs-build
 
 project:
 	cd $(NATIVE_DIR) && xcodegen generate
@@ -23,6 +25,14 @@ ui-test:
 sim:
 	./scripts/run-simulator.sh
 
+archive: project
+	mkdir -p artifacts/release
+	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Release -destination 'generic/platform=iOS' -archivePath $(ARCHIVE_PATH) -allowProvisioningUpdates archive
+
+export: archive
+	rm -rf $(EXPORT_PATH)
+	xcodebuild -exportArchive -archivePath $(ARCHIVE_PATH) -exportPath $(EXPORT_PATH) -exportOptionsPlist $(NATIVE_DIR)/ExportOptions.plist -allowProvisioningUpdates
+
 lint-check: project
 	./scripts/lint-check.sh
 
@@ -31,5 +41,4 @@ docs-build:
 
 clean:
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) clean
-	rm -rf $(DERIVED_DATA) apps/docs/dist
-
+	rm -rf $(DERIVED_DATA) apps/docs/dist artifacts/release

@@ -17,6 +17,34 @@ This is submission copy, not a submitted listing. Recheck character counts and U
 
 The URLs assume GitHub Pages publishes the repository at the standard project-site path. Verify the deployed URLs before submission.
 
+## App Store Connect record
+
+- **Primary language:** English (U.S.)
+- **Bundle ID:** `com.mrdemonwolf.sonapin`
+- **SKU:** `sonapin-ios`
+- **User access:** Full Access
+- **Copyright:** `2026 MrDemonWolf, Inc.`
+- **Price:** Free
+- **TestFlight internal group:** SonaPin Internal
+- **Feedback email:** `hello@mrdemonwolf.com`
+
+## TestFlight beta information
+
+### Beta app description
+
+SonaPin turns an iPhone or iPad into an interactive fursona badge. Test the built-in avatar or import a compatible VRM file, create a profile and QR code, then use Badge Mode at convention-friendly brightness and scale.
+
+### What to Test
+
+- Complete onboarding and create a badge profile.
+- Tap the built-in avatar and confirm its expression and QR-card reactions feel clear and responsive.
+- Scan the QR code from another phone at normal badge distance.
+- Import a VRM file you have permission to use and review the compatibility report.
+- Try portrait and landscape orientations, larger text, VoiceOver, and Reduce Motion.
+- Confirm your profile and imported avatar remain after relaunching the app.
+
+Please report confusing steps, visual glitches, failed QR scans, crashes, or unusually high battery use through TestFlight feedback.
+
 ## Description
 
 Your sona. Your badge. Alive.

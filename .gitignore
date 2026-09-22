@@ -4,6 +4,7 @@
 .turbo/
 node_modules/
 apps/docs/dist/
+artifacts/release/
 
 # Xcode
 DerivedData/
