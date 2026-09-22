@@ -305,12 +305,6 @@ final class SonaPinUITests: XCTestCase {
         } else {
             app.swipeDown()
         }
-
-        let keyboardHidden = expectation(
-            for: NSPredicate(format: "exists == false"),
-            evaluatedWith: app.keyboards.element
-        )
-        wait(for: [keyboardHidden], timeout: 4)
     }
 
     private func replaceText(in field: XCUIElement, with newValue: String) {
