@@ -1,7 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title">
-  <title id="title">SonaPin badge with a centered paw print</title>
-  <path fill="#091533" stroke="#0FACED" stroke-width="36" stroke-linejoin="round" d="M300 72h424c29 0 44 14 59 38l128 126c13 13 21 32 21 51v573c0 55-45 100-100 100H192c-55 0-100-45-100-100V287c0-19 8-38 21-51l128-126c15-24 30-38 59-38Z"/>
-  <rect x="380" y="124" width="264" height="68" rx="34" fill="#0FACED"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <path fill="#0FACED" d="M512 516c-88 0-177 112-177 205 0 70 53 111 115 82 39-19 85-19 124 0 62 29 115-12 115-82 0-93-89-205-177-205Z"/>
   <ellipse cx="329" cy="431" rx="66" ry="87" transform="rotate(-28 329 431)" fill="#0FACED"/>
   <ellipse cx="453" cy="364" rx="64" ry="89" transform="rotate(-8 453 364)" fill="#0FACED"/>

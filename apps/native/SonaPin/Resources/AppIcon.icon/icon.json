@@ -6,8 +6,12 @@
     {
       "layers" : [
         {
-          "image-name" : "paw-badge.svg",
-          "name" : "Paw Badge"
+          "image-name" : "paw-print.svg",
+          "name" : "Paw Print"
+        },
+        {
+          "image-name" : "badge-body.svg",
+          "name" : "Badge Body"
         },
         {
           "image-name" : "background.png",

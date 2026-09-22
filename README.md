@@ -1,6 +1,6 @@
 # SonaPin - Your Fursona Badge, Alive
 
-![SonaPin paw badge](assets/brand/sonapin-badge.svg)
+![SonaPin badge logo](assets/brand/sonapin-badge.svg)
 
 SonaPin turns an iPhone into an interactive fursona badge for conventions,
 meetups, and everyday introductions. It combines an expressive 3D avatar,
