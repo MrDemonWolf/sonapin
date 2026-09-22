@@ -93,6 +93,38 @@ final class SonaPinUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
     }
 
+    func testImmersiveAvatarRespondsToPhysicalTouchWithReducedMotion() {
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))
+
+        advanceOnboarding()
+        XCTAssertTrue(app.buttons["avatar.use-demo"].waitForExistence(timeout: 3))
+        app.buttons["avatar.use-demo"].tap()
+        advanceOnboarding()
+        enterIdentity()
+        advanceOnboarding()
+        enterQRPayload()
+        advanceOnboarding()
+        app.buttons["onboarding.finish"].tap()
+
+        XCTAssertTrue(app.buttons["badge.full-screen"].waitForExistence(timeout: 10))
+        tapWhenHittable(app.buttons["badge.full-screen"])
+        let avatarStage = element("badge.full-screen.avatar")
+        XCTAssertTrue(avatarStage.waitForExistence(timeout: 5))
+        let avatarReady = expectation(
+            for: NSPredicate(format: "value == %@", "Ready"),
+            evaluatedWith: avatarStage
+        )
+        wait(for: [avatarReady], timeout: 8)
+
+        avatarStage.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25)).tap()
+        let avatarReacted = expectation(
+            for: NSPredicate(format: "value == %@", "Ready. Reaction 1"),
+            evaluatedWith: avatarStage
+        )
+        wait(for: [avatarReacted], timeout: 5)
+    }
+
     func testOnboardingResumesAtSavedStep() {
         app.launch()
         XCTAssertTrue(app.staticTexts["Step 1 of 5"].waitForExistence(timeout: 8))

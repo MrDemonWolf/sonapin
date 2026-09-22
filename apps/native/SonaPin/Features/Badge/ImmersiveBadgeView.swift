@@ -10,7 +10,7 @@ struct ImmersiveBadgeView: View {
         GeometryReader { proxy in
             let isLandscape = proxy.size.width > proxy.size.height
 
-            ZStack {
+            ZStack(alignment: .topTrailing) {
                 SonaPinBackground(theme: model.snapshot.theme)
 
                 AvatarStageHost(
@@ -38,21 +38,16 @@ struct ImmersiveBadgeView: View {
 
     @ViewBuilder
     private var closeButton: some View {
-        VStack {
-            HStack {
-                Spacer()
-                if #available(iOS 26.0, *) {
-                    dismissButton
-                        .buttonStyle(.glass)
-                        .buttonBorderShape(.circle)
-                } else {
-                    dismissButton
-                        .background(.regularMaterial, in: Circle())
-                }
-            }
-            Spacer()
+        if #available(iOS 26.0, *) {
+            dismissButton
+                .buttonStyle(.glass)
+                .buttonBorderShape(.circle)
+                .padding()
+        } else {
+            dismissButton
+                .background(.regularMaterial, in: Circle())
+                .padding()
         }
-        .padding()
     }
 
     private var dismissButton: some View {

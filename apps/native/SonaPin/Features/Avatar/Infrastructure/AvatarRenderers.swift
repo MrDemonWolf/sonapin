@@ -555,7 +555,13 @@ final class VRMKitAvatarRenderer: AvatarRendering {
                 available.first { $0.name.caseInsensitiveCompare(fallback) == .orderedSame }
             }
         guard let selected else { return }
-        avatarEntity.setExpression(value: CGFloat(weight), for: selected.key)
+        avatarEntity.setExpressions(
+            Dictionary(
+                uniqueKeysWithValues: available.map {
+                    ($0.key, $0.key == selected.key ? CGFloat(weight) : .zero)
+                }
+            )
+        )
     }
 
     func play(_ animation: AvatarAnimation, looping: Bool) throws {

@@ -6,19 +6,12 @@ struct AvatarTouchReaction: Equatable {
     let expression: AvatarExpression
     let animation: String
 
-    static func reaction(for entityName: String) -> Self? {
-        switch entityName {
-        case "SonaPinHeadHitTarget":
-            Self(expression: .happy, animation: "boop")
-        case "SonaPinLeftPawHitTarget":
-            Self(expression: .happy, animation: "left-paw")
-        case "SonaPinRightPawHitTarget":
-            Self(expression: .happy, animation: "right-paw")
-        case "SonaPinBodyHitTarget":
-            Self(expression: .surprised, animation: "wiggle")
-        default:
-            nil
-        }
+    static func reaction(tapCount: Int = 0) -> Self {
+        let expressions: [AvatarExpression] = [.surprised, .relaxed, .happy]
+        return Self(
+            expression: expressions[max(0, tapCount) % expressions.count],
+            animation: "reaction"
+        )
     }
 }
 
@@ -81,6 +74,7 @@ struct AvatarStageView: View {
     @State private var zoom: Float = 1
     @State private var restingZoom: Float = 1
     @State private var reactionToken = 0
+    @State private var touchCount = 0
 
     init(
         source: AvatarSource,
@@ -104,6 +98,11 @@ struct AvatarStageView: View {
 
     private var reducesMotion: Bool {
         systemReduceMotion || model.snapshot.preferences.reduceMotion
+    }
+
+    private var accessibilityStatus: String {
+        guard isLoaded else { return loadError == nil ? "Loading" : "Unavailable" }
+        return reactionToken == 0 ? "Ready" : "Ready. Reaction \(reactionToken)"
     }
 
     var body: some View {
@@ -165,16 +164,12 @@ struct AvatarStageView: View {
             }
             .frame(maxWidth: .infinity, minHeight: minimumHeight)
             .contentShape(.rect)
-            .highPriorityGesture(
-                TapGesture(count: 2).onEnded {
-                    resetView()
-                }
-            )
             .simultaneousGesture(
                 TapGesture()
-                    .targetedToAnyEntity()
-                    .onEnded { value in
-                        guard let reaction = AvatarTouchReaction.reaction(for: value.entity.name) else { return }
+                    .onEnded {
+                        guard isLoaded else { return }
+                        let reaction = AvatarTouchReaction.reaction(tapCount: touchCount)
+                        touchCount = (touchCount + 1) % 3
                         react(with: reaction.expression, animation: reaction.animation)
                     }
             )
@@ -211,11 +206,11 @@ struct AvatarStageView: View {
                     }
             )
             .accessibilityLabel("Interactive avatar")
-            .accessibilityValue(isLoaded ? "Ready" : loadError == nil ? "Loading" : "Unavailable")
+            .accessibilityValue(accessibilityStatus)
             .accessibilityHint(
                 showsControls
-                    ? "Double tap for a friendly reaction. Use the buttons below for accessible avatar controls."
-                    : "Double-tap to react. More actions include Reset Avatar."
+                    ? "Tap the avatar to change its expression. Use the buttons below for accessible avatar controls."
+                    : "Tap the avatar to change its expression. More actions include Reset Avatar."
             )
             .accessibilityIdentifier(showsControls ? "avatar.stage" : "badge.full-screen.avatar")
             .accessibilityAction(.default) {
@@ -319,6 +314,7 @@ struct AvatarStageView: View {
         restingZoom = 1
         renderer.resetPose()
         renderer.resetCamera()
+        touchCount = 0
         applyTransform()
         reactionToken += 1
     }
