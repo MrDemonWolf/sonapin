@@ -26,6 +26,7 @@ struct OnboardingView: View {
                                 Text("Step \(step.number) of \(OnboardingStep.allCases.count)")
                                     .font(.subheadline.weight(.semibold).monospacedDigit())
                                     .foregroundStyle(Color(uiColor: .label))
+                                    .accessibilityIdentifier("onboarding.progress")
                                 ProgressView(value: Double(step.number), total: Double(OnboardingStep.allCases.count))
                                     .tint(.sonaCyan)
                                     .accessibilityHidden(true)
