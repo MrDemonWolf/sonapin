@@ -27,14 +27,12 @@ function showSelectedScreen() {
   appScreen.src = darkImage ?? image;
   appScreen.alt = darkImage
     ? selected.dataset.altDark ?? alt
-    : theme === "dark" ? `${alt} Captured in light appearance; no dark capture is available for this screen.` : alt;
+    : alt;
 
   const name = selected.textContent?.trim() ?? "Selected screen";
   screenCaption.textContent = darkImage
-    ? `Actual dark-mode capture · ${name} · No QR code is configured in this simulator.`
-    : theme === "dark"
-      ? `Actual light-mode capture · ${name} · No dark capture is available for this screen.`
-      : `Actual SonaPin screen · ${name}`;
+    ? `Actual dark-mode capture · ${name}`
+    : `Actual light-mode capture · ${name}`;
 }
 
 function applyTheme() {

@@ -19,7 +19,7 @@ test("manually switches between genuine app screens and ends on the badge", asyn
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
 
-  await expect(page.getByRole("img", { name: /SonaPin badge screen/i })).toBeVisible();
+  await expect(page.getByRole("img", { name: /SonaPin full-screen badge/i })).toBeVisible();
   const screenshot = page.locator("#app-screen");
   await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
   expect(await screenshot.evaluate((element) => element.clientWidth / element.clientHeight)).toBeLessThan(0.5);
@@ -36,6 +36,15 @@ test("manually switches between genuine app screens and ends on the badge", asyn
   await seeBadge.click();
   await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
   await expect(seeBadge).toHaveAttribute("aria-pressed", "true");
+
+  await page.getByRole("button", { name: "Switch to dark appearance" }).first().click();
+  await chooseAvatar.click();
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-dark\.png$/);
+  await addDetails.click();
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/details-dark\.png$/);
+  await seeBadge.click();
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture-dark\.png$/);
+  await expect(screenshot).toHaveAttribute("alt", /full-screen badge in dark appearance/i);
 });
 
 test("automatically rotates through app screens and can be paused", async ({ page }) => {
@@ -70,7 +79,7 @@ test("defaults to the OS theme and persists a theme choice across docs pages", a
   await page.getByRole("button", { name: "Switch to dark appearance" }).click();
   await expect(root).toHaveAttribute("data-theme", "dark");
   await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture-dark\.png$/);
-  await expect(page.locator("#screen-caption")).toContainText("No QR code is configured in this simulator");
+  await expect(page.locator("#screen-caption")).toContainText("Actual dark-mode capture · See your badge");
   await page.reload();
   await expect(root).toHaveAttribute("data-theme", "dark");
   await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture-dark\.png$/);
@@ -134,7 +143,7 @@ test("keeps the page usable on a narrow phone", async ({ page }) => {
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.locator(".hero-copy .store-button")).toBeVisible();
-  await expect(page.getByRole("img", { name: /SonaPin badge screen/i })).toBeVisible();
+  await expect(page.getByRole("img", { name: /SonaPin full-screen badge/i })).toBeVisible();
   const overflow = await page.evaluate(() => ({
     width: document.documentElement.scrollWidth,
     elements: [...document.querySelectorAll("*")]
