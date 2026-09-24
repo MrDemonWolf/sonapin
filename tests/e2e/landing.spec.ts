@@ -144,3 +144,51 @@ test("keeps the page usable on a narrow phone", async ({ page }) => {
   }));
   expect(overflow.width, JSON.stringify(overflow.elements)).toBeLessThanOrEqual(375);
 });
+
+test("keeps every public page responsive and key controls easy to tap", async ({ page }) => {
+  const routes = ["/", "/docs/", "/guide/", "/support/", "/privacy/", "/terms/", "/acknowledgments/"];
+
+  for (const width of [320, 360, 375, 414, 600, 760, 761, 768, 900]) {
+    await page.setViewportSize({ width, height: 812 });
+    for (const route of routes) {
+      await page.goto(route);
+      const overflow = await page.evaluate(() => ({
+        viewport: innerWidth,
+        document: document.documentElement.scrollWidth,
+        overflowingElements: [...document.querySelectorAll("body *")]
+          .filter((element) => element.getBoundingClientRect().right > innerWidth + 1)
+          .map((element) => element.className || element.tagName)
+          .slice(0, 5),
+      }));
+      expect(overflow.document, `${route} at ${width}px: ${JSON.stringify(overflow.overflowingElements)}`)
+        .toBeLessThanOrEqual(width);
+      if (route === "/acknowledgments/" && width <= 600) {
+        await expect(page.getByText("Scroll horizontally to see all columns.")).toBeVisible();
+      }
+    }
+
+    await page.goto("/");
+    const headerSelector = width <= 760 ? ".theme-toggle, .mobile-menu summary" : ".theme-toggle";
+    const headerTargets = await page.locator(headerSelector).evaluateAll((elements) =>
+      elements.map((element) => element.getBoundingClientRect().height),
+    );
+    expect(headerTargets.every((height) => height >= 44), `${width}px header targets: ${headerTargets}`).toBeTruthy();
+    await expect(page.locator(".hero .actions .button").first()).toHaveCSS("min-height", "48px");
+
+    await page.goto("/guide/");
+    const guideTargets = await page.locator(".guide-toc a").evaluateAll((elements) =>
+      elements.map((element) => element.getBoundingClientRect().height),
+    );
+    expect(guideTargets.every((height) => height >= 44), `${width}px guide targets: ${guideTargets}`).toBeTruthy();
+
+    for (const route of ["/privacy/", "/terms/"]) {
+      await page.goto(route);
+      await page.locator(".policy-toc summary").click();
+      const sectionTargets = await page.locator(".policy-toc nav a").evaluateAll((elements) =>
+        elements.map((element) => element.getBoundingClientRect().height),
+      );
+      expect(sectionTargets.every((height) => height >= 44), `${route} at ${width}px targets: ${sectionTargets}`)
+        .toBeTruthy();
+    }
+  }
+});

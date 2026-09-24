@@ -7,10 +7,12 @@
 - The previous hero led with a disabled App Store action and sent interested visitors to GitHub instead of showing a clear next step.
 - The website had a setup guide but no documentation index, and the guide explained visual app flows without showing the app screens.
 - Long privacy and terms pages had no in-page navigation.
+- A deeper responsive pass found the acknowledgments table could widen a narrow page and a few small controls fell short of the recommended touch size.
 - The homepage now has an active “Explore the badge” route and a docs hub. The guide includes actual app screenshots; policy pages have compact section links.
+- The acknowledgments table is contained in a labeled horizontal-scroll region, key controls meet the 44px target, and all public pages pass the phone and breakpoint width matrix.
 - The visual system uses quiet editorial typography, restrained navy/cyan, simple card surfaces, and fewer decorative gradients. Product and legal facts remain unchanged.
 
-**Findings:** 🟥 0 catastrophic · 🟧 0 major · 🟨 3 minor (resolved) · ⬜ 0 cosmetic
+**Findings:** 🟥 0 catastrophic · 🟧 0 major · 🟨 4 minor (resolved) · ⬜ 0 cosmetic
 
 ## Findings
 
@@ -46,8 +48,19 @@
 - **Evidence:** NN/g finds that scannable headings and concise navigation help people find information on the web ([How Users Read on the Web](https://www.nngroup.com/articles/how-users-read-on-the-web/); [Scrolling and Attention](https://www.nngroup.com/articles/scrolling-and-attention/)).
 - **Fix:**
   - [x] Add collapsed, native section jump lists with descriptive labels; the legal wording is unchanged.
-  - [x] Keep anchor targets clear of the sticky header when reached.
-  - [x] Add E2E checks for policy-link counts and direct navigation.
+- [x] Keep anchor targets clear of the sticky header when reached.
+- [x] Add E2E checks for policy-link counts and direct navigation.
+
+#### 4. Some mobile targets were undersized and a data table widened the page
+
+- **What:** The theme and screen-rotation controls were 40–42px tall, guide and policy jump links were about 40px tall, and the three-column acknowledgments table extended past a 320px viewport.
+- **Where:** Mobile header, homepage screen controls, app-guide and policy jump links, and `/acknowledgments/`.
+- **Guideline:** Touch targets should be easy to hit, and narrow screens should not require horizontal scrolling of the whole page. Data tables may scroll in their own clearly labeled region when they cannot fit legibly.
+- **Evidence:** NN/g recommends adequately sized touchscreen targets ([Touch Targets on Touchscreens](https://www.nngroup.com/articles/touch-target-size/)). The issue was reproduced at a 320px viewport and checked across the site.
+- **Fix:**
+  - [x] Set theme, rotation, guide, and policy targets to at least 44px; keep the main CTA at 48px.
+  - [x] Put the wide table in a named, keyboard-focusable horizontal-scroll region and show a scroll hint on phones.
+  - [x] Test all public pages at 320, 360, 375, 414, 600, 760, 761, 768, and 900px.
 
 ## Unverified (needs a different input to check)
 
@@ -60,7 +73,7 @@
 - The landing page states the product’s purpose early and keeps the App Store status honest.
 - Real app screens now demonstrate the avatar, profile, and badge experience instead of using a decorative mock interface.
 - The site keeps a visible Docs route, a separate theme control, keyboard focus styles, reduced-motion handling, and the existing dark/light screenshot pairing.
-- On the 375 × 812 phone viewport, the page has one H1, 16px body text with 1.6 line height, a 44px Menu control, and no horizontal overflow. The main CTA is visible before the device preview.
+- At phone widths from 320–414px, every public page stays within the viewport; the site also passes at 600–900px around its responsive navigation and layout breakpoints. The landing page has one H1, 16px body text with 1.6 line height, touch-sized controls, and an above-the-fold main CTA.
 - The information architecture uses the direct product navigation and concise value proposition seen on [ConPaws](https://conpaws.com/) and [WolfWave](https://mrdemonwolf.github.io/wolfwave/) as references, without copying either site’s full layout.
 
 ## Quick wins
@@ -69,4 +82,5 @@
 - [x] Add a dedicated docs index and link it from the homepage, navigation, and supporting pages.
 - [x] Add screenshots and captions to the setup guide.
 - [x] Add jump navigation to the long legal pages without changing their wording.
-- [x] Run the responsive and docs-flow E2E suite after updating its landing-page assertions.
+- [x] Contain wide tabular content and meet the minimum touch size for key controls.
+- [x] Run the responsive and docs-flow E2E suite across phone and breakpoint widths.

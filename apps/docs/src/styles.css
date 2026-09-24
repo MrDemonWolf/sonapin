@@ -318,8 +318,8 @@ h3 {
 
 .screen-rotation-toggle {
   display: inline-grid;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   place-items: center;
   border: 1px solid var(--border);
   border-radius: 50%;
@@ -377,7 +377,7 @@ h3 {
 .prose.guide-content { padding-top: 0.5rem; }
 .prose.guide-content h2 { margin-top: 1.25rem; margin-bottom: 0.6rem; }
 .guide-toc { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2rem; }
-.guide-toc a { padding: 0.45rem 0.7rem; border: 1px solid var(--border); border-radius: 999px; text-decoration: none; }
+.guide-toc a { display: inline-flex; min-height: 44px; align-items: center; padding: 0.45rem 0.7rem; border: 1px solid var(--border); border-radius: 999px; text-decoration: none; }
 .guide-note { margin-top: 2.5rem; padding: 1rem; border-left: 3px solid var(--cyan); background: var(--card); color: var(--muted); }
 
 .guide-shot { margin: 1.5rem 0 2.5rem; padding: 1rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
@@ -492,7 +492,7 @@ ul.footer-links {
 .policy-toc { margin: 0 0 2rem; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 0.8rem; background: var(--card); }
 .policy-toc summary { min-height: 44px; display: flex; align-items: center; color: var(--ink); font-weight: 700; cursor: pointer; }
 .policy-toc nav { display: flex; flex-wrap: wrap; gap: 0.45rem; padding-top: 0.75rem; }
-.policy-toc nav a { min-height: 40px; display: inline-flex; align-items: center; padding: 0.4rem 0.65rem; border: 1px solid var(--border); border-radius: 999px; font-size: 0.9rem; text-decoration: none; }
+.policy-toc nav a { min-height: 44px; display: inline-flex; align-items: center; padding: 0.4rem 0.65rem; border: 1px solid var(--border); border-radius: 999px; font-size: 0.9rem; text-decoration: none; }
 
 .prose li + li {
   margin-top: 0.5rem;
@@ -506,6 +506,11 @@ ul.footer-links {
   border-collapse: collapse;
   border-radius: 1rem;
 }
+
+.table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+.table-scroll:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+.ack-table--wide { min-width: 560px; }
+.table-hint { display: none; }
 
 .ack-table th,
 .ack-table td {
@@ -608,9 +613,9 @@ ul.footer-links {
    editorial rhythm and WolfWave-style clear product copy. */
 .theme-toggle {
   display: inline-grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
   place-items: center;
   border: 1px solid var(--border);
   border-radius: 50%;
@@ -848,9 +853,10 @@ ul.footer-links {
 }
 
 @media (max-width: 600px) {
+  .table-hint { display: block; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.9rem; }
   .nav-wrap { gap: 0.75rem; }
   .site-nav { gap: 0.5rem; }
-  .theme-toggle { width: 40px; height: 40px; flex-basis: 40px; }
+  .theme-toggle { width: 44px; height: 44px; flex-basis: 44px; }
   .guide-card { align-items: flex-start; flex-direction: column; }
   .guide-card .button { width: 100%; justify-content: center; }
   .hero { padding-top: 2.5rem; }
