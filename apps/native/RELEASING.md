@@ -2,17 +2,17 @@
 
 SonaPin 1.0 is released as an open-source app project. TestFlight distribution uses local Xcode archives and Apple's Transporter app, matching the ConPaws release path. Builds use bundle identifier `com.mrdemonwolf.sonapin` and Apple team `HBB7T99U79`.
 
-On 2026-09-22, Xcode 27 exported a 7.1 MB App Store Connect IPA for version 1.0.0, build 8. Its embedded store provisioning profile has `get-task-allow = false`, and the privacy manifest is present. Upload and App Store Connect processing have not been verified.
+On 2026-09-22, Xcode 27 exported a 7.1 MB App Store Connect IPA for version 1.0.0, build 8. Its embedded store provisioning profile has `get-task-allow = false`, and the privacy manifest is present. App Store Connect separately shows version 1.0.0 build 206 uploaded on 2026-08-31; its availability to the current tester group still needs verification.
 
 ## One-time App Store Connect setup
 
 - App name: `SonaPin`
 - Primary language: `English (U.S.)`
 - Bundle ID: `com.mrdemonwolf.sonapin`
-- SKU: `sonapin-ios`
+- SKU: `MDW-SonaPin`
 - User access: Full Access
-- Internal TestFlight group: `SonaPin Internal`
-- Feedback email: `hello@mrdemonwolf.com`
+- Internal TestFlight group observed: `PB Private Beta`
+- Feedback email: Not set as of 2026-09-24
 
 Use the listing, beta copy, URLs, and screenshot plan in `../../docs/APP_STORE_LISTING.md`. Use the reviewer walkthrough in `../../docs/APP_REVIEW_NOTES.md`.
 
@@ -23,7 +23,7 @@ Use the listing, beta copy, URLs, and screenshot plan in `../../docs/APP_STORE_L
 3. Run `make export` from the repository root.
 4. Confirm `artifacts/release/export/SonaPin.ipa` exists.
 5. Open Transporter, sign in with an App Store Connect account, add the IPA, and select Deliver.
-6. Wait for processing, then confirm the build appears in `SonaPin Internal` in TestFlight.
+6. Wait for processing, then confirm the build appears in `PB Private Beta` in TestFlight. Use a build number higher than the last uploaded build, 206.
 
 The first archive may ask Xcode to create or download an Apple Distribution certificate and provisioning profile. Signing credentials stay in the developer account and Keychain; never commit certificates, profiles, API keys, or passwords.
 

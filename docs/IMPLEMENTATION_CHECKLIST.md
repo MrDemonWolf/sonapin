@@ -1,6 +1,6 @@
 # SonaPin 1.0 release checklist
 
-SonaPin is a released open-source iOS project. Store distribution is a separate gate. This list records verified work as of 2026-09-22.
+SonaPin is a released open-source iOS project with a TestFlight build. Public App Store distribution is a separate gate. This list records verified work as of 2026-09-24.
 
 ## Product
 
@@ -21,9 +21,12 @@ SonaPin is a released open-source iOS project. Store distribution is a separate 
 ## TestFlight gate
 
 - [x] Xcode 27 exported version 1.0.0 build 8 as an App Store Connect IPA; store profile and privacy manifest inspected.
-- [ ] Confirm App Store Connect app record, bundle ID, privacy answers, and internal tester group.
+- [x] Confirm App Store Connect app record and bundle ID; version 1.0 is Prepare for Submission.
+- [ ] Confirm App Privacy, Content Rights, age rating, and internal tester group assignment.
 - [ ] Complete every physical-iPhone check in [DEVICE_TEST_CHECKLIST.md](DEVICE_TEST_CHECKLIST.md).
 - [x] Deployed support and privacy URLs opened successfully on 2026-09-22.
-- [ ] Upload an IPA with a unique build number and confirm it processes in TestFlight.
+- [x] Confirm an uploaded TestFlight build: 1.0.0 build 206 appeared in App Store Connect on 2026-08-31.
+- [x] Upload five iPhone screenshots and save updated App Store listing copy.
+- [ ] Upload the prepared 13-inch iPad screenshot.
 
 Simulator results do not clear the physical-device or App Store Connect gates.

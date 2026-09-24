@@ -10,7 +10,7 @@ SonaPin is a released open-source iPhone and iPad app project that turns your de
 
 - Start with the built-in demo wolf or import a compatible VRM avatar from Files.
 - Tap and move the avatar to trigger reactions.
-- Add a display name, pronouns, short bio, and QR destination.
+- Add a display name, pronouns, species, tagline, and QR destination.
 - Show a high-contrast QR code in badge mode.
 - Adjust motion, haptics, contrast, and screen-awake behavior.
 - Delete all locally stored profile and avatar data from Settings.
@@ -19,7 +19,9 @@ No account, ads, analytics, tracking, or backend.
 
 ## Get SonaPin
 
-The source release is available here. An App Store or public TestFlight link will be added after App Store Connect processing and physical-device checks pass. See the [release guide](apps/native/RELEASING.md) for the current route to TestFlight.
+The source release is available here, and a 1.0.0 build has already reached TestFlight. A public App Store link is not available yet. See the [release guide](apps/native/RELEASING.md) for the current distribution status.
+
+The [App Store listing copy and screenshots](docs/APP_STORE_LISTING.md) are in this repository.
 
 ## Run it locally
 
@@ -56,8 +58,8 @@ GitHub Actions runs native build, lint, unit and UI tests, plus browser tests on
 | Source app | Released as version 1.0.0 |
 | Website | Public landing and support pages in this repository |
 | Automated checks | Simulator build, Swift tests, iOS UI tests, browser tests |
-| TestFlight | Signed 1.0.0 build 8 IPA exported; upload, processing, and physical-device sign-off pending |
-| App Store | No public listing link confirmed |
+| TestFlight | 1.0.0 build 206 observed in App Store Connect; tester group assignment and physical-device sign-off need verification |
+| App Store | Version 1.0 is Prepare for Submission; five iPhone screenshots and updated listing copy are saved, with the iPad screenshot ready to upload |
 
 See the [device release gate](docs/DEVICE_TEST_CHECKLIST.md) and [App Review notes](docs/APP_REVIEW_NOTES.md). Simulator tests cannot confirm real-world VRM rendering, haptics, QR scanning, battery use, or signing.
 
