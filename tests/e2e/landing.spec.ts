@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
 
-test("shows an honest iOS placeholder and a working source link", async ({ page }) => {
+test("shows TestFlight release status and a working source link", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your sona");
   await expect(page.getByRole("link", { name: /Explore the badge/i })).toHaveAttribute("href", "#features");
-  await expect(page.getByRole("button", { name: /Get iOS app/i })).toHaveCount(2);
-  for (const button of await page.getByRole("button", { name: /Get iOS app/i }).all()) {
+  await expect(page.getByRole("button", { name: /TestFlight release active/i })).toHaveCount(2);
+  for (const button of await page.getByRole("button", { name: /TestFlight release active/i }).all()) {
     await expect(button).toBeDisabled();
   }
   await expect(page.getByRole("link", { name: /View source on GitHub/i }).first()).toHaveAttribute(
