@@ -18,6 +18,7 @@
 		3156126DEE634D1D1253D62B /* SonaPinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */; };
 		34E9D965B763E7C49BC5F312 /* ImmersiveBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B056EE47F01251918444809B /* ImmersiveBadgeView.swift */; };
 		582A39E707CC1024306E0846 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */; };
+		5CD65F6D2779B5C04048D5CD /* AppIconDev.icon in Resources */ = {isa = PBXBuildFile; fileRef = 6136C187C183A7BBAFF4728C /* AppIconDev.icon */; };
 		621502CADEEFB4DBDB8BC362 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D567D2D232B896C799B26A61 /* AppRootView.swift */; };
 		654C9C0E9AEB4E7E034F8FC6 /* SonaPinStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30984E3996934D67DA8024B /* SonaPinStyle.swift */; };
 		677034CB593C3192BF6EB582 /* SonaPinCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B43D0688699DC13F1FF2082 /* SonaPinCoreTests.swift */; };
@@ -72,6 +73,7 @@
 		59BA65DE2D2FDD3F88CD8595 /* VRMImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VRMImportService.swift; sourceTree = "<group>"; };
 		5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5FC3879C16E0F1017BDFBB8E /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		6136C187C183A7BBAFF4728C /* AppIconDev.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIconDev.icon; sourceTree = "<group>"; };
 		63221C67F690A90676A38C95 /* AvatarStageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStageView.swift; sourceTree = "<group>"; };
 		6852DD19055F9D638AB64EFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				1432D7DFB5C8965B1633EE83 /* AppIcon.icon */,
+				6136C187C183A7BBAFF4728C /* AppIconDev.icon */,
 				6852DD19055F9D638AB64EFB /* Assets.xcassets */,
 				69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */,
 				5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */,
@@ -442,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EB0D986AE36AA6AE3070A57 /* AppIcon.icon in Resources */,
+				5CD65F6D2779B5C04048D5CD /* AppIconDev.icon in Resources */,
 				E7755CFFF0E8255BEE079B58 /* Assets.xcassets in Resources */,
 				B63557950A703D6003E272F1 /* Localizable.xcstrings in Resources */,
 				582A39E707CC1024306E0846 /* PrivacyInfo.xcprivacy in Resources */,
