@@ -2,6 +2,8 @@
 
 SonaPin 1.0 is released as an open-source app project. TestFlight distribution uses local Xcode archives and Apple's Transporter app, matching the ConPaws release path. Builds use bundle identifier `com.mrdemonwolf.sonapin` and Apple team `HBB7T99U79`.
 
+Debug builds install as **SonaPin Dev** with bundle ID `com.mrdemonwolf.sonapin.dev` and an IconWolf-generated DEV icon. Release archives keep the original SonaPin icon and `com.mrdemonwolf.sonapin` bundle ID. TestFlight and the public App Store app therefore share one installation, while the development app can sit beside them.
+
 On 2026-09-22, Xcode 27 exported a 7.1 MB App Store Connect IPA for version 1.0.0, build 8. Its embedded store provisioning profile has `get-task-allow = false`, and the privacy manifest is present. App Store Connect shows version 1.0.0 build 1 testing in the Private Beta group, installed on an iPhone 14 Pro Max on 2026-09-22.
 
 ## One-time App Store Connect setup
