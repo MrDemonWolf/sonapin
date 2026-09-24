@@ -8,14 +8,14 @@
     <title>SonaPin — Your sona. Your badge. Alive.</title>
     <link rel="icon" href="__BASE_PATH__brand/sonapin-badge.svg" type="image/svg+xml">
     <link rel="stylesheet" href="__BASE_PATH__styles.css">
-    <script type="module" src="__BASE_PATH__moods.js"></script>
+    <script type="module" src="__BASE_PATH__site.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <nav class="nav-wrap" aria-label="Primary navigation">
         <a class="brand" href="__BASE_PATH__"><img src="__BASE_PATH__brand/sonapin-badge.svg" alt="" width="44" height="44"><span>SonaPin</span></a>
-        <div class="site-nav"><a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="__BASE_PATH__support/">Support</a><button class="nav-cta store-button" type="button" disabled>Get iOS app · Soon</button></div>
+        <div class="site-nav"><a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="__BASE_PATH__support/">Support</a><button class="nav-cta store-button" type="button" disabled>Get iOS app · Soon</button><button class="theme-toggle" type="button" aria-label="Switch to light appearance">☼ Light</button></div>
       </nav>
     </header>
 
@@ -32,19 +32,17 @@
         </div>
         <div class="hero-stage">
           <div class="badge-demo">
-            <button id="mood-badge" class="digital-badge" type="button" data-mood="bright" aria-label="SonaPin badge, Bright mood. Tap to react." aria-describedby="mood-instructions">
-              <span class="digital-badge__camera" aria-hidden="true"></span>
+            <div class="digital-badge">
               <span class="digital-badge__volume" aria-hidden="true"></span>
               <span class="digital-badge__power" aria-hidden="true"></span>
-              <span class="digital-badge__screen">
-                <span class="badge-topline"><span>SONAPIN / 001</span><span class="badge-live">● LIVE</span></span>
-                <span class="mood-glow" aria-hidden="true"></span>
-                <span class="paw-character" aria-hidden="true"><img src="__BASE_PATH__brand/sonapin-badge.svg" alt="" width="260" height="260"></span>
-                <span class="badge-identity"><strong>Nova Wolf</strong><span>they / them · your new con friend</span></span>
-                <span class="badge-bottomline"><span id="mood-label" aria-live="polite">Bright</span><span>Tap to react ✦</span></span>
-              </span>
-            </button>
-            <p id="mood-instructions">Tap the badge to see it react. Illustrative preview.</p>
+              <img id="app-screen" class="digital-badge__screen" src="__BASE_PATH__screenshots/badge-capture.png" alt="SonaPin badge screen showing the built-in blue wolf avatar, the name Nova, and a QR code linking to the public SonaPin website." width="1206" height="2622">
+            </div>
+            <p id="screen-caption" aria-live="polite">Actual SonaPin screen · See your badge</p>
+            <div class="screen-picker" role="group" aria-label="Choose an app screen">
+              <button type="button" data-image="__BASE_PATH__screenshots/avatar.png" data-alt="SonaPin avatar screen showing built-in blue wolf support and VRM import." aria-pressed="false">Choose avatar</button>
+              <button type="button" data-image="__BASE_PATH__screenshots/details.jpg" data-alt="SonaPin profile editor showing the demo name Nova and optional pronouns." aria-pressed="false">Add details</button>
+              <button type="button" data-image="__BASE_PATH__screenshots/badge-capture.png" data-alt="SonaPin badge screen showing the built-in blue wolf avatar, the name Nova, and a QR code linking to the public SonaPin website." data-image-dark="__BASE_PATH__screenshots/badge-capture-dark.png" data-alt-dark="SonaPin badge screen in dark appearance showing the built-in blue wolf avatar, the name Nova, and a No QR code yet message." aria-pressed="true">See your badge</button>
+            </div>
           </div>
         </div>
       </section>
