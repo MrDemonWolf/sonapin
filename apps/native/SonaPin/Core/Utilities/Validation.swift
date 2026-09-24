@@ -28,7 +28,7 @@ enum ValidationError: Error, Equatable, LocalizedError, Sendable {
 
 enum ProfileValidator {
     private static let limits = [
-        "Display name": 80,
+        "Badge name": 80,
         "Pronouns": 80,
         "Species": 80,
         "Tagline": 140,
@@ -43,11 +43,11 @@ enum ProfileValidator {
         )
 
         guard !value.displayName.isEmpty else {
-            throw ValidationError.required(field: "Display name")
+            throw ValidationError.required(field: "Badge name")
         }
 
         for (field, text) in [
-            ("Display name", value.displayName),
+            ("Badge name", value.displayName),
             ("Pronouns", value.pronouns),
             ("Species", value.species),
             ("Tagline", value.tagline),

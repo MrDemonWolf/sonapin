@@ -79,7 +79,7 @@ struct AvatarStageHost: View {
     let model: AppModel
     var showsControls = true
     var minimumHeight: CGFloat = 280
-    var stageAccessibilityIdentifier: String?
+    var stageAccessibilityIdentifier: String? = nil
 
     @State private var importedURL: URL?
 

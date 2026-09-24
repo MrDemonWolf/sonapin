@@ -321,7 +321,7 @@ struct ProfileFields: View {
                         .submitLabel(.done)
                         .focused($focusedField, equals: .displayName)
                         .onSubmit { focusedField = nil }
-                        .accessibilityLabel("Display name")
+                        .accessibilityLabel("Badge name")
                         .accessibilityHint("Required. Up to 80 characters.")
                         .accessibilityIdentifier("profile.display-name")
                 }

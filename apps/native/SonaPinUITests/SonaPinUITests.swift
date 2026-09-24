@@ -63,7 +63,7 @@ final class SonaPinUITests: XCTestCase {
 
         app.buttons["onboarding.next"].tap()
 
-        XCTAssertTrue(app.staticTexts["Display name is required."].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Badge name is required."].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Step 2 of 3"].exists)
     }
 
