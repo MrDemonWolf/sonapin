@@ -25,9 +25,12 @@ Verify the deployed URLs again before App Review submission.
 - **User access:** Full Access
 - **Copyright:** `2026 MrDemonWolf, Inc.`
 - **Price:** Free
-- **TestFlight internal group:** PB Private Beta (build assignment still needs verification)
+- **TestFlight internal group:** PB Private Beta; build 1 testing with one installed internal tester
 - **Feedback email:** Not set in App Store Connect as of 2026-09-24
-- **Latest observed TestFlight upload:** 1.0.0 build 206, uploaded 2026-08-31
+- **Latest observed TestFlight upload:** 1.0.0 build 1, uploaded 2026-09-22
+- **Age rating:** 4+ calculated and saved in App Store Connect on 2026-09-24
+- **App Privacy:** Privacy policy URL saved. The older “Data Not Collected” draft must be replaced before releasing a Sentry-enabled build. Sentry's SDK manifest lists crash data, performance data, and other diagnostic data for app functionality, not linked to the user and not used for tracking.
+- **Content Rights:** Declaration pending owner confirmation of rights for imported VRM content
 
 ## TestFlight beta information
 
@@ -75,13 +78,13 @@ Five screenshots captured from the iPhone 18 Pro simulator were uploaded to the 
 4. `04_Everywhere.png` — Avatar import.
 5. `05_Engaging.png` — Settings and on-device privacy.
 
-The cleaned upload files are in `assets/app-store/`. `06_iPad_Badge.png` is a real 13-inch iPad Pro simulator capture at 2064 × 2752, prepared but **not uploaded** as of 2026-09-24. The QR points to the public SonaPin site, not a personal contact.
+The cleaned upload files are in `assets/app-store/`. `06_iPad_Badge.png` is a real 13-inch iPad Pro simulator capture at 2064 × 2752 and was uploaded on 2026-09-24. The QR points to the public SonaPin site, not a personal contact.
 
 ## Age-rating notes
 
 - Version 1 includes no developer-provided violence, sexual content, gambling, substances, profanity, advertising, payments, chat, feed, or public user-generated-content system.
 - Users can import files they already possess. Answer App Store Connect's current questionnaire based on the shipped app and sample content; do not assume a rating solely from this draft.
-- The likely result is the lowest general-audience tier if the final binary and supplied assets remain as described, but App Store Connect determines the displayed rating.
+- App Store Connect calculated and saved a 4+ global rating from the version 1 answers on 2026-09-24. Revisit the questionnaire if shipped content or capabilities change.
 
 ## Imported-content acknowledgment
 

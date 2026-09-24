@@ -15,7 +15,7 @@ SonaPin is a released open-source iPhone and iPad app project that turns your de
 - Adjust motion, haptics, contrast, and screen-awake behavior.
 - Delete all locally stored profile and avatar data from Settings.
 
-No account, ads, analytics, tracking, or backend.
+No account, ads, product analytics, tracking, or backend. Newer builds send limited crash and hang diagnostics to Sentry; badge data stays on your device.
 
 ## Get SonaPin
 
@@ -58,8 +58,8 @@ GitHub Actions runs native build, lint, unit and UI tests, plus browser tests on
 | Source app | Released as version 1.0.0 |
 | Website | Public landing and support pages in this repository |
 | Automated checks | Simulator build, Swift tests, iOS UI tests, browser tests |
-| TestFlight | 1.0.0 build 206 observed in App Store Connect; tester group assignment and physical-device sign-off need verification |
-| App Store | Version 1.0 is Prepare for Submission; five iPhone screenshots and updated listing copy are saved, with the iPad screenshot ready to upload |
+| TestFlight | 1.0.0 build 1 is testing in the Private Beta group and installed on an iPhone 14 Pro Max; physical-device sign-off is still open |
+| App Store | Version 1.0 is Prepare for Submission; five iPhone screenshots, one iPad screenshot, listing copy, and a 4+ age rating are saved |
 
 See the [device release gate](docs/DEVICE_TEST_CHECKLIST.md) and [App Review notes](docs/APP_REVIEW_NOTES.md). Simulator tests cannot confirm real-world VRM rendering, haptics, QR scanning, battery use, or signing.
 
@@ -73,7 +73,7 @@ See the [device release gate](docs/DEVICE_TEST_CHECKLIST.md) and [App Review not
 | [docs](docs/) | App Store, privacy, review, and device checklists |
 | [.github/workflows](.github/workflows/) | Pull request checks and Pages deployment |
 
-VRMKit is pinned to 0.10.0. Imported files are checked before the active avatar is replaced. The app is licensed under [GPL-3.0-or-later](LICENSE); dependency notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+VRMKit is pinned to 0.10.0 and Sentry to 9.29.0. Imported files are checked before the active avatar is replaced. The app is licensed under [GPL-3.0-or-later](LICENSE); dependency notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Support
 

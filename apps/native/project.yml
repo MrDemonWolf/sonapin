@@ -8,6 +8,9 @@ options:
   groupSortPosition: top
 
 packages:
+  Sentry:
+    url: https://github.com/getsentry/sentry-cocoa.git
+    exactVersion: 9.29.0
   VRMKit:
     url: https://github.com/tattn/VRMKit.git
     exactVersion: 0.10.0
@@ -35,6 +38,8 @@ targets:
       - path: SonaPin/Resources
         buildPhase: resources
     dependencies:
+      - package: Sentry
+        product: Sentry
       - package: VRMKit
         product: VRMKit
       - package: VRMKit

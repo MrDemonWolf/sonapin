@@ -22,11 +22,12 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 
 - [x] Xcode 27 exported version 1.0.0 build 8 as an App Store Connect IPA; store profile and privacy manifest inspected.
 - [x] Confirm App Store Connect app record and bundle ID; version 1.0 is Prepare for Submission.
-- [ ] Confirm App Privacy, Content Rights, age rating, and internal tester group assignment.
+- [x] Confirm the 4+ age rating and the build 1 assignment to the Private Beta internal group.
+- [ ] Revise App Privacy for the Sentry-enabled build, publish the updated privacy policy, complete Content Rights, and add review contact details.
 - [ ] Complete every physical-iPhone check in [DEVICE_TEST_CHECKLIST.md](DEVICE_TEST_CHECKLIST.md).
 - [x] Deployed support and privacy URLs opened successfully on 2026-09-22.
-- [x] Confirm an uploaded TestFlight build: 1.0.0 build 206 appeared in App Store Connect on 2026-08-31.
+- [x] Confirm an installed TestFlight build: 1.0.0 build 1 is testing in the Private Beta group.
 - [x] Upload five iPhone screenshots and save updated App Store listing copy.
-- [ ] Upload the prepared 13-inch iPad screenshot.
+- [x] Upload the 13-inch iPad screenshot.
 
 Simulator results do not clear the physical-device or App Store Connect gates.
