@@ -4,7 +4,7 @@ test("shows an honest iOS placeholder and a working source link", async ({ page 
   await page.goto("/");
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your sona");
-  await expect(page.getByText("Coming soon to the App Store")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Explore the badge/i })).toHaveAttribute("href", "#features");
   await expect(page.getByRole("button", { name: /Get iOS app/i })).toHaveCount(2);
   for (const button of await page.getByRole("button", { name: /Get iOS app/i }).all()) {
     await expect(button).toBeDisabled();
@@ -107,7 +107,25 @@ test("mobile menu exposes navigation and closes after a link is chosen", async (
 
   await page.goto("/guide/");
   await menu.locator("summary").click();
-  await expect(menu.getByRole("link", { name: "App guide" })).toHaveAttribute("aria-current", "page");
+  await expect(menu.getByRole("link", { name: "Docs" })).toBeVisible();
+});
+
+test("docs hub links to the guide and complete support and policy pages", async ({ page }) => {
+  await page.goto("/docs/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Everything you need");
+  await page.getByRole("link", { name: /Read the app guide/i }).click();
+  await expect(page).toHaveURL(/\/guide\/$/);
+  await expect(page.locator(".guide-shot img")).toHaveCount(3);
+
+  await page.goto("/privacy/");
+  await expect(page.locator(".policy-toc a")).toHaveCount(12);
+  await page.locator(".policy-toc summary").click();
+  await page.locator('.policy-toc a[href="#contact"]').click();
+  await expect(page).toHaveURL(/#contact$/);
+  await expect(page.locator("#contact")).toBeInViewport();
+
+  await page.goto("/terms/");
+  await expect(page.locator(".policy-toc a")).toHaveCount(15);
 });
 
 test("keeps the page usable on a narrow phone", async ({ page }) => {

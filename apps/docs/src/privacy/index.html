@@ -22,7 +22,7 @@
         <nav class="site-nav" aria-label="Primary navigation">
           <ul class="site-nav__links">
             <li><a href="__BASE_PATH__#features">Features</a></li>
-            <li><a class="guide-link" href="__BASE_PATH__guide/">App guide</a></li>
+            <li><a href="__BASE_PATH__docs/">Docs</a></li>
             <li><a href="__BASE_PATH__privacy/" aria-current="page">Privacy</a></li>
             <li><a href="__BASE_PATH__terms/">Terms</a></li>
             <li><a href="__BASE_PATH__support/">Support</a></li>
@@ -33,7 +33,7 @@
             <summary><span class="mobile-menu__icon" aria-hidden="true"></span><span>Menu</span></summary>
             <div class="mobile-menu__panel">
               <a href="__BASE_PATH__#features">Features</a>
-              <a href="__BASE_PATH__guide/">App guide</a>
+              <a href="__BASE_PATH__docs/">Docs</a>
               <a href="__BASE_PATH__support/">Support</a>
               <a href="__BASE_PATH__privacy/" aria-current="page">Privacy</a>
               <a href="__BASE_PATH__terms/">Terms</a>
@@ -54,6 +54,12 @@
       </header>
 
       <article class="prose">
+        <details class="policy-toc">
+          <summary>On this page</summary>
+          <nav aria-label="Privacy policy sections">
+            <a href="#who-we-are">Who we are</a><a href="#local-data">Data on your device</a><a href="#visible-info">Information you make visible</a><a href="#avatar-files">Avatar files</a><a href="#retention">Retention and deletion</a><a href="#website-support">Website and support</a><a href="#providers">Providers and transfers</a><a href="#rights">Privacy rights</a><a href="#children">Children</a><a href="#security">Security</a><a href="#changes">Changes</a><a href="#contact">Contact</a>
+          </nav>
+        </details>
         <div class="policy-summary" role="note" aria-label="Privacy summary">
           <strong>The short version</strong>
           <p>
@@ -61,7 +67,7 @@
           </p>
         </div>
 
-        <h2>1. Who we are</h2>
+        <h2 id="who-we-are">1. Who we are</h2>
         <p>
           SonaPin is operated by MrDemonWolf, Inc., 645 3rd St, Beloit, Wisconsin 53511, United States. For privacy questions or requests, email <a href="mailto:legal@mrdemonwolf.com">legal@mrdemonwolf.com</a>.
         </p>
@@ -69,7 +75,7 @@
           This policy covers the SonaPin iOS app, this documentation website, and information you choose to send to SonaPin support.
         </p>
 
-        <h2>2. Data the app processes on your device</h2>
+        <h2 id="local-data">2. Data the app processes on your device</h2>
         <p>SonaPin processes the following information locally to create and display your badge:</p>
         <table class="ack-table policy-table">
           <thead>
@@ -115,12 +121,12 @@
           MrDemonWolf, Inc. does not receive this on-device badge information, and the app has no automated decision-making or profiling that produces legal or similarly significant effects.
         </p>
 
-        <h2>3. Information you choose to make visible</h2>
+        <h2 id="visible-info">3. Information you choose to make visible</h2>
         <p>
           SonaPin is a digital badge. People nearby can read, scan, photograph, or screenshot the profile and QR information you display. A QR code may contain personal information or lead to a third-party service. Add only information you intend to share. SonaPin cannot revoke copies made by another person or control what a destination website does after someone opens it.
         </p>
 
-        <h2>4. Avatar files and Files providers</h2>
+        <h2 id="avatar-files">4. Avatar files and Files providers</h2>
         <p>
           When you select a VRM, Apple’s document picker gives SonaPin temporary access to that file. SonaPin validates it, makes an app-managed local copy, and releases access to the selected source. Removing an avatar or deleting SonaPin data removes the app-managed copy, not the original file in Files, iCloud Drive, or another provider.
         </p>
@@ -128,7 +134,7 @@
           Your Files provider handles its own storage and may process information under its own privacy policy. SonaPin does not persist access to the source file.
         </p>
 
-        <h2>5. Retention and deletion</h2>
+        <h2 id="retention">5. Retention and deletion</h2>
         <p>
           Local data remains in SonaPin’s Application Support directory until you edit or replace it, remove the imported avatar, choose <strong>Delete All Local Data</strong> in Settings, or uninstall the app. Delete All Local Data removes SonaPin’s saved profile, QR settings, preferences, onboarding state, app-managed avatar, and local recovery or temporary files from the app’s data directory.
         </p>
@@ -139,7 +145,7 @@
           Deleting local app data does not automatically remove a diagnostic report already sent to Sentry. Contact us if you want us to locate or delete a report where possible.
         </p>
 
-        <h2>6. Website and support information</h2>
+        <h2 id="website-support">6. Website and support information</h2>
         <p>
           This static site uses no SonaPin analytics, advertising, account system, contact form, or marketing cookies. GitHub Pages hosts the site and may process request information such as an IP address, browser details, and security logs as an independent controller under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub’s Privacy Statement</a>. MrDemonWolf, Inc. does not receive GitHub’s raw request logs for this site.
         </p>
@@ -147,7 +153,7 @@
           If you email support or legal, we receive the address, message, and any details or attachments you choose to send. We use that information to answer your request, troubleshoot, prevent abuse, and meet legal obligations. Where European privacy law applies, our basis is performance of our agreement or steps you request (Article 6(1)(b)), our legitimate interests in supporting and securing SonaPin (Article 6(1)(f)), or compliance with law (Article 6(1)(c)). Support information is optional, but without an email address and enough detail we may be unable to respond. We normally delete support correspondence 24 months after the last activity unless an active security, dispute, accounting, or legal need requires a longer period.
         </p>
 
-        <h2>7. Providers, sharing, and transfers</h2>
+        <h2 id="providers">7. Providers, sharing, and transfers</h2>
         <ul>
           <li><strong>Apple</strong> independently distributes the app and processes App Store, purchase, crash, backup, or diagnostic information under its policies. TestFlight crash reports are shared with us automatically; App Store diagnostics depend on your sharing choice.</li>
           <li><strong>Sentry</strong> receives crash, hang, and related diagnostic reports from Sentry-enabled builds as our processor. See <a href="https://sentry.io/privacy/">Sentry’s Privacy Policy</a>.</li>
@@ -162,7 +168,7 @@
           MrDemonWolf, Inc. is established in the United States. If applicable law requires us to appoint a representative in another jurisdiction before covered processing begins there, we will publish that representative’s contact details in this policy.
         </p>
 
-        <h2>8. Your privacy rights</h2>
+        <h2 id="rights">8. Your privacy rights</h2>
         <p>
           Because MrDemonWolf, Inc. cannot access data that exists only inside SonaPin on your device, use the app’s edit, remove, and Delete All Local Data controls to manage it. For information we do hold, such as support correspondence, applicable law may give you rights to access, correct, delete, restrict, object, or receive a portable copy. You may also withdraw consent where consent is the processing basis.
         </p>
@@ -170,22 +176,22 @@
           Send requests to <a href="mailto:legal@mrdemonwolf.com">legal@mrdemonwolf.com</a>. We may need to verify your identity before acting. EU and UK residents may complain to their local data-protection authority. California residents may request access, correction, or deletion; we do not sell or share personal information and will not discriminate against anyone for exercising privacy rights.
         </p>
 
-        <h2>9. Children</h2>
+        <h2 id="children">9. Children</h2>
         <p>
           SonaPin is a general-audience app and is not directed specifically to children under 13. The local app does not create accounts or send a child’s badge data to MrDemonWolf, Inc. Anyone who is not old enough to accept these terms or provide consent under local law should use SonaPin only with a parent or guardian. Children under 13 should not email support without a parent or guardian. If we learn that we received a child’s personal information through support, a parent or guardian can contact <a href="mailto:legal@mrdemonwolf.com">legal@mrdemonwolf.com</a> for a verified deletion request.
         </p>
 
-        <h2>10. Security</h2>
+        <h2 id="security">10. Security</h2>
         <p>
           SonaPin stores its working files in the app’s private iOS container and relies on Apple’s app sandbox, device security, and data-protection features. No storage or transmission method is perfectly secure. Protect your device, review what you place in a QR code, and avoid sending sensitive model or QR data in a support email unless it is necessary.
         </p>
 
-        <h2>11. Changes to this policy</h2>
+        <h2 id="changes">11. Changes to this policy</h2>
         <p>
           If SonaPin adds accounts, cloud sync, product analytics, advertising, or another material data practice, this policy and the App Store privacy disclosure will be updated before that version is released. If a change materially reduces your privacy, we will provide a conspicuous in-app notice before it takes effect and request fresh consent where law requires it. Changes apply prospectively. The effective date at the top shows the latest revision.
         </p>
 
-        <h2>12. Contact</h2>
+        <h2 id="contact">12. Contact</h2>
         <address class="contact-card">
           <strong>MrDemonWolf, Inc.</strong><br>
           645 3rd St<br>
@@ -201,6 +207,7 @@
         <p class="footer-credit">© 2026 SonaPin by <a href="https://www.mrdemonwolf.com">MrDemonWolf, Inc.</a></p>
         <ul class="footer-links">
           <li><a href="__BASE_PATH__">Home</a></li>
+          <li><a href="__BASE_PATH__docs/">Docs</a></li>
           <li><a href="__BASE_PATH__guide/">App guide</a></li>
           <li><a href="__BASE_PATH__terms/">Terms</a></li>
           <li><a href="__BASE_PATH__support/">Support</a></li>

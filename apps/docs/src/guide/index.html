@@ -18,7 +18,7 @@
         <nav class="site-nav" aria-label="Primary navigation">
           <ul class="site-nav__links">
             <li><a href="__BASE_PATH__#features">Features</a></li>
-            <li><a class="guide-link" href="__BASE_PATH__guide/" aria-current="page">App guide</a></li>
+            <li><a href="__BASE_PATH__docs/">Docs</a></li>
             <li><a href="__BASE_PATH__support/">Support</a></li>
             <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
           </ul>
@@ -27,7 +27,7 @@
             <summary><span class="mobile-menu__icon" aria-hidden="true"></span><span>Menu</span></summary>
             <div class="mobile-menu__panel">
               <a href="__BASE_PATH__#features">Features</a>
-              <a href="__BASE_PATH__guide/" aria-current="page">App guide</a>
+              <a href="__BASE_PATH__docs/">Docs</a>
               <a href="__BASE_PATH__support/">Support</a>
               <a href="__BASE_PATH__privacy/">Privacy</a>
               <a href="__BASE_PATH__terms/">Terms</a>
@@ -39,6 +39,7 @@
     </header>
     <main id="main">
       <header class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="__BASE_PATH__docs/">Docs</a><span aria-hidden="true">/</span><span aria-current="page">App guide</span></nav>
         <p class="eyebrow">SonaPin App Guide</p>
         <h1>From first tap to your badge.</h1>
         <p>Set up the basics, then make a badge that is ready to share at your next event.</p>
@@ -55,15 +56,18 @@
           <h2>2. Choose an avatar</h2>
           <p>Use the built-in blue wolf or choose a VRM file from Files. SonaPin checks the model and reports compatibility before using it. Only import models you own or have permission to display.</p>
           <p>Your selected avatar is stored in the app on this device. To change it later, open the avatar controls from your badge settings.</p>
+          <figure class="guide-shot"><img src="__BASE_PATH__screenshots/avatar.png" alt="SonaPin’s avatar screen with the built-in blue wolf and avatar choices." width="1206" height="2622" loading="lazy" decoding="async"><figcaption>Start with the built-in wolf or bring a compatible VRM from Files.</figcaption></figure>
         </section>
         <section id="profile">
           <h2>3. Add your details</h2>
           <p>Start with a badge name. Pronouns are optional; species and a short tagline are optional too. Preview the details before saving.</p>
+          <figure class="guide-shot"><img src="__BASE_PATH__screenshots/details.jpg" alt="SonaPin profile editor with the badge name Nova and optional profile details." width="1206" height="2622" loading="lazy" decoding="async"><figcaption>Only add the details you want other people to see.</figcaption></figure>
         </section>
         <section id="badge">
           <h2>4. Set up and share your badge</h2>
           <p>Choose what your QR code contains: a website, social profile, contact card, or custom text. Review the preview, then scan it with a separate phone to make sure it opens what you expect.</p>
-          <p>In Badge Mode, tap the QR code to enlarge it for easier scanning. Use Full Screen for an immersive presentation. Unlock editing in Badge actions to open settings or change your badge.</p>
+          <p>In Badge Mode, tap your avatar to see its reactions. Tap the QR code to enlarge it for easier scanning. Use Full Screen for a larger presentation, and use Badge actions to edit your details.</p>
+          <figure class="guide-shot"><img src="__BASE_PATH__screenshots/badge-capture.png" alt="SonaPin badge with the blue wolf avatar, the name Nova, reaction controls, and a scannable QR code." width="1206" height="2622" loading="lazy" decoding="async"><figcaption>Your badge brings avatar, reactions, profile details, and QR together.</figcaption></figure>
         </section>
         <section id="privacy">
           <h2>Privacy and settings</h2>
@@ -73,6 +77,6 @@
         <p class="guide-note">SonaPin is coming soon to the App Store. Screen names and options may change before release.</p>
       </article>
     </main>
-    <footer class="site-footer"><div class="site-footer__inner"><p class="footer-credit">© 2026 SonaPin by <a href="https://www.mrdemonwolf.com">MrDemonWolf, Inc.</a></p><nav class="footer-links" aria-label="Footer"><a href="__BASE_PATH__">Home</a><a href="__BASE_PATH__support/">Support</a><a href="__BASE_PATH__privacy/">Privacy</a><a href="__BASE_PATH__terms/">Terms</a></nav></div></footer>
+    <footer class="site-footer"><div class="site-footer__inner"><p class="footer-credit">© 2026 SonaPin by <a href="https://www.mrdemonwolf.com">MrDemonWolf, Inc.</a></p><nav class="footer-links" aria-label="Footer"><a href="__BASE_PATH__">Home</a><a href="__BASE_PATH__docs/">Docs</a><a href="__BASE_PATH__support/">Support</a><a href="__BASE_PATH__privacy/">Privacy</a><a href="__BASE_PATH__terms/">Terms</a></nav></div></footer>
   </body>
 </html>

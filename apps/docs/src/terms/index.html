@@ -22,7 +22,7 @@
         <nav class="site-nav" aria-label="Primary navigation">
           <ul class="site-nav__links">
             <li><a href="__BASE_PATH__#features">Features</a></li>
-            <li><a class="guide-link" href="__BASE_PATH__guide/">App guide</a></li>
+            <li><a href="__BASE_PATH__docs/">Docs</a></li>
             <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
             <li><a href="__BASE_PATH__terms/" aria-current="page">Terms</a></li>
             <li><a href="__BASE_PATH__support/">Support</a></li>
@@ -33,7 +33,7 @@
             <summary><span class="mobile-menu__icon" aria-hidden="true"></span><span>Menu</span></summary>
             <div class="mobile-menu__panel">
               <a href="__BASE_PATH__#features">Features</a>
-              <a href="__BASE_PATH__guide/">App guide</a>
+              <a href="__BASE_PATH__docs/">Docs</a>
               <a href="__BASE_PATH__support/">Support</a>
               <a href="__BASE_PATH__privacy/">Privacy</a>
               <a href="__BASE_PATH__terms/" aria-current="page">Terms</a>
@@ -54,6 +54,12 @@
       </header>
 
       <article class="prose">
+        <details class="policy-toc">
+          <summary>On this page</summary>
+          <nav aria-label="Terms sections">
+            <a href="#agreement">Agreement</a><a href="#license">App license</a><a href="#service">Local-first service</a><a href="#content">Your content</a><a href="#use">Acceptable use</a><a href="#privacy">Privacy</a><a href="#third-party">Third-party services</a><a href="#ownership">Ownership</a><a href="#availability">Availability</a><a href="#warranty">Warranties</a><a href="#liability">Liability</a><a href="#ending-use">Ending use</a><a href="#law">Governing law</a><a href="#changes">Changes</a><a href="#contact">Contact</a>
+          </nav>
+        </details>
         <div class="policy-summary" role="note" aria-label="Terms summary">
           <strong>The short version</strong>
           <p>
@@ -61,7 +67,7 @@
           </p>
         </div>
 
-        <h2>1. Agreement</h2>
+        <h2 id="agreement">1. Agreement</h2>
         <p>
           These Terms of Use (the “Terms”) are an agreement between you and MrDemonWolf, Inc. (“MrDemonWolf,” “we,” “us,” or “our”). By downloading, installing, or using SonaPin or this site, you agree to these Terms. If you cannot agree, do not use SonaPin.
         </p>
@@ -69,7 +75,7 @@
           If you use SonaPin for an organization or another person, you confirm that you have authority to accept these Terms for them. If local law does not allow you to agree on your own, a parent or legal guardian must review and accept these Terms.
         </p>
 
-        <h2>2. App license</h2>
+        <h2 id="license">2. App license</h2>
         <p>
           For SonaPin obtained through Apple, MrDemonWolf uses the <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Apple Standard End User License Agreement</a> as the app license. This webpage is not a custom App Store license. These Terms supplement Apple’s license for SonaPin-specific content, conduct, and services. Apple’s license controls if these Terms conflict with it on a matter that license governs.
         </p>
@@ -77,12 +83,12 @@
           SonaPin is licensed, not sold. You may use the official build on Apple-branded products you own or control as permitted by Apple’s usage rules. Open-source components remain governed by their own licenses, listed on the <a href="__BASE_PATH__acknowledgments/">Acknowledgments page</a>.
         </p>
 
-        <h2>3. Local-first service</h2>
+        <h2 id="service">3. Local-first service</h2>
         <p>
           The current SonaPin app has no SonaPin account, cloud profile, social feed, or hosted model gallery. It stores your badge, QR settings, preferences, and imported avatar on your device. Features may change as the app develops, and device or model compatibility is not guaranteed.
         </p>
 
-        <h2>4. Your avatar, profile, and QR content</h2>
+        <h2 id="content">4. Your avatar, profile, and QR content</h2>
         <p>
           You keep any rights you have in content you add. Because the current app does not upload that content to us, you do not grant MrDemonWolf a license to host or publish it.
         </p>
@@ -97,7 +103,7 @@
           SonaPin may display metadata embedded in a VRM file, but that compatibility or license summary is informational. It does not prove ownership, grant permission, or replace reviewing the model’s complete license.
         </p>
 
-        <h2>5. Acceptable use</h2>
+        <h2 id="use">5. Acceptable use</h2>
         <p>Do not use SonaPin to:</p>
         <ul>
           <li>violate intellectual-property, privacy, publicity, or other legal rights;</li>
@@ -107,32 +113,32 @@
           <li>use the app where doing so is unlawful.</li>
         </ul>
 
-        <h2>6. Privacy</h2>
+        <h2 id="privacy">6. Privacy</h2>
         <p>
           The <a href="__BASE_PATH__privacy/">SonaPin Privacy Policy</a> explains local storage, deletion, visible badge information, website hosting, and support messages. You control what goes into your badge and what you expose through the QR code.
         </p>
 
-        <h2>7. Third-party services and content</h2>
+        <h2 id="third-party">7. Third-party services and content</h2>
         <p>
           Apple distributes the app. Files providers supply files you select. QR codes and links may open third-party websites or apps. VRMKit and Apple frameworks help SonaPin render content locally. Those products and destinations have their own terms and privacy practices, and MrDemonWolf does not control them.
         </p>
 
-        <h2>8. Ownership</h2>
+        <h2 id="ownership">8. Ownership</h2>
         <p>
           MrDemonWolf, Inc. and its licensors own SonaPin’s official builds, original interface, documentation, logos, and trademarks, excluding your content and third-party open-source components. These Terms do not grant permission to use SonaPin or MrDemonWolf branding in a way that suggests sponsorship, endorsement, or affiliation.
         </p>
 
-        <h2>9. Availability and changes</h2>
+        <h2 id="availability">9. Availability and changes</h2>
         <p>
           We may improve, change, suspend, or discontinue SonaPin or a feature. You are responsible for keeping the original copy of any imported model. SonaPin is not a backup service.
         </p>
 
-        <h2>10. Disclaimer of warranties</h2>
+        <h2 id="warranty">10. Disclaimer of warranties</h2>
         <p>
           To the maximum extent permitted by law, SonaPin and this site are provided “as is” and “as available,” without warranties of merchantability, fitness for a particular purpose, non-infringement, uninterrupted operation, or compatibility with every device, QR scanner, Files provider, or VRM model. Nothing in these Terms excludes a warranty or consumer right that applicable law does not allow us to exclude.
         </p>
 
-        <h2>11. Limitation of liability</h2>
+        <h2 id="liability">11. Limitation of liability</h2>
         <p>
           To the maximum extent permitted by law, MrDemonWolf, Inc. and its officers, employees, and contributors will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages; loss of data, opportunity, goodwill, or profits; or claims arising from content you choose to display, a third-party destination, or your lack of rights to a model.
         </p>
@@ -140,22 +146,22 @@
           Our total liability for claims relating to SonaPin will not exceed the greater of the amount you paid for SonaPin during the 12 months before the claim or US$50. These limits do not apply to fraud, willful misconduct, gross negligence, death or personal injury caused by negligence, or any liability or consumer right that cannot legally be limited.
         </p>
 
-        <h2>12. Ending use</h2>
+        <h2 id="ending-use">12. Ending use</h2>
         <p>
           You may end this agreement at any time by stopping use and deleting SonaPin. We may stop providing the app or terminate access to any future service if required by law, security, or a material breach of these Terms. Sections that by their nature should survive—including ownership, warranty, liability, and governing-law terms—remain effective.
         </p>
 
-        <h2>13. Governing law</h2>
+        <h2 id="law">13. Governing law</h2>
         <p>
           Wisconsin law governs these Terms, without regard to conflict-of-law rules. Where permitted, disputes will be brought in the state or federal courts serving Rock County, Wisconsin. Mandatory consumer protections and rights in your home jurisdiction still apply.
         </p>
 
-        <h2>14. Changes to these Terms</h2>
+        <h2 id="changes">14. Changes to these Terms</h2>
         <p>
           We may update these Terms as SonaPin changes. Material updates will be posted here with a new effective date and announced through a conspicuous in-app notice before they take effect. Changes apply prospectively. We will request fresh agreement where law requires it; otherwise, continued use after the stated effective date means you accept the revised Terms.
         </p>
 
-        <h2>15. Contact</h2>
+        <h2 id="contact">15. Contact</h2>
         <address class="contact-card">
           <strong>MrDemonWolf, Inc.</strong><br>
           645 3rd St<br>
@@ -171,6 +177,7 @@
         <p class="footer-credit">© 2026 SonaPin by <a href="https://www.mrdemonwolf.com">MrDemonWolf, Inc.</a></p>
         <ul class="footer-links">
           <li><a href="__BASE_PATH__">Home</a></li>
+          <li><a href="__BASE_PATH__docs/">Docs</a></li>
           <li><a href="__BASE_PATH__guide/">App guide</a></li>
           <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
           <li><a href="__BASE_PATH__support/">Support</a></li>
