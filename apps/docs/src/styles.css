@@ -178,7 +178,7 @@ button { font: inherit; }
   gap: 1.25rem;
 }
 
-.site-nav ul { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
+.site-nav__links { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
 
 .site-nav a,
 .footer-links a {
@@ -187,6 +187,8 @@ button { font: inherit; }
   font-weight: 650;
   text-decoration: none;
 }
+
+.site-nav a[aria-current="page"] { color: var(--ink); }
 
 .section {
   padding-block: 6rem;
@@ -551,10 +553,6 @@ ul.footer-links {
 }
 
 @media (max-width: 560px) {
-  .site-nav a:first-child {
-    display: none;
-  }
-
   .section {
     padding-block: 4rem;
   }
@@ -584,13 +582,6 @@ ul.footer-links {
 
 /* Marketing page: an illustrated convention badge with ConPaws-style
    editorial rhythm and WolfWave-style clear product copy. */
-.site-nav .nav-cta {
-  padding: 0.55rem 0.85rem;
-  border: 1px solid var(--cyan);
-  border-radius: 0.5rem;
-  color: var(--brand-color);
-}
-
 .theme-toggle {
   display: inline-grid;
   width: 42px;
@@ -608,12 +599,10 @@ ul.footer-links {
 
 .theme-toggle:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
 
-.site-nav .nav-cta:hover,
 .button--secondary:hover {
   background: rgb(15 172 237 / 14%);
 }
 
-.site-nav .store-button:disabled,
 .store-button:disabled {
   border-color: var(--border);
   background: var(--disabled-bg);
@@ -622,8 +611,45 @@ ul.footer-links {
   cursor: not-allowed;
 }
 
-.site-nav .store-button:disabled { font-size: 0.82rem; font-weight: 700; }
 .guide-link { white-space: nowrap; }
+
+.mobile-menu { position: relative; display: none; }
+.mobile-menu summary {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--button-secondary-bg);
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.mobile-menu summary::-webkit-details-marker { display: none; }
+.mobile-menu summary:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+.mobile-menu__icon::before { content: "☰"; font-size: 1rem; }
+.mobile-menu[open] .mobile-menu__icon::before { content: "×"; font-size: 1.25rem; }
+.mobile-menu__panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  display: grid;
+  width: min(18rem, calc(100vw - 2rem));
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--navy);
+  box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 22%);
+}
+.mobile-menu__panel a { display: flex; min-height: 48px; align-items: center; padding-inline: 0.75rem; border-radius: 0.65rem; }
+.mobile-menu__panel a:hover,
+.mobile-menu__panel a[aria-current="page"] { background: var(--button-secondary-bg); color: var(--ink); }
+.mobile-menu__panel a:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
 
 .store-note {
   margin: 0.65rem 0 0;
@@ -792,13 +818,16 @@ ul.footer-links {
   .footer-links { justify-content: flex-start; }
 }
 
+@media (max-width: 760px) {
+  .site-nav__links,
+  .nav-status { display: none; }
+  .mobile-menu { display: block; }
+}
+
 @media (max-width: 600px) {
   .nav-wrap { gap: 0.75rem; }
   .site-nav { gap: 0.5rem; }
-  .site-nav .store-button:disabled { display: none; }
   .theme-toggle { width: 40px; height: 40px; flex-basis: 40px; }
-  .site-nav a:not(.nav-cta) { display: none; }
-  .site-nav a.guide-link { display: inline-flex; align-items: center; min-height: 40px; }
   .guide-card { align-items: flex-start; flex-direction: column; }
   .guide-card .button { width: 100%; justify-content: center; }
   .hero { padding-top: 2.5rem; }

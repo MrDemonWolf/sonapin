@@ -5,7 +5,7 @@ test("shows an honest iOS placeholder and a working source link", async ({ page 
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your sona");
   await expect(page.getByText("Coming soon to the App Store")).toBeVisible();
-  await expect(page.getByRole("button", { name: /Get iOS app/i })).toHaveCount(3);
+  await expect(page.getByRole("button", { name: /Get iOS app/i })).toHaveCount(2);
   for (const button of await page.getByRole("button", { name: /Get iOS app/i }).all()) {
     await expect(button).toBeDisabled();
   }
@@ -90,6 +90,24 @@ test("keeps support and privacy pages reachable", async ({ page }) => {
 
   await page.goto("/privacy/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+});
+
+test("mobile menu exposes navigation and closes after a link is chosen", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+
+  const menu = page.locator(".mobile-menu");
+  await menu.locator("summary").click();
+  await expect(menu.getByRole("link", { name: "Support" })).toBeVisible();
+  const featuresLink = menu.locator('a[href="#features"]');
+  await expect(featuresLink).toBeVisible();
+  await featuresLink.click();
+  await expect(menu).not.toHaveAttribute("open");
+  await expect(page).toHaveURL(/#features$/);
+
+  await page.goto("/guide/");
+  await menu.locator("summary").click();
+  await expect(menu.getByRole("link", { name: "App guide" })).toHaveAttribute("aria-current", "page");
 });
 
 test("keeps the page usable on a narrow phone", async ({ page }) => {

@@ -15,7 +15,17 @@
     <header class="site-header">
       <nav class="nav-wrap" aria-label="Primary navigation">
         <a class="brand" href="__BASE_PATH__"><img src="__BASE_PATH__brand/sonapin-badge.svg" alt="" width="44" height="44"><span>SonaPin</span></a>
-        <div class="site-nav"><a href="#features">Features</a><a href="#how-it-works">How it works</a><a class="guide-link" href="__BASE_PATH__guide/">App guide</a><a href="__BASE_PATH__support/">Support</a><button class="nav-cta store-button" type="button" disabled>Get iOS app · Soon</button><button class="theme-toggle" type="button" aria-label="Switch to light appearance" title="Switch to light appearance">☀</button></div>
+        <div class="site-nav">
+          <div class="site-nav__links"><a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="__BASE_PATH__guide/">App guide</a><a href="__BASE_PATH__support/">Support</a></div>
+          <span class="nav-status"><span class="status-dot" aria-hidden="true"></span> iOS · Coming soon</span>
+          <button class="theme-toggle" type="button" aria-label="Switch to light appearance" title="Switch to light appearance">☀</button>
+          <details class="mobile-menu">
+            <summary><span class="mobile-menu__icon" aria-hidden="true"></span><span>Menu</span></summary>
+            <div class="mobile-menu__panel">
+              <a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="__BASE_PATH__guide/">App guide</a><a href="__BASE_PATH__support/">Support</a>
+            </div>
+          </details>
+        </div>
       </nav>
     </header>
 

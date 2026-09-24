@@ -20,7 +20,7 @@
           <span>SonaPin</span>
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
-          <ul>
+          <ul class="site-nav__links">
             <li><a href="__BASE_PATH__#features">Features</a></li>
             <li><a class="guide-link" href="__BASE_PATH__guide/">App guide</a></li>
             <li><a href="__BASE_PATH__privacy/" aria-current="page">Privacy</a></li>
@@ -29,6 +29,17 @@
             <li><a href="__BASE_PATH__acknowledgments/">Credits</a></li>
           </ul>
           <button class="theme-toggle" type="button" aria-label="Switch to light appearance" title="Switch to light appearance">☀</button>
+          <details class="mobile-menu">
+            <summary><span class="mobile-menu__icon" aria-hidden="true"></span><span>Menu</span></summary>
+            <div class="mobile-menu__panel">
+              <a href="__BASE_PATH__#features">Features</a>
+              <a href="__BASE_PATH__guide/">App guide</a>
+              <a href="__BASE_PATH__support/">Support</a>
+              <a href="__BASE_PATH__privacy/" aria-current="page">Privacy</a>
+              <a href="__BASE_PATH__terms/">Terms</a>
+              <a href="__BASE_PATH__acknowledgments/">Credits</a>
+            </div>
+          </details>
         </nav>
       </div>
     </header>

@@ -16,13 +16,24 @@
       <div class="nav-wrap">
         <a class="brand" href="__BASE_PATH__" aria-label="SonaPin home"><img src="__BASE_PATH__brand/sonapin-badge.svg" alt="" width="42" height="42"><span>SonaPin</span></a>
         <nav class="site-nav" aria-label="Primary navigation">
-          <ul>
+          <ul class="site-nav__links">
             <li><a href="__BASE_PATH__#features">Features</a></li>
             <li><a class="guide-link" href="__BASE_PATH__guide/" aria-current="page">App guide</a></li>
             <li><a href="__BASE_PATH__support/">Support</a></li>
             <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
           </ul>
           <button class="theme-toggle" type="button" aria-label="Switch to light appearance" title="Switch to light appearance">☀</button>
+          <details class="mobile-menu">
+            <summary><span class="mobile-menu__icon" aria-hidden="true"></span><span>Menu</span></summary>
+            <div class="mobile-menu__panel">
+              <a href="__BASE_PATH__#features">Features</a>
+              <a href="__BASE_PATH__guide/" aria-current="page">App guide</a>
+              <a href="__BASE_PATH__support/">Support</a>
+              <a href="__BASE_PATH__privacy/">Privacy</a>
+              <a href="__BASE_PATH__terms/">Terms</a>
+              <a href="__BASE_PATH__acknowledgments/">Credits</a>
+            </div>
+          </details>
         </nav>
       </div>
     </header>

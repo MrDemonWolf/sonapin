@@ -91,6 +91,11 @@ for (const button of document.querySelectorAll<HTMLButtonElement>(".theme-toggle
   });
 }
 
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
+  event.target.closest(".mobile-menu__panel a")?.closest("details")?.removeAttribute("open");
+});
+
 for (const button of screenButtons) {
   button.addEventListener("click", () => {
     for (const option of document.querySelectorAll<HTMLButtonElement>(".screen-picker button")) {
