@@ -14,7 +14,9 @@ struct SonaPinApp: App {
             options.attachViewHierarchy = false
             options.enableAutoSessionTracking = false
             options.enableAutoBreadcrumbTracking = false
+            options.enableNetworkTracking = false
             options.enableNetworkBreadcrumbs = false
+            options.enableCaptureFailedRequests = false
             options.enableMetrics = false
         }
 #if DEBUG

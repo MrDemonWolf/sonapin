@@ -213,9 +213,11 @@ final class SonaPinUITests: XCTestCase {
 
         let lock = app.buttons["badge.edit-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
-        lock.tap()
+        if lock.label == "Unlock editing" {
+            lock.tap()
+            actions.tap()
+        }
 
-        actions.tap()
         let settings = app.buttons["badge.settings"]
         let settingsEnabled = expectation(
             for: NSPredicate(format: "enabled == true"),
