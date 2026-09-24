@@ -11,6 +11,10 @@ let theme: "light" | "dark" = storedTheme === "light" || storedTheme === "dark"
   : matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 const appScreen = document.querySelector<HTMLImageElement>("#app-screen");
 const screenCaption = document.querySelector<HTMLElement>("#screen-caption");
+const screenButtons = [...document.querySelectorAll<HTMLButtonElement>(".screen-picker [data-image]")];
+const rotationToggle = document.querySelector<HTMLButtonElement>("#screen-rotation-toggle");
+let rotationPaused = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let rotationTimer: number | undefined;
 
 function showSelectedScreen() {
   if (!appScreen || !screenCaption) return;
@@ -41,9 +45,35 @@ function applyTheme() {
   for (const button of document.querySelectorAll<HTMLButtonElement>(".theme-toggle")) {
     const nextTheme = theme === "light" ? "dark" : "light";
     button.setAttribute("aria-label", `Switch to ${nextTheme} appearance`);
-    button.textContent = nextTheme === "light" ? "☼ Light" : "☾ Dark";
+    button.title = `Switch to ${nextTheme} appearance`;
+    button.textContent = nextTheme === "light" ? "☀" : "☾";
   }
   showSelectedScreen();
+}
+
+function stopRotation() {
+  if (rotationTimer !== undefined) window.clearInterval(rotationTimer);
+  rotationTimer = undefined;
+}
+
+function advanceScreen() {
+  const current = screenButtons.findIndex((button) => button.getAttribute("aria-pressed") === "true");
+  screenButtons[(current + 1) % screenButtons.length]?.click();
+}
+
+function startRotation() {
+  stopRotation();
+  if (!rotationPaused && screenButtons.length > 1) rotationTimer = window.setInterval(advanceScreen, 6000);
+}
+
+function updateRotation() {
+  stopRotation();
+  if (!rotationToggle) return;
+
+  rotationToggle.textContent = rotationPaused ? "▶" : "⏸";
+  rotationToggle.setAttribute("aria-label", `${rotationPaused ? "Play" : "Pause"} screen rotation`);
+  rotationToggle.setAttribute("aria-pressed", String(rotationPaused));
+  startRotation();
 }
 
 applyTheme();
@@ -57,14 +87,44 @@ for (const button of document.querySelectorAll<HTMLButtonElement>(".theme-toggle
       // The current page still changes theme when browser storage is unavailable.
     }
     applyTheme();
+    button.title = `Switch to ${theme === "light" ? "dark" : "light"} appearance`;
   });
 }
 
-for (const button of document.querySelectorAll<HTMLButtonElement>(".screen-picker button")) {
+for (const button of screenButtons) {
   button.addEventListener("click", () => {
     for (const option of document.querySelectorAll<HTMLButtonElement>(".screen-picker button")) {
       option.setAttribute("aria-pressed", String(option === button));
     }
     showSelectedScreen();
+    if (rotationTimer !== undefined) startRotation();
   });
 }
+
+rotationToggle?.addEventListener("click", () => {
+  rotationPaused = !rotationPaused;
+  updateRotation();
+});
+
+const screenChooser = document.querySelector<HTMLElement>(".screen-chooser");
+screenChooser?.addEventListener("pointerenter", () => {
+  stopRotation();
+});
+screenChooser?.addEventListener("pointerleave", () => {
+  if (!screenChooser.contains(document.activeElement)) updateRotation();
+});
+screenChooser?.addEventListener("focusin", () => {
+  stopRotation();
+});
+screenChooser?.addEventListener("focusout", (event) => {
+  if (!screenChooser.contains(event.relatedTarget as Node | null)) updateRotation();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopRotation();
+  } else {
+    updateRotation();
+  }
+});
+
+updateRotation();

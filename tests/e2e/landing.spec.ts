@@ -38,6 +38,29 @@ test("manually switches between genuine app screens and ends on the badge", asyn
   await expect(seeBadge).toHaveAttribute("aria-pressed", "true");
 });
 
+test("automatically rotates through app screens and can be paused", async ({ page }) => {
+  await page.clock.install();
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "no-preference" });
+  await page.goto("/");
+
+  const screenshot = page.locator("#app-screen");
+  const rotationToggle = page.getByRole("button", { name: "Pause screen rotation" });
+  await expect(rotationToggle).toHaveAttribute("aria-pressed", "false");
+  await page.clock.fastForward(6000);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+
+  await rotationToggle.click();
+  await expect(page.getByRole("button", { name: "Play screen rotation" })).toHaveAttribute("aria-pressed", "true");
+  await page.clock.fastForward(12000);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Play screen rotation" })).toHaveAttribute("aria-pressed", "true");
+  await page.clock.fastForward(12000);
+  await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+});
+
 test("defaults to the OS theme and persists a theme choice across docs pages", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
@@ -55,6 +78,10 @@ test("defaults to the OS theme and persists a theme choice across docs pages", a
   await page.goto("/support/");
   await expect(root).toHaveAttribute("data-theme", "dark");
   await expect(page.getByRole("button", { name: "Switch to light appearance" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Switch to light appearance" })).toHaveText("☀");
+  await page.goto("/guide/");
+  await expect(page.getByRole("heading", { name: "From first tap to your badge." })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Set up your badge" })).toHaveAttribute("href", "#badge");
 });
 
 test("keeps support and privacy pages reachable", async ({ page }) => {
