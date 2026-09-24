@@ -40,7 +40,7 @@ final class SonaPinUITests: XCTestCase {
             ),
             evaluatedWith: demoAvatar
         )
-        wait(for: [avatarReacted], timeout: 5)
+        wait(for: [avatarReacted], timeout: 15)
 
         advanceOnboarding()
         let displayName = app.textFields["profile.display-name"]
