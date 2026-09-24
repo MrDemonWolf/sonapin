@@ -15,7 +15,7 @@ test("shows a released product page with a working source link", async ({ page }
 test("cycles the badge mood when tapped", async ({ page }) => {
   await page.goto("/");
 
-  const badge = page.getByRole("button", { name: /Cyan paw badge/i });
+  const badge = page.getByRole("button", { name: /SonaPin badge/i });
   await expect(page.getByText("Bright", { exact: true })).toBeVisible();
   await badge.click();
   await expect(page.getByText("Playful", { exact: true })).toBeVisible();
@@ -35,7 +35,7 @@ test("keeps the page usable on a narrow phone", async ({ page }) => {
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByRole("link", { name: /Get SonaPin/i }).first()).toBeVisible();
-  await expect(page.getByRole("button", { name: /Cyan paw badge/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /SonaPin badge/i })).toBeVisible();
   const overflow = await page.evaluate(() => ({
     width: document.documentElement.scrollWidth,
     elements: [...document.querySelectorAll("*")]

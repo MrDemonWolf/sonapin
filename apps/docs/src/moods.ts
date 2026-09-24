@@ -15,6 +15,6 @@ if (badge && label) {
     const mood = moods[index];
     badge.dataset.mood = mood.key;
     label.textContent = mood.label;
-    badge.setAttribute("aria-label", `Cyan paw badge, ${mood.label} mood. Tap to react.`);
+    badge.setAttribute("aria-label", `SonaPin badge, ${mood.label} mood. Tap to react.`);
   });
 }

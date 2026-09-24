@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-  <path fill="#0FACED" d="M512 516c-88 0-177 112-177 205 0 70 53 111 115 82 39-19 85-19 124 0 62 29 115-12 115-82 0-93-89-205-177-205Z"/>
-  <ellipse cx="329" cy="431" rx="66" ry="87" transform="rotate(-28 329 431)" fill="#0FACED"/>
-  <ellipse cx="453" cy="364" rx="64" ry="89" transform="rotate(-8 453 364)" fill="#0FACED"/>
-  <ellipse cx="571" cy="364" rx="64" ry="89" transform="rotate(8 571 364)" fill="#0FACED"/>
-  <ellipse cx="695" cy="431" rx="66" ry="87" transform="rotate(28 695 431)" fill="#0FACED"/>
+  <g transform="translate(128 128) scale(.75)">
+    <path fill="#0FACED" d="M512 516c-88 0-177 112-177 205 0 70 53 111 115 82 39-19 85-19 124 0 62 29 115-12 115-82 0-93-89-205-177-205Z"/>
+    <ellipse cx="329" cy="431" rx="66" ry="87" transform="rotate(-28 329 431)" fill="#0FACED"/>
+    <ellipse cx="453" cy="364" rx="64" ry="89" transform="rotate(-8 453 364)" fill="#0FACED"/>
+    <ellipse cx="571" cy="364" rx="64" ry="89" transform="rotate(8 571 364)" fill="#0FACED"/>
+    <ellipse cx="695" cy="431" rx="66" ry="87" transform="rotate(28 695 431)" fill="#0FACED"/>
+  </g>
 </svg>
