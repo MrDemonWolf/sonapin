@@ -6,8 +6,9 @@
     <meta name="theme-color" content="#091533">
     <meta name="description" content="Privacy Policy for the local-first SonaPin iOS app and its documentation website.">
     <title>Privacy Policy — SonaPin</title>
-    <link rel="icon" href="__BASE_PATH__brand/sonapin-mascot.png" type="image/png">
+    <link rel="icon" href="__BASE_PATH__brand/sonapin-badge.svg" type="image/svg+xml">
     <link rel="stylesheet" href="__BASE_PATH__styles.css">
+    <script type="module" src="__BASE_PATH__site.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -15,7 +16,7 @@
     <header class="site-header">
       <div class="nav-wrap">
         <a class="brand" href="__BASE_PATH__" aria-label="SonaPin home">
-          <img src="__BASE_PATH__brand/sonapin-mascot.png" alt="" width="42" height="42">
+          <img src="__BASE_PATH__brand/sonapin-badge.svg" alt="" width="42" height="42">
           <span>SonaPin</span>
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
@@ -26,16 +27,17 @@
             <li><a href="__BASE_PATH__support/">Support</a></li>
             <li><a href="__BASE_PATH__acknowledgments/">Credits</a></li>
           </ul>
+          <button class="theme-toggle" type="button" aria-label="Switch to light appearance">☼ Light</button>
         </nav>
       </div>
     </header>
 
     <main id="main">
       <header class="page-hero">
-        <p class="eyebrow">Privacy Policy · Effective September 18, 2026</p>
+        <p class="eyebrow">Privacy Policy · Effective September 24, 2026</p>
         <h1>Privacy by design, in writing.</h1>
         <p>
-          SonaPin is a local-first iOS app. Your badge profile, QR content, settings, and imported avatar stay on your device. The app has no account, advertising, analytics, tracking, or SonaPin-operated backend.
+          SonaPin is a local-first iOS app. Your badge profile, QR content, settings, and imported avatar stay on your device. The app has no account, advertising, product analytics, tracking, or SonaPin-operated backend. Newer builds send limited crash and hang diagnostics to Sentry so we can fix problems.
         </p>
       </header>
 
@@ -43,7 +45,7 @@
         <div class="policy-summary" role="note" aria-label="Privacy summary">
           <strong>The short version</strong>
           <p>
-            SonaPin’s code does not send your profile, QR payload, or VRM file to MrDemonWolf, Inc. Apple may separately process App Store, backup, crash, or diagnostic information under your device settings and Apple’s policies. Displaying your badge, choosing a Files provider, opening an external link, and contacting support are actions you control.
+            SonaPin does not intentionally send your badge profile, QR payload, or VRM file to us or Sentry. Sentry-enabled builds send crash, hang, and related device diagnostics to Sentry for app functionality. The TestFlight build 1 released September 22, 2026, does not include Sentry. Apple separately processes App Store, backup, crash, and diagnostic information under its policies. TestFlight crash reports are shared with the developer automatically; App Store crash reports depend on your diagnostics-sharing choice.
           </p>
         </div>
 
@@ -84,14 +86,21 @@
           </tbody>
         </table>
         <p>
-          This information is not uploaded to MrDemonWolf, Inc. SonaPin does not open your QR destination, remotely load avatar resources, or send profile or model data to an analytics service.
+          Badge information is not intentionally uploaded to MrDemonWolf, Inc. or Sentry. SonaPin does not open your QR destination, remotely load avatar resources, or send profile or model files to an analytics service.
+        </p>
+        <h3>Crash and hang diagnostics</h3>
+        <p>
+          In Sentry-enabled builds, the app sends crash reports, hang reports, and related diagnostic details to Sentry so we can investigate and fix failures. These reports may include a stack trace, app version, device model, operating-system version, and the time of the failure. The SDK is configured without screenshots, screen recordings, automatic breadcrumbs, session tracking, product analytics, or default personal identifiers. We do not add your profile, QR content, or avatar file to reports. An unexpected error message may still contain information involved in that failure, so please avoid placing sensitive information in a support report.
+        </p>
+        <p>
+          We use diagnostic data to maintain app functionality and security, based on our legitimate interests where applicable (GDPR and UK GDPR Article 6(1)(f)). Sentry processes reports for us under its retention and security settings. Email <a href="mailto:legal@mrdemonwolf.com">legal@mrdemonwolf.com</a> to ask about a diagnostic report or request deletion where applicable. The older TestFlight build 1 uses Apple's crash reporting only.
         </p>
         <h3>Legal basis, choices, and automated decisions</h3>
         <p>
           Where the GDPR or UK GDPR applies, local processing is necessary to provide the app functions you request and to perform our agreement with you, or to take steps at your request before that agreement (Article 6(1)(b)). A display name and valid QR payload are required to create a working badge; the avatar, pronouns, character details, tagline, and preference choices are optional. If you do not provide required badge information, SonaPin cannot create that badge.
         </p>
         <p>
-          MrDemonWolf, Inc. does not receive this on-device information, and the current app has no automated decision-making or profiling that produces legal or similarly significant effects.
+          MrDemonWolf, Inc. does not receive this on-device badge information, and the app has no automated decision-making or profiling that produces legal or similarly significant effects.
         </p>
 
         <h2>3. Information you choose to make visible</h2>
@@ -114,6 +123,9 @@
         <p>
           Apple device or iCloud backups may retain app data according to settings and retention rules you control with Apple. Copies held by your Files provider, QR scanners, screenshots, or other people are outside SonaPin’s control.
         </p>
+        <p>
+          Deleting local app data does not automatically remove a diagnostic report already sent to Sentry. Contact us if you want us to locate or delete a report where possible.
+        </p>
 
         <h2>6. Website and support information</h2>
         <p>
@@ -125,7 +137,8 @@
 
         <h2>7. Providers, sharing, and transfers</h2>
         <ul>
-          <li><strong>Apple</strong> independently distributes the app and may process App Store, purchase, crash, backup, or diagnostic information under your Apple settings and Apple’s policies.</li>
+          <li><strong>Apple</strong> independently distributes the app and processes App Store, purchase, crash, backup, or diagnostic information under its policies. TestFlight crash reports are shared with us automatically; App Store diagnostics depend on your sharing choice.</li>
+          <li><strong>Sentry</strong> receives crash, hang, and related diagnostic reports from Sentry-enabled builds as our processor. See <a href="https://sentry.io/privacy/">Sentry’s Privacy Policy</a>.</li>
           <li><strong>GitHub</strong> independently hosts this public site and source repository in the United States under its Privacy Statement.</li>
           <li><strong>Email and infrastructure providers</strong> act for us to receive, secure, and answer messages you choose to send. We require providers acting on our behalf to protect that information consistently with this policy and applicable law.</li>
           <li><strong>VRMKit</strong> runs inside the app to parse and render compatible avatars. It does not receive your model from SonaPin.</li>
@@ -157,7 +170,7 @@
 
         <h2>11. Changes to this policy</h2>
         <p>
-          If SonaPin adds accounts, networking, cloud sync, analytics, advertising, or another material data practice, this policy and the App Store privacy disclosure will be updated before that version is released. If a change materially reduces your privacy, we will provide a conspicuous in-app notice before it takes effect and request fresh consent where law requires it. Changes apply prospectively. The effective date at the top shows the latest revision.
+          If SonaPin adds accounts, cloud sync, product analytics, advertising, or another material data practice, this policy and the App Store privacy disclosure will be updated before that version is released. If a change materially reduces your privacy, we will provide a conspicuous in-app notice before it takes effect and request fresh consent where law requires it. Changes apply prospectively. The effective date at the top shows the latest revision.
         </p>
 
         <h2>12. Contact</h2>
@@ -173,7 +186,7 @@
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <p>© 2026 MrDemonWolf, Inc. Local-first by design.</p>
+        <p class="footer-credit">© 2026 SonaPin by <a href="https://www.mrdemonwolf.com">MrDemonWolf, Inc.</a></p>
         <ul class="footer-links">
           <li><a href="__BASE_PATH__">Home</a></li>
           <li><a href="__BASE_PATH__terms/">Terms</a></li>

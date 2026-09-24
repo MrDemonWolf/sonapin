@@ -1,6 +1,15 @@
 {
-  "originHash" : "3ca2c6fb8039c1b46ce060b1aca981d2322b44a3874ca06c9f6d0952b4ecee13",
+  "originHash" : "3f423fd3baf0832c150ac49ac116b179baf4d3e18de1febe29e7d52dd470ec68",
   "pins" : [
+    {
+      "identity" : "sentry-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getsentry/sentry-cocoa.git",
+      "state" : {
+        "revision" : "d9df1c4e8d8466c7f8b3c56150378927dadf1b8e",
+        "version" : "9.29.0"
+      }
+    },
     {
       "identity" : "vrmkit",
       "kind" : "remoteSourceControl",

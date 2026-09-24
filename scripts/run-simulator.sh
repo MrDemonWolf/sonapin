@@ -5,7 +5,7 @@ repo_root="${0:A:h:h}"
 native_dir="$repo_root/apps/native"
 artifacts_dir="$repo_root/artifacts"
 derived_data="$native_dir/.derived-data"
-bundle_id="com.mrdemonwolf.sonapin"
+bundle_id="com.mrdemonwolf.sonapin.dev"
 mkdir -p "$artifacts_dir"
 
 command -v xcodebuild >/dev/null || { print -u2 "xcodebuild is required. Install Xcode."; exit 1; }

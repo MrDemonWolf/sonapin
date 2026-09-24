@@ -3,7 +3,10 @@
 .swiftpm/
 .turbo/
 node_modules/
+test-results/
+playwright-report/
 apps/docs/dist/
+artifacts/release/
 
 # Xcode
 DerivedData/

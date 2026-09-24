@@ -67,5 +67,14 @@ const renderedFiles = await renderHtml(outputDirectory, new Map([
   ["__REPOSITORY_URL__", repositoryUrl],
 ]));
 
+const siteScript = await Bun.build({
+  entrypoints: [join(sourceDirectory, "site.ts")],
+  outdir: outputDirectory,
+  target: "browser",
+  minify: true,
+});
+assert(siteScript.success, "Failed to build the site theme toggle");
+await rm(join(outputDirectory, "site.ts"));
+
 assert(renderedFiles >= 6, "Expected the landing page and five supporting pages");
 console.log(`Built ${renderedFiles} pages at ${basePath}`);

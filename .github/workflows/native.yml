@@ -2,21 +2,17 @@ name: Native iOS
 
 on:
   push:
-    paths:
-      - ".github/workflows/native.yml"
-      - "apps/native/**"
-      - "scripts/**"
-      - "Makefile"
+    branches: [main]
   pull_request:
-    paths:
-      - ".github/workflows/native.yml"
-      - "apps/native/**"
-      - "scripts/**"
-      - "Makefile"
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: native-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build-and-test:
@@ -29,7 +25,9 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Print tool versions
         run: |
@@ -48,8 +46,8 @@ jobs:
       - name: Resolve Swift packages
         run: make resolve
 
-      - name: Build for iOS Simulator
-        run: make build
+      - name: Lint Swift and build for Simulator
+        run: make lint-check
 
       - name: Run unit tests
         run: make test
@@ -59,7 +57,7 @@ jobs:
 
       - name: Upload failure diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: native-diagnostics-macos-26
           if-no-files-found: warn

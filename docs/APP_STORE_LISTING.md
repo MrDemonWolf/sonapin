@@ -1,12 +1,12 @@
-# App Store listing draft
+# SonaPin 1.0 App Store listing copy
 
-This is submission copy, not a submitted listing. Recheck character counts and URLs in App Store Connect before release.
+SonaPin 1.0 is available to TestFlight testers. The public App Store version is still in Prepare for Submission. This copy and the five iPhone screenshots were saved in App Store Connect on 2026-09-24.
 
 ## Metadata
 
 - **Name:** SonaPin
 - **Subtitle:** Interactive Fursona Badge
-- **Promotional text:** Bring your fursona to conventions and meetups with an interactive 3D badge, a clear profile, and a scannable QR code that all work offline.
+- **Promotional text:** Your fursona badge, ready for the con floor. Show an interactive avatar, share a scannable QR code, and keep your profile on your device—even offline.
 - **Keywords:** `vrm,avatar,furry,character,profile,convention,cosplay,qr,contact,identity,3d,offline`
 - **Proposed primary category:** Lifestyle
 - **Proposed secondary category:** Entertainment
@@ -15,48 +15,76 @@ This is submission copy, not a submitted listing. Recheck character counts and U
 - **Privacy URL:** `https://mrdemonwolf.github.io/sonapin/privacy/`
 - **Terms URL:** `https://mrdemonwolf.github.io/sonapin/terms/`
 
-The URLs assume GitHub Pages publishes the repository at the standard project-site path. Verify the deployed URLs before submission.
+Verify the deployed URLs again before App Review submission.
+
+## App Store Connect record
+
+- **Primary language:** English (U.S.)
+- **Bundle ID:** `com.mrdemonwolf.sonapin`
+- **SKU:** `MDW-SonaPin`
+- **User access:** Full Access
+- **Copyright:** `2026 MrDemonWolf, Inc.`
+- **Price:** Free
+- **TestFlight internal group:** PB Private Beta; build 1 testing with one installed internal tester
+- **Feedback email:** Not set in App Store Connect as of 2026-09-24
+- **Latest observed TestFlight upload:** 1.0.0 build 1, uploaded 2026-09-22
+- **Age rating:** 4+ calculated and saved in App Store Connect on 2026-09-24
+- **App Privacy:** Privacy policy URL saved. The older “Data Not Collected” draft must be replaced before releasing a Sentry-enabled build. Sentry's SDK manifest lists crash data, performance data, and other diagnostic data for app functionality, not linked to the user and not used for tracking.
+- **Content Rights:** Declaration pending owner confirmation of rights for imported VRM content
+
+## TestFlight beta information
+
+### Beta app description
+
+SonaPin turns an iPhone or iPad into an interactive fursona badge. Test the built-in avatar or import a compatible VRM file, create a profile and QR code, then use Badge Mode at convention-friendly brightness and scale.
+
+### What to Test
+
+- Complete onboarding and create a badge profile.
+- Tap the built-in avatar and confirm its expression and QR-card reactions feel clear and responsive.
+- Scan the QR code from another phone at normal badge distance.
+- Import a VRM file you have permission to use and review the compatibility report.
+- Try portrait and landscape orientations, larger text, VoiceOver, and Reduce Motion.
+- Confirm your profile and imported avatar remain after relaunching the app.
+
+Please report confusing steps, visual glitches, failed QR scans, crashes, or unusually high battery use through TestFlight feedback.
 
 ## Description
 
-Your sona. Your badge. Alive.
+SonaPin turns your iPhone or iPad into an interactive fursona badge for conventions and meetups. Put your character, name, and scannable QR code on one screen. It works offline, with no account to make.
 
-SonaPin turns your iPhone into an interactive fursona badge for conventions, meetups, and everyday introductions. Show a 3D avatar, the profile details you choose, and an easy-to-enlarge QR code from one focused screen.
+START WITH A WOLF, OR BRING YOUR OWN
+Try the built-in blue wolf right away. If you have a compatible VRM avatar, import it from Files. Tap the avatar for expressions and badge reactions.
 
-Start immediately with SonaPin's built-in demo avatar, or import your own compatible VRM file from the Files app. Explore the avatar with touch gestures and see a plain-language compatibility report when a model uses features the renderer cannot fully reproduce.
+MAKE THE BADGE YOURS
+Add a display name, pronouns, species, and a short tagline. Choose a badge theme and tune motion, haptics, and interaction sensitivity.
 
-Build your badge:
+GIVE PEOPLE ONE EASY SCAN
+Create a QR code for a website, social profile, contact link, or custom text. Enlarge it when someone is ready to scan, and turn on high contrast for busy convention lighting.
 
-- Add your display name, pronouns, short bio, and optional links.
-- Create a crisp QR code with selectable error correction and a high-contrast mode.
-- Enlarge the code when someone is ready to scan.
-- Choose a badge theme and interaction preferences.
-- Adjust motion, haptics, sensitivity, and screen-awake behavior.
+READY FOR THE CON FLOOR
+Keep the screen awake while you show your badge. Your profile, avatar, and QR settings stay on your device, so the badge still works when Wi-Fi doesn't.
 
-Private by design:
+KNOW WHAT YOUR VRM CAN DO
+VRM support depends on the model's materials and features. SonaPin reports compatibility limits in plain language.
 
-- No account or login.
-- No ads, analytics, or tracking.
-- No model uploads or public gallery.
-- Imported avatars, badge details, and QR settings stay on your device.
+## Screenshots
 
-VRM rendering varies by model features and materials. SonaPin reports known limitations and does not promise compatibility with every VRM file.
+Five screenshots captured from the iPhone 18 Pro simulator were uploaded to the 6.9-inch iPhone slot in this order. App Store Connect uses them for the 6.5-inch slot too. The first three lead with the badge, scanning, and customization because Apple uses those on installation sheets.
 
-## Screenshot shot list
+1. `01_Brand_Hero.png` — SonaPin badge with the built-in wolf.
+2. `02_Stories.png` — Enlarged QR code.
+3. `03_Explore.png` — Profile editor.
+4. `04_Everywhere.png` — Avatar import.
+5. `05_Engaging.png` — Settings and on-device privacy.
 
-1. **Your sona, ready to meet** — Badge Mode with demo avatar, name, pronouns, and polished navy/cyan theme.
-2. **A badge that feels alive** — Avatar interaction with visible pose or expression response.
-3. **Share with one clear scan** — Enlarged high-contrast QR preview.
-4. **Import with honest feedback** — Files import followed by the compatibility summary.
-5. **Make it comfortable for you** — Accessibility, motion, haptics, and interaction settings.
-
-Use only rights-cleared avatar art in screenshots. Do not place a real personal contact payload in the QR shown publicly.
+The cleaned upload files are in `assets/app-store/`. `06_iPad_Badge.png` is a real 13-inch iPad Pro simulator capture at 2064 × 2752 and was uploaded on 2026-09-24. The QR points to the public SonaPin site, not a personal contact.
 
 ## Age-rating notes
 
-- No developer-provided violence, sexual content, gambling, substances, profanity, advertising, payments, chat, feed, or public user-generated-content system is planned for version 1.
+- Version 1 includes no developer-provided violence, sexual content, gambling, substances, profanity, advertising, payments, chat, feed, or public user-generated-content system.
 - Users can import files they already possess. Answer App Store Connect's current questionnaire based on the shipped app and sample content; do not assume a rating solely from this draft.
-- The likely result is the lowest general-audience tier if the final binary and supplied assets remain as described, but App Store Connect determines the displayed rating.
+- App Store Connect calculated and saved a 4+ global rating from the version 1 answers on 2026-09-24. Revisit the questionnaire if shipped content or capabilities change.
 
 ## Imported-content acknowledgment
 

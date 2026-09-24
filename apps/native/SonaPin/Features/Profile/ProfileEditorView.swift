@@ -16,7 +16,7 @@ struct ProfileEditorView: View {
         Form {
             Section {
                 ProfileFields(profile: $draft)
-                    .listRowInsets(EdgeInsets())
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                     .listRowBackground(Color.clear)
             } header: {
                 Text("Badge identity")

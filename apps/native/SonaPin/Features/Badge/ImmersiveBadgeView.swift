@@ -10,7 +10,7 @@ struct ImmersiveBadgeView: View {
         GeometryReader { proxy in
             let isLandscape = proxy.size.width > proxy.size.height
 
-            ZStack {
+            ZStack(alignment: .topTrailing) {
                 SonaPinBackground(theme: model.snapshot.theme)
 
                 AvatarStageHost(
@@ -26,8 +26,10 @@ struct ImmersiveBadgeView: View {
                     configuration: model.snapshot.qrConfiguration,
                     theme: model.snapshot.theme,
                     size: proxy.size,
-                    isLandscape: isLandscape
+                    isLandscape: isLandscape,
+                    showsQRCode: hasConfiguredQR && model.snapshot.avatar.kind != .demo
                 )
+                .allowsHitTesting(false)
 
                 closeButton
             }
@@ -35,23 +37,22 @@ struct ImmersiveBadgeView: View {
         .statusBarHidden()
     }
 
+    private var hasConfiguredQR: Bool {
+        (try? QRPayloadValidator.validate(model.snapshot.qrConfiguration)) != nil
+    }
+
     @ViewBuilder
     private var closeButton: some View {
-        VStack {
-            HStack {
-                Spacer()
-                if #available(iOS 26.0, *) {
-                    dismissButton
-                        .buttonStyle(.glass)
-                        .buttonBorderShape(.circle)
-                } else {
-                    dismissButton
-                        .background(.regularMaterial, in: Circle())
-                }
-            }
-            Spacer()
+        if #available(iOS 26.0, *) {
+            dismissButton
+                .buttonStyle(.glass)
+                .buttonBorderShape(.circle)
+                .padding()
+        } else {
+            dismissButton
+                .background(.regularMaterial, in: Circle())
+                .padding()
         }
-        .padding()
     }
 
     private var dismissButton: some View {
@@ -72,6 +73,7 @@ private struct ImmersiveBadgeOverlay: View {
     let theme: BadgeTheme
     let size: CGSize
     let isLandscape: Bool
+    let showsQRCode: Bool
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @ViewBuilder
@@ -80,7 +82,9 @@ private struct ImmersiveBadgeOverlay: View {
             ScrollView {
                 VStack(spacing: 12) {
                     identityCard
-                    qrCard
+                    if showsQRCode {
+                        qrCard
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 20)
@@ -97,9 +101,11 @@ private struct ImmersiveBadgeOverlay: View {
                         alignment: isLandscape ? .leading : .center
                     )
 
-                qrCard
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
-                    .offset(y: isLandscape ? -size.height * 0.04 : -size.height * 0.10)
+                if showsQRCode {
+                    qrCard
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+                        .offset(y: isLandscape ? -size.height * 0.04 : -size.height * 0.10)
+                }
             }
             .padding(20)
         }

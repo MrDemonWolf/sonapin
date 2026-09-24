@@ -2,16 +2,13 @@
 
 Status: **pending**. Nothing below can be marked passed from Simulator evidence.
 
-## Automated evidence already available
+## Automated evidence already available (2026-09-22)
 
-- [x] Generic iOS Simulator build succeeded with Xcode 26.6.
-- [x] Unit suite passed 29 tests in 5 suites.
-- [x] UI suite passed 3 tests with 0 failures.
-- [x] App installed and launched on the ConPaws iPhone Pro Max Simulator running iOS 26.5.
-- [x] Launch metadata, screenshot, build log, runtime log, test logs, and result bundles exist under `artifacts/`.
-- [x] Captured Simulator log was inspected; it contains no app crash or serious runtime fault and retains two CoreSimulator launch-measurement submission errors.
+- [x] Generic iOS Simulator build succeeded with Xcode 27.0.
+- [x] Unit suite passed 34 tests in 6 suites, including the local VRM fixture.
+- [x] UI suite passed 6 tests with 0 failures on iPhone 18 Pro Simulator running iOS 27.0.
+- [x] Test logs and result bundles exist under `artifacts/` on the verification Mac.
 - [ ] Run on an iOS 18 runtime. No iOS 18 Simulator runtime is installed on the verification Mac.
-- [ ] Run the optional local VRM parsing and rendering tests. `LocalAssets/TestAvatar.vrm` is absent.
 
 These checks establish build and Simulator behavior only. They do not satisfy any physical-iPhone item below.
 

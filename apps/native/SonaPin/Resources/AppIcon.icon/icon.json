@@ -6,8 +6,12 @@
     {
       "layers" : [
         {
-          "image-name" : "wolf-foreground.png",
-          "name" : "Wolf"
+          "image-name" : "paw-print.svg",
+          "name" : "Paw Print"
+        },
+        {
+          "image-name" : "badge-body.svg",
+          "name" : "Badge Body"
         },
         {
           "image-name" : "background.png",

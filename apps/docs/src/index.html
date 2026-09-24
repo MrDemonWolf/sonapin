@@ -4,160 +4,67 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#091533">
-    <meta name="description" content="SonaPin is a local-first interactive fursona badge for iPhone, currently in development.">
+    <meta name="description" content="SonaPin turns your iPhone or iPad into a living fursona badge. Bring your VRM avatar, profile, and QR code to your next convention.">
     <title>SonaPin — Your sona. Your badge. Alive.</title>
-    <link rel="icon" href="__BASE_PATH__brand/sonapin-mascot.png" type="image/png">
+    <link rel="icon" href="__BASE_PATH__brand/sonapin-badge.svg" type="image/svg+xml">
     <link rel="stylesheet" href="__BASE_PATH__styles.css">
+    <script type="module" src="__BASE_PATH__site.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-
     <header class="site-header">
-      <div class="nav-wrap">
-        <a class="brand" href="__BASE_PATH__" aria-label="SonaPin home">
-          <img src="__BASE_PATH__brand/sonapin-mascot.png" alt="" width="42" height="42">
-          <span>SonaPin</span>
-        </a>
-
-        <nav class="site-nav" aria-label="Primary navigation">
-          <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
-            <li><a href="__BASE_PATH__terms/">Terms</a></li>
-            <li><a href="__BASE_PATH__support/">Support</a></li>
-            <li><a href="__BASE_PATH__acknowledgments/">Credits</a></li>
-          </ul>
-        </nav>
-      </div>
+      <nav class="nav-wrap" aria-label="Primary navigation">
+        <a class="brand" href="__BASE_PATH__"><img src="__BASE_PATH__brand/sonapin-badge.svg" alt="" width="44" height="44"><span>SonaPin</span></a>
+        <div class="site-nav"><a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="__BASE_PATH__support/">Support</a><button class="nav-cta store-button" type="button" disabled>Get iOS app · Soon</button><button class="theme-toggle" type="button" aria-label="Switch to light appearance">☼ Light</button></div>
+      </nav>
     </header>
 
     <main id="main">
-      <section class="section hero" aria-labelledby="hero-heading">
-        <div>
-          <p class="eyebrow">Native on iPhone · Local-first</p>
-          <p class="status">Version 1 is in active development</p>
-          <h1 id="hero-heading">Your sona. Your badge. <span>Alive.</span></h1>
-          <p class="hero-copy">
-            SonaPin is an interactive digital fursona badge built for the people you meet in person.
-            Bring your avatar, identity, and scannable link together without an account or cloud profile.
-          </p>
-          <div class="actions">
-            <a class="button button--primary" href="#features">Explore version 1</a>
-            <a class="button" href="__BASE_PATH__privacy/">Read the privacy policy</a>
-          </div>
+      <section class="hero section">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Coming soon to the App Store</p>
+          <h1>Your sona.<br>Your badge.<br><span>Alive.</span></h1>
+          <p class="hero-lede">The convention badge that feels like you. Put your fursona, name, pronouns, and a scannable link on one lively screen.</p>
+          <div class="actions"><button class="button button--primary store-button" type="button" disabled>Get iOS app · Coming soon</button><a class="button button--secondary" href="__REPOSITORY_URL__">View source on GitHub <span aria-hidden="true">↗</span></a></div>
+          <p class="store-note">The App Store link will go live when SonaPin is available.</p>
+          <p class="availability">For iPhone and iPad · iOS 18+ · No account or tracking</p>
+          <div class="hero-proof" aria-label="SonaPin highlights"><span><b>01</b> Your VRM avatar</span><span><b>02</b> Tap to react</span><span><b>03</b> Scan to connect</span></div>
         </div>
-
-        <div class="badge-shell" role="img" aria-label="Concept preview of a SonaPin digital badge">
-          <div class="badge-preview">
-            <div class="badge-preview__top">
-              <span>Badge mode</span>
-              <span class="badge-preview__lock" role="img" aria-label="Editing locked">◆</span>
+        <div class="hero-stage">
+          <div class="badge-demo">
+            <div class="digital-badge">
+              <span class="digital-badge__volume" aria-hidden="true"></span>
+              <span class="digital-badge__power" aria-hidden="true"></span>
+              <img id="app-screen" class="digital-badge__screen" src="__BASE_PATH__screenshots/badge-capture.png" alt="SonaPin badge screen showing the built-in blue wolf avatar, the name Nova, and a QR code linking to the public SonaPin website." width="1206" height="2622">
             </div>
-            <div class="avatar-orbit">
-              <img src="__BASE_PATH__brand/sonapin-mascot.png" alt="Friendly blue wolf mascot">
+            <p id="screen-caption" aria-live="polite">Actual SonaPin screen · See your badge</p>
+            <div class="screen-picker" role="group" aria-label="Choose an app screen">
+              <button type="button" data-image="__BASE_PATH__screenshots/avatar.png" data-alt="SonaPin avatar screen showing built-in blue wolf support and VRM import." aria-pressed="false">Choose avatar</button>
+              <button type="button" data-image="__BASE_PATH__screenshots/details.jpg" data-alt="SonaPin profile editor showing the demo name Nova and optional pronouns." aria-pressed="false">Add details</button>
+              <button type="button" data-image="__BASE_PATH__screenshots/badge-capture.png" data-alt="SonaPin badge screen showing the built-in blue wolf avatar, the name Nova, and a QR code linking to the public SonaPin website." data-image-dark="__BASE_PATH__screenshots/badge-capture-dark.png" data-alt-dark="SonaPin badge screen in dark appearance showing the built-in blue wolf avatar, the name Nova, and a No QR code yet message." aria-pressed="true">See your badge</button>
             </div>
-            <h2 class="badge-name">Nova</h2>
-            <p class="badge-meta">they / them · celestial wolf</p>
-            <div class="mock-qr" aria-hidden="true"></div>
-            <p class="qr-note">Concept preview · not a working QR code</p>
           </div>
         </div>
       </section>
-
-      <section class="section" id="features" aria-labelledby="features-heading">
-        <div class="section-header">
-          <h2 id="features-heading">A badge with a pulse.</h2>
-          <p>
-            Version 1 is being built around one focused job: making your character easy to share while keeping the moment personal.
-          </p>
-        </div>
-
+      <section id="features" class="section features-section">
+        <div class="section-header"><p class="eyebrow">01 / The badge</p><h2>More you than a name tag.</h2><p>Everything someone needs to meet you, with the fursona they came to see.</p></div>
         <div class="feature-grid">
-          <article class="feature-card feature-card--accent">
-            <span class="feature-card__number" aria-hidden="true">01 / AVATAR</span>
-            <h3>Bring your character into the room.</h3>
-            <p>
-              Start with the built-in demo or import a compatible VRM avatar. SonaPin will report what the model supports before it replaces your working badge.
-            </p>
-          </article>
-
-          <article class="feature-card">
-            <span class="feature-card__number" aria-hidden="true">02 / IDENTITY</span>
-            <h3>Show up as yourself.</h3>
-            <p>Add your display name, pronouns, species or character type, and an optional short tagline.</p>
-          </article>
-
-          <article class="feature-card">
-            <span class="feature-card__number" aria-hidden="true">03 / CONNECTION</span>
-            <h3>Share one clear next step.</h3>
-            <p>Create a high-contrast QR code for a website, social profile, contact link, or custom text, then enlarge it for easier scanning.</p>
-          </article>
-
-          <article class="feature-card">
-            <span class="feature-card__number" aria-hidden="true">04 / CONTROL</span>
-            <h3>Convention-floor friendly.</h3>
-            <p>
-              Use an accidental-edit lock, optional keep-awake behavior, adjustable interactions, haptics, reduced motion, and high-contrast QR presentation.
-            </p>
-          </article>
+          <article class="feature-card feature-card--accent"><span class="feature-card__number">01 / REACT</span><div><h3>A badge with personality.</h3><p>Tap your avatar and watch it respond. A quick hello feels like you.</p></div><span class="feature-card__mark" aria-hidden="true">↗</span></article>
+          <article class="feature-card"><span class="feature-card__number">02 / YOUR SONA</span><div><h3>Bring your own avatar.</h3><p>Import a compatible VRM from Files, or start with the built-in demo wolf.</p></div><span class="feature-card__mark" aria-hidden="true">↗</span></article>
+          <article class="feature-card"><span class="feature-card__number">03 / CONNECT</span><div><h3>One scan, easy hello.</h3><p>Put your name, pronouns, and QR link right on your badge.</p></div><span class="feature-card__mark" aria-hidden="true">↗</span></article>
+          <article class="feature-card"><span class="feature-card__number">04 / YOURS</span><div><h3>Private by design.</h3><p>Your profile and avatar stay on your device. No account, ads, or tracking.</p></div><span class="feature-card__mark" aria-hidden="true">↗</span></article>
         </div>
       </section>
-
-      <section class="section" aria-labelledby="flow-heading">
-        <div class="section-header">
-          <h2 id="flow-heading">Pin it in three moves.</h2>
-          <p>A resumable setup flow keeps the choices clear and saves progress as you go.</p>
-        </div>
-
-        <ol class="steps">
-          <li>
-            <strong>Choose a face</strong>
-            <p>Try the built-in demo or review a compatible VRM model from your Files app.</p>
-          </li>
-          <li>
-            <strong>Build your badge</strong>
-            <p>Add identity details, pick a theme, and validate the link you want people to scan.</p>
-          </li>
-          <li>
-            <strong>Enter badge mode</strong>
-            <p>Keep the avatar expressive, the QR quiet zone clear, and editing safely locked.</p>
-          </li>
-        </ol>
-      </section>
-
-      <section class="section" aria-labelledby="privacy-heading">
-        <div class="privacy-callout">
-          <div>
-            <p class="eyebrow">Local means local</p>
-            <h2 id="privacy-heading">Your character stays with you.</h2>
-            <p>
-              SonaPin has no account or backend. Imported models, badge fields, QR settings, and preferences stay in the app’s local container.
-            </p>
-            <a href="__BASE_PATH__privacy/">Read the full Privacy Policy →</a>
-          </div>
-
-          <ul class="privacy-list" aria-label="Version 1 privacy commitments">
-            <li>No account or login</li>
-            <li>No ads or tracking</li>
-            <li>No analytics SDK</li>
-            <li>No model upload</li>
-            <li>No social feed</li>
-          </ul>
+      <section id="how-it-works" class="section how-section">
+        <div class="section-header"><p class="eyebrow">02 / Make it yours</p><h2>From Files to con floor.</h2><p>Set up once. Then let your badge do the introductions.</p></div>
+        <div class="step-list">
+          <div><span>01</span><h3>Pick your look</h3><p>Start with the demo wolf or import your VRM fursona.</p></div>
+          <div><span>02</span><h3>Add your details</h3><p>Choose your display name, pronouns, and QR destination.</p></div>
+          <div><span>03</span><h3>Show up as you</h3><p>Open badge mode, react to taps, and share a link with a scan.</p></div>
         </div>
       </section>
+      <section class="section closing-section"><div class="closing-card"><p class="eyebrow">On its way to iOS</p><h2>Give your sona<br>a front row seat.</h2><p>The App Store download is coming soon. SonaPin's source is open now if you want an early look.</p><div class="actions"><button class="button button--primary store-button" type="button" disabled>Get iOS app · Coming soon</button><a class="button button--secondary" href="__REPOSITORY_URL__">View source on GitHub <span aria-hidden="true">↗</span></a></div></div></section>
     </main>
-
-    <footer class="site-footer">
-      <div class="site-footer__inner">
-        <p>© 2026 MrDemonWolf, Inc. Built for convention floors.</p>
-        <ul class="footer-links">
-          <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
-          <li><a href="__BASE_PATH__terms/">Terms</a></li>
-          <li><a href="__BASE_PATH__support/">Support</a></li>
-          <li><a href="__BASE_PATH__acknowledgments/">Acknowledgments</a></li>
-          <li><a href="__REPOSITORY_URL__">Source repository</a></li>
-        </ul>
-      </div>
-    </footer>
+    <footer class="site-footer"><div class="site-footer__inner"><p class="footer-credit">© 2026 SonaPin by <a href="https://www.mrdemonwolf.com">MrDemonWolf, Inc.</a></p><nav class="footer-links" aria-label="Footer"><a href="__BASE_PATH__support/">Support</a><a href="__BASE_PATH__privacy/">Privacy</a><a href="__BASE_PATH__terms/">Terms</a><a href="__BASE_PATH__acknowledgments/">Acknowledgments</a></nav></div></footer>
   </body>
 </html>

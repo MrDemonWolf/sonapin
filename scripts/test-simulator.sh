@@ -45,4 +45,3 @@ fi
 
 print -r -- "Simulator: $simulator_name ($runtime_id, $simulator_udid)" | tee "$artifacts_dir/$result_name.log"
 "${build_command[@]}" 2>&1 | tee -a "$artifacts_dir/$result_name.log"
-

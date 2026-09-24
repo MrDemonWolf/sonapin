@@ -21,7 +21,6 @@ The generated project is `apps/native/SonaPin.xcodeproj`; the shared scheme is `
 - `--ui-testing` enables deterministic automation behavior.
 - `--reset-app-state` removes persisted test state.
 - `--use-demo-avatar` selects the built-in procedural avatar.
-- `--skip-onboarding` opens the main badge directly.
 
 ## Local data
 

@@ -52,6 +52,7 @@ private struct DemoAvatarMotionSystem: System {
     func update(context: SceneUpdateContext) {
         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
             guard var motion = entity.components[DemoAvatarMotionComponent.self] else { continue }
+            guard motion.idleEnabled || motion.reactionRemaining > 0 else { continue }
             motion.elapsed += context.deltaTime
 
             let idleOffset: Float = motion.idleEnabled ? Float(sin(motion.elapsed * 1.7)) * 0.018 : 0
@@ -63,6 +64,10 @@ private struct DemoAvatarMotionSystem: System {
                 reactionScale += Float(sin(progress * .pi)) * 0.08
                 reactionTilt = Float(sin(progress * .pi * Double(motion.reactionWiggles))) * motion.reactionTilt
                 motion.reactionRemaining = max(0, motion.reactionRemaining - context.deltaTime)
+                if motion.reactionRemaining == 0 {
+                    reactionScale = 1
+                    reactionTilt = 0
+                }
             }
 
             entity.position = motion.baseTransform.translation + SIMD3<Float>(0, idleOffset, 0)
@@ -296,12 +301,14 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         motion.addChild(belly)
 
         let head = sphere(
-            name: "Head",
+            name: "SonaPinHeadHitTarget",
             radius: 0.46,
             material: navy,
             position: SIMD3<Float>(0, 1.48, 0),
             scale: SIMD3<Float>(1, 0.92, 0.9)
         )
+        head.components.set(InputTargetComponent())
+        head.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.46)]))
         motion.addChild(head)
 
         let leftEar = box(
@@ -366,14 +373,12 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         rightEye.addChild(rightPupil)
 
         let nose = sphere(
-            name: "SonaPinHeadHitTarget",
+            name: "Nose",
             radius: 0.12,
             material: dark,
             position: SIMD3<Float>(0, -0.05, 0.52),
             scale: SIMD3<Float>(1.1, 0.78, 0.7)
         )
-        nose.components.set(InputTargetComponent())
-        nose.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.14)]))
         head.addChild(nose)
 
         let mouth = sphere(
@@ -555,7 +560,13 @@ final class VRMKitAvatarRenderer: AvatarRendering {
                 available.first { $0.name.caseInsensitiveCompare(fallback) == .orderedSame }
             }
         guard let selected else { return }
-        avatarEntity.setExpression(value: CGFloat(weight), for: selected.key)
+        avatarEntity.setExpressions(
+            Dictionary(
+                uniqueKeysWithValues: available.map {
+                    ($0.key, $0.key == selected.key ? CGFloat(weight) : .zero)
+                }
+            )
+        )
     }
 
     func play(_ animation: AvatarAnimation, looping: Bool) throws {

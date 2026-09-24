@@ -29,15 +29,19 @@ struct ValidationTests {
         #expect(result.tagline == "Friendly sona")
     }
 
-    @Test("Required profile fields fail", arguments: [
-        BadgeProfile(displayName: "", pronouns: "they/them", species: "Wolf"),
-        BadgeProfile(displayName: "Nova", pronouns: "", species: "Wolf"),
-        BadgeProfile(displayName: "Nova", pronouns: "they/them", species: ""),
-    ])
-    func requiredProfileFields(_ profile: BadgeProfile) {
+    @Test("Badge name is required")
+    func badgeNameIsRequired() {
         #expect(throws: ValidationError.self) {
-            try ProfileValidator.validate(profile)
+            try ProfileValidator.validate(BadgeProfile())
         }
+    }
+
+    @Test("Optional profile details may be empty")
+    func optionalProfileDetailsMayBeEmpty() throws {
+        let profile = try ProfileValidator.validate(BadgeProfile(displayName: "Nova"))
+        #expect(profile.displayName == "Nova")
+        #expect(profile.pronouns.isEmpty)
+        #expect(profile.species.isEmpty)
     }
 
     @Test("Supported QR payloads pass", arguments: [
@@ -409,17 +413,26 @@ struct AvatarRendererTests {
 
         #expect(renderer.rootEntity === stableRoot)
         #expect(!renderer.rootEntity.children.isEmpty)
-        #expect(renderer.rootEntity.findEntity(named: "SonaPinHeadHitTarget") != nil)
-        #expect(renderer.rootEntity.findEntity(named: "SonaPinBodyHitTarget") != nil)
-        #expect(renderer.rootEntity.findEntity(named: "SonaPinLeftPawHitTarget") != nil)
-        #expect(renderer.rootEntity.findEntity(named: "SonaPinRightPawHitTarget") != nil)
+        for name in [
+            "SonaPinHeadHitTarget",
+            "SonaPinBodyHitTarget",
+            "SonaPinLeftPawHitTarget",
+            "SonaPinRightPawHitTarget",
+        ] {
+            let target = try #require(renderer.rootEntity.findEntity(named: name))
+            #expect(target.components[InputTargetComponent.self] != nil)
+            #expect(target.components[CollisionComponent.self] != nil)
+        }
         #expect(renderer.capabilities == .proceduralDemo)
 
         let motionEntity = try #require(renderer.rootEntity.children.first)
+        let mouth = try #require(renderer.rootEntity.findEntity(named: "Mouth"))
+        let neutralMouthScale = mouth.scale
         let restingMotion = try #require(motionEntity.components[DemoAvatarMotionComponent.self])
         #expect(!restingMotion.idleEnabled)
 
         renderer.setExpression(.happy, weight: 1)
+        #expect(mouth.scale != neutralMouthScale)
         renderer.look(at: SIMD3<Float>(1, 1, 1))
         for animation in ["idle", "boop", "left-paw", "right-paw", "wiggle"] {
             try renderer.play(AvatarAnimation(name: animation), looping: animation == "idle")
@@ -573,22 +586,46 @@ private func makeVRM(
 
 @Suite("Avatar touch reactions")
 struct AvatarTouchReactionTests {
-    @Test("Named avatar regions choose distinct reactions", arguments: [
-        ("SonaPinHeadHitTarget", AvatarExpression.happy, "boop"),
-        ("SonaPinLeftPawHitTarget", AvatarExpression.happy, "left-paw"),
-        ("SonaPinRightPawHitTarget", AvatarExpression.happy, "right-paw"),
-        ("SonaPinBodyHitTarget", AvatarExpression.surprised, "wiggle"),
+    @Test("Repeated touches cycle screenshot-style emotions", arguments: [
+        (0, AvatarExpression.surprised),
+        (1, AvatarExpression.blink),
+        (2, AvatarExpression.relaxed),
+        (3, AvatarExpression.happy),
+        (4, AvatarExpression.neutral),
+        (5, AvatarExpression.surprised),
+        (-1, AvatarExpression.surprised),
     ])
-    func touchReaction(name: String, expression: AvatarExpression, animation: String) throws {
-        let reaction = try #require(AvatarTouchReaction.reaction(for: name))
+    func emotionCycle(tapCount: Int, expression: AvatarExpression) {
+        let reaction = AvatarTouchReaction.reaction(tapCount: tapCount)
         #expect(reaction.expression == expression)
-        #expect(reaction.animation == animation)
+        #expect(reaction.animation == "reaction")
     }
 
-    @Test("Unknown scene entities do not react")
-    func ignoresUnknownEntity() {
-        #expect(AvatarTouchReaction.reaction(for: "Background") == nil)
+    @Test("Imported avatars keep the compact emotion cycle", arguments: [
+        (0, AvatarExpression.surprised),
+        (1, AvatarExpression.relaxed),
+        (2, AvatarExpression.happy),
+        (3, AvatarExpression.surprised),
+        (-1, AvatarExpression.surprised),
+    ])
+    func importedEmotionCycle(tapCount: Int, expression: AvatarExpression) {
+        let reaction = AvatarTouchReaction.reaction(tapCount: tapCount, includesPlacard: false)
+        #expect(reaction.expression == expression)
     }
+
+    @Test("Repeated touches cycle QR card choreography", arguments: [
+        (0, DemoBadgeReactionPhase.idle),
+        (1, DemoBadgeReactionPhase.hiding),
+        (2, DemoBadgeReactionPhase.peeking),
+        (3, DemoBadgeReactionPhase.ducking),
+        (4, DemoBadgeReactionPhase.revealing),
+        (5, DemoBadgeReactionPhase.idle),
+        (-1, DemoBadgeReactionPhase.idle),
+    ])
+    func placardCycle(tapCount: Int, phase: DemoBadgeReactionPhase) {
+        #expect(DemoBadgeReactionPhase.phase(tapCount: tapCount) == phase)
+    }
+
 }
 
 private func imageBytes(_ image: CGImage) throws -> Data {

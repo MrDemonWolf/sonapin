@@ -18,14 +18,15 @@
 		3156126DEE634D1D1253D62B /* SonaPinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */; };
 		34E9D965B763E7C49BC5F312 /* ImmersiveBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B056EE47F01251918444809B /* ImmersiveBadgeView.swift */; };
 		582A39E707CC1024306E0846 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */; };
+		5CD65F6D2779B5C04048D5CD /* AppIconDev.icon in Resources */ = {isa = PBXBuildFile; fileRef = 6136C187C183A7BBAFF4728C /* AppIconDev.icon */; };
 		621502CADEEFB4DBDB8BC362 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D567D2D232B896C799B26A61 /* AppRootView.swift */; };
 		654C9C0E9AEB4E7E034F8FC6 /* SonaPinStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30984E3996934D67DA8024B /* SonaPinStyle.swift */; };
 		677034CB593C3192BF6EB582 /* SonaPinCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B43D0688699DC13F1FF2082 /* SonaPinCoreTests.swift */; };
-		78F1B44A28D37F39650BC6B2 /* VRMRealityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 519DB447BA221E1EA8440014 /* VRMRealityKit */; };
+		78F1B44A28D37F39650BC6B2 /* VRMKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0BA79646B21235F61FB280F7 /* VRMKit */; };
 		9D8221BA4F8EEAF2E6EFDE41 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D1E74BF7C8B29CBFDE332C /* QRCodeGenerator.swift */; };
 		A1C991B870DAA41569D2DE0C /* ProfileEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116913DAC6158BC35E1E8101 /* ProfileEditorView.swift */; };
 		A1CC02F4906B4E3903710429 /* AvatarStageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63221C67F690A90676A38C95 /* AvatarStageView.swift */; };
-		A75F33B2962406CADFCBF27B /* VRMKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0BA79646B21235F61FB280F7 /* VRMKit */; };
+		A75F33B2962406CADFCBF27B /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 3655D6A6C7B75145DFC8852F /* Sentry */; };
 		AA30B2915FED36FE042CA74A /* AppDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8630CB9270C057AFC717F5E3 /* AppDiagnostics.swift */; };
 		AF6BBAB903236DE593EA18BE /* AppPersistenceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF22C7C2F34AE6D873E9AC6 /* AppPersistenceStore.swift */; };
 		B63557950A703D6003E272F1 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */; };
@@ -33,6 +34,7 @@
 		E6BCA407BE994297BDA8B816 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C63D837B9D9CEF4A84F586 /* Validation.swift */; };
 		E7755CFFF0E8255BEE079B58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6852DD19055F9D638AB64EFB /* Assets.xcassets */; };
 		E7CFD477CDEF64592817FF7F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F14D20ED092B2877A38D739 /* SettingsView.swift */; };
+		F035F3D4576F3788656DEDF5 /* VRMRealityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 519DB447BA221E1EA8440014 /* VRMRealityKit */; };
 		F695C0193AF718C49DEAA5D1 /* AvatarRenderers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE5ABB714BF09D0599BC12C /* AvatarRenderers.swift */; };
 		FB14AE22F12C10FF38455503 /* AvatarDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA69EAF63F6F44C65F8E2A9 /* AvatarDomain.swift */; };
 /* End PBXBuildFile section */
@@ -71,10 +73,12 @@
 		59BA65DE2D2FDD3F88CD8595 /* VRMImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VRMImportService.swift; sourceTree = "<group>"; };
 		5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5FC3879C16E0F1017BDFBB8E /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		6136C187C183A7BBAFF4728C /* AppIconDev.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIconDev.icon; sourceTree = "<group>"; };
 		63221C67F690A90676A38C95 /* AvatarStageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStageView.swift; sourceTree = "<group>"; };
 		6852DD19055F9D638AB64EFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		8630CB9270C057AFC717F5E3 /* AppDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDiagnostics.swift; sourceTree = "<group>"; };
+		8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildNumber.xcconfig; sourceTree = "<group>"; };
 		8EA69EAF63F6F44C65F8E2A9 /* AvatarDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarDomain.swift; sourceTree = "<group>"; };
 		95299040DF6255C733F933C1 /* SonaPinUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SonaPinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA46D22E901862DF6D6F9E6D /* SonaPin.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SonaPin.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,8 +95,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A75F33B2962406CADFCBF27B /* VRMKit in Frameworks */,
-				78F1B44A28D37F39650BC6B2 /* VRMRealityKit in Frameworks */,
+				A75F33B2962406CADFCBF27B /* Sentry in Frameworks */,
+				78F1B44A28D37F39650BC6B2 /* VRMKit in Frameworks */,
+				F035F3D4576F3788656DEDF5 /* VRMRealityKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +107,7 @@
 		08C57AF6BDEAAB932AC2246E = {
 			isa = PBXGroup;
 			children = (
+				7A73067FBFB1CC57646039C2 /* native */,
 				6B3FCA683D74713A3F1F9AD9 /* Resources */,
 				B56E6E86CEE2BF8C1E4628F5 /* SonaPin */,
 				CA7384103EFCDA5F05DDBF22 /* SonaPinTests */,
@@ -140,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				1432D7DFB5C8965B1633EE83 /* AppIcon.icon */,
+				6136C187C183A7BBAFF4728C /* AppIconDev.icon */,
 				6852DD19055F9D638AB64EFB /* Assets.xcassets */,
 				69EE876CE1A8B5B78556F4AB /* Localizable.xcstrings */,
 				5B7A5AE574AE7564C6FAC341 /* PrivacyInfo.xcprivacy */,
@@ -165,6 +172,15 @@
 				22F7ED3961E18BA38844C1D3 /* SonaPinUITests.swift */,
 			);
 			path = SonaPinUITests;
+			sourceTree = "<group>";
+		};
+		7A73067FBFB1CC57646039C2 /* native */ = {
+			isa = PBXGroup;
+			children = (
+				8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */,
+			);
+			name = native;
+			path = .;
 			sourceTree = "<group>";
 		};
 		81E2E61268DB6AF694D545C1 /* Utilities */ = {
@@ -354,6 +370,7 @@
 			);
 			name = SonaPin;
 			packageProductDependencies = (
+				3655D6A6C7B75145DFC8852F /* Sentry */,
 				0BA79646B21235F61FB280F7 /* VRMKit */,
 				519DB447BA221E1EA8440014 /* VRMRealityKit */,
 			);
@@ -389,6 +406,7 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					BE485A86FB4C9C678941B7BC = {
+						DevelopmentTeam = HBB7T99U79;
 						ProvisioningStyle = Automatic;
 					};
 					E5F640C29E4BA83A6A5C1284 = {
@@ -406,6 +424,7 @@
 			mainGroup = 08C57AF6BDEAAB932AC2246E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				B8D51835A16A6CF06D05C5A5 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				350D5B8865FDEC252EFBA26F /* XCRemoteSwiftPackageReference "VRMKit" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -426,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EB0D986AE36AA6AE3070A57 /* AppIcon.icon in Resources */,
+				5CD65F6D2779B5C04048D5CD /* AppIconDev.icon in Resources */,
 				E7755CFFF0E8255BEE079B58 /* Assets.xcassets in Resources */,
 				B63557950A703D6003E272F1 /* Localizable.xcstrings in Resources */,
 				582A39E707CC1024306E0846 /* PrivacyInfo.xcprivacy in Resources */,
@@ -598,15 +618,17 @@
 		};
 		76BF8F9E3530DAB8A8C8D59A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HBB7T99U79;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SonaPin;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -722,15 +744,17 @@
 		};
 		E857F963D77006AFD2E902A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8957F1A9D61FCB13419A5D99 /* BuildNumber.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HBB7T99U79;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = SonaPin;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_CFBundleDisplayName = "SonaPin Dev";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -741,7 +765,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrdemonwolf.sonapin.dev;
 				PRODUCT_NAME = SonaPin;
 				SDKROOT = iphoneos;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -799,6 +823,14 @@
 				version = 0.10.0;
 			};
 		};
+		B8D51835A16A6CF06D05C5A5 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = exactVersion;
+				version = 9.29.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -806,6 +838,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 350D5B8865FDEC252EFBA26F /* XCRemoteSwiftPackageReference "VRMKit" */;
 			productName = VRMKit;
+		};
+		3655D6A6C7B75145DFC8852F /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8D51835A16A6CF06D05C5A5 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 		519DB447BA221E1EA8440014 /* VRMRealityKit */ = {
 			isa = XCSwiftPackageProductDependency;
