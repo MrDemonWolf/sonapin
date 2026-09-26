@@ -13,7 +13,10 @@ const appScreen = document.querySelector<HTMLImageElement>("#app-screen");
 const screenCaption = document.querySelector<HTMLElement>("#screen-caption");
 const screenButtons = [...document.querySelectorAll<HTMLButtonElement>(".screen-picker [data-image]")];
 const rotationToggle = document.querySelector<HTMLButtonElement>("#screen-rotation-toggle");
-let rotationPaused = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+let rotationPaused = reducedMotion.matches;
+let chooserHovered = false;
+let pointerPausedState: boolean | undefined;
 let rotationTimer: number | undefined;
 
 function showSelectedScreen() {
@@ -59,19 +62,20 @@ function advanceScreen() {
   screenButtons[(current + 1) % screenButtons.length]?.click();
 }
 
-function startRotation() {
+function startRotation(force = false) {
   stopRotation();
-  if (!rotationPaused && screenButtons.length > 1) rotationTimer = window.setInterval(advanceScreen, 6000);
+  if (!rotationPaused && (force || !chooserHovered) && !document.hidden && screenButtons.length > 1) {
+    rotationTimer = window.setInterval(advanceScreen, 6000);
+  }
 }
 
-function updateRotation() {
+function updateRotation(force = false) {
   stopRotation();
   if (!rotationToggle) return;
 
   rotationToggle.textContent = rotationPaused ? "▶" : "⏸";
   rotationToggle.setAttribute("aria-label", `${rotationPaused ? "Play" : "Pause"} screen rotation`);
-  rotationToggle.setAttribute("aria-pressed", String(rotationPaused));
-  startRotation();
+  startRotation(force);
 }
 
 applyTheme();
@@ -104,28 +108,39 @@ for (const button of screenButtons) {
   });
 }
 
-rotationToggle?.addEventListener("click", () => {
-  rotationPaused = !rotationPaused;
-  updateRotation();
+rotationToggle?.addEventListener("pointerdown", () => {
+  pointerPausedState = rotationPaused;
+});
+rotationToggle?.addEventListener("click", (event) => {
+  const wasPaused = event.detail > 0 ? pointerPausedState ?? rotationPaused : rotationPaused;
+  rotationPaused = !wasPaused;
+  pointerPausedState = undefined;
+  updateRotation(!rotationPaused);
 });
 
 const screenChooser = document.querySelector<HTMLElement>(".screen-chooser");
 screenChooser?.addEventListener("pointerenter", () => {
+  chooserHovered = true;
   stopRotation();
 });
 screenChooser?.addEventListener("pointerleave", () => {
-  if (!screenChooser.contains(document.activeElement)) updateRotation();
+  chooserHovered = false;
+  if (!screenChooser.contains(document.activeElement)) startRotation();
 });
 screenChooser?.addEventListener("focusin", () => {
-  stopRotation();
-});
-screenChooser?.addEventListener("focusout", (event) => {
-  if (!screenChooser.contains(event.relatedTarget as Node | null)) updateRotation();
+  rotationPaused = true;
+  updateRotation();
 });
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopRotation();
   } else {
+    updateRotation();
+  }
+});
+reducedMotion.addEventListener("change", (event) => {
+  if (event.matches) {
+    rotationPaused = true;
     updateRotation();
   }
 });
