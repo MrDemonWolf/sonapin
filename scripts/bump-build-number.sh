@@ -2,6 +2,11 @@
 set -euo pipefail
 
 spec="${0:A:h:h}/apps/native/BuildNumber.xcconfig"
+if [[ -n "${CONFIGURATION:-}" && "$CONFIGURATION" != Release ]]; then
+  print "Skipping SonaPin build number bump for $CONFIGURATION"
+  exit 0
+fi
+
 current="$(sed -nE 's/^CURRENT_PROJECT_VERSION = ([0-9]+)$/\1/p' "$spec")"
 [[ "$current" == <-> ]] || { print -u2 "Expected one numeric CURRENT_PROJECT_VERSION in $spec"; exit 1; }
 
