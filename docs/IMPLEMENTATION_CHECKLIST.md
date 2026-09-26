@@ -12,9 +12,9 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 
 ## Automated checks
 
-- [x] Active `Solo Main Protection` ruleset requires `E2E / Verify` and `Xcode 26.6 / macOS 26`; no bypass actors are configured.
-- [x] PR head `9a47f1d`: `E2E / Verify` passed on workflow run `36221227286`.
-- [x] PR head `9a47f1d`: Native lint, Simulator build, unit tests, and UI tests passed on workflow run `36221225506`.
+- [x] Active `Solo Main Protection` ruleset requires `E2E / Verify` and `Xcode 26.6 / macOS 26`; strict status checks are enabled and no bypass actors are configured.
+- [x] PR head `9dd628c`: `E2E / Verify` passed on workflow run `36223471233`.
+- [x] PR head `9dd628c`: Native lint, Simulator build, unit tests, and UI tests passed on workflow run `36223471259`.
 
 ## Sentry
 
