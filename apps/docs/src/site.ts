@@ -11,6 +11,13 @@ let theme: "light" | "dark" = storedTheme === "light" || storedTheme === "dark"
   : matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 const appScreen = document.querySelector<HTMLImageElement>("#app-screen");
 const screenCaption = document.querySelector<HTMLElement>("#screen-caption");
+const screenButtons = [...document.querySelectorAll<HTMLButtonElement>(".screen-picker [data-image]")];
+const rotationToggle = document.querySelector<HTMLButtonElement>("#screen-rotation-toggle");
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+let rotationPaused = reducedMotion.matches;
+let chooserHovered = false;
+let pointerPausedState: boolean | undefined;
+let rotationTimer: number | undefined;
 
 function showSelectedScreen() {
   if (!appScreen || !screenCaption) return;
@@ -23,14 +30,12 @@ function showSelectedScreen() {
   appScreen.src = darkImage ?? image;
   appScreen.alt = darkImage
     ? selected.dataset.altDark ?? alt
-    : theme === "dark" ? `${alt} Captured in light appearance; no dark capture is available for this screen.` : alt;
+    : alt;
 
   const name = selected.textContent?.trim() ?? "Selected screen";
   screenCaption.textContent = darkImage
-    ? `Actual dark-mode capture · ${name} · No QR code is configured in this simulator.`
-    : theme === "dark"
-      ? `Actual light-mode capture · ${name} · No dark capture is available for this screen.`
-      : `Actual SonaPin screen · ${name}`;
+    ? `Actual dark-mode capture · ${name}`
+    : `Actual light-mode capture · ${name}`;
 }
 
 function applyTheme() {
@@ -41,9 +46,36 @@ function applyTheme() {
   for (const button of document.querySelectorAll<HTMLButtonElement>(".theme-toggle")) {
     const nextTheme = theme === "light" ? "dark" : "light";
     button.setAttribute("aria-label", `Switch to ${nextTheme} appearance`);
-    button.textContent = nextTheme === "light" ? "☼ Light" : "☾ Dark";
+    button.title = `Switch to ${nextTheme} appearance`;
+    button.textContent = nextTheme === "light" ? "☀" : "☾";
   }
   showSelectedScreen();
+}
+
+function stopRotation() {
+  if (rotationTimer !== undefined) window.clearInterval(rotationTimer);
+  rotationTimer = undefined;
+}
+
+function advanceScreen() {
+  const current = screenButtons.findIndex((button) => button.getAttribute("aria-pressed") === "true");
+  screenButtons[(current + 1) % screenButtons.length]?.click();
+}
+
+function startRotation() {
+  stopRotation();
+  if (!rotationPaused && !chooserHovered && !document.hidden && screenButtons.length > 1) {
+    rotationTimer = window.setInterval(advanceScreen, 6000);
+  }
+}
+
+function updateRotation() {
+  stopRotation();
+  if (!rotationToggle) return;
+
+  rotationToggle.textContent = rotationPaused ? "▶" : "⏸";
+  rotationToggle.setAttribute("aria-label", `${rotationPaused ? "Play" : "Pause"} screen rotation`);
+  startRotation();
 }
 
 applyTheme();
@@ -57,14 +89,61 @@ for (const button of document.querySelectorAll<HTMLButtonElement>(".theme-toggle
       // The current page still changes theme when browser storage is unavailable.
     }
     applyTheme();
+    button.title = `Switch to ${theme === "light" ? "dark" : "light"} appearance`;
   });
 }
 
-for (const button of document.querySelectorAll<HTMLButtonElement>(".screen-picker button")) {
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
+  event.target.closest(".mobile-menu__panel a")?.closest("details")?.removeAttribute("open");
+});
+
+for (const button of screenButtons) {
   button.addEventListener("click", () => {
     for (const option of document.querySelectorAll<HTMLButtonElement>(".screen-picker button")) {
       option.setAttribute("aria-pressed", String(option === button));
     }
     showSelectedScreen();
+    if (rotationTimer !== undefined) startRotation();
   });
 }
+
+rotationToggle?.addEventListener("pointerdown", () => {
+  pointerPausedState = rotationPaused;
+});
+rotationToggle?.addEventListener("click", (event) => {
+  const wasPaused = event.detail > 0 ? pointerPausedState ?? rotationPaused : rotationPaused;
+  rotationPaused = !wasPaused;
+  pointerPausedState = undefined;
+  updateRotation();
+});
+
+const screenChooser = document.querySelector<HTMLElement>(".screen-chooser");
+screenChooser?.addEventListener("pointerenter", () => {
+  chooserHovered = true;
+  stopRotation();
+});
+screenChooser?.addEventListener("pointerleave", () => {
+  chooserHovered = false;
+  updateRotation();
+});
+screenChooser?.addEventListener("focusin", (event) => {
+  if (!(event.target instanceof HTMLElement) || !event.target.matches(":focus-visible")) return;
+  rotationPaused = true;
+  updateRotation();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopRotation();
+  } else {
+    updateRotation();
+  }
+});
+reducedMotion.addEventListener("change", (event) => {
+  if (event.matches) {
+    rotationPaused = true;
+    updateRotation();
+  }
+});
+
+updateRotation();

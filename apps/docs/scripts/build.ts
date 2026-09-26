@@ -76,5 +76,5 @@ const siteScript = await Bun.build({
 assert(siteScript.success, "Failed to build the site theme toggle");
 await rm(join(outputDirectory, "site.ts"));
 
-assert(renderedFiles >= 6, "Expected the landing page and five supporting pages");
+assert(renderedFiles >= 8, "Expected the landing page and seven supporting pages");
 console.log(`Built ${renderedFiles} pages at ${basePath}`);

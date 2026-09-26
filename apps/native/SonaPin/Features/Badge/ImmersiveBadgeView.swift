@@ -98,7 +98,8 @@ private struct ImmersiveBadgeOverlay: View {
                     .frame(maxWidth: isLandscape ? 380 : 300)
                     .frame(
                         maxWidth: .infinity,
-                        alignment: isLandscape ? .leading : .center
+                        maxHeight: .infinity,
+                        alignment: isLandscape ? .leading : .bottom
                     )
 
                 if showsQRCode {

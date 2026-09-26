@@ -213,10 +213,12 @@ final class SonaPinUITests: XCTestCase {
 
         let lock = app.buttons["badge.edit-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
-        lock.tap()
-
-        actions.tap()
         let settings = app.buttons["badge.settings"]
+        if !settings.isEnabled {
+            lock.tap()
+            actions.tap()
+        }
+
         let settingsEnabled = expectation(
             for: NSPredicate(format: "enabled == true"),
             evaluatedWith: settings
@@ -308,7 +310,13 @@ final class SonaPinUITests: XCTestCase {
     }
 
     private func replaceText(in field: XCUIElement, with newValue: String) {
+        XCTAssertTrue(field.isHittable)
         field.tap()
+        let keyboard = app.keyboards.firstMatch
+        if !keyboard.waitForExistence(timeout: 2) {
+            field.tap()
+        }
+        XCTAssertTrue(keyboard.waitForExistence(timeout: 3), "Text field did not receive keyboard focus")
         let oldValue = field.value as? String ?? ""
         field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: oldValue.count))
         field.typeText(newValue)

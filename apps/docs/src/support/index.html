@@ -20,14 +20,26 @@
           <span>SonaPin</span>
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
-          <ul>
+          <ul class="site-nav__links">
             <li><a href="__BASE_PATH__#features">Features</a></li>
+            <li><a href="__BASE_PATH__docs/">Docs</a></li>
             <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
             <li><a href="__BASE_PATH__terms/">Terms</a></li>
             <li><a href="__BASE_PATH__support/" aria-current="page">Support</a></li>
             <li><a href="__BASE_PATH__acknowledgments/">Credits</a></li>
           </ul>
-          <button class="theme-toggle" type="button" aria-label="Switch to light appearance">☼ Light</button>
+          <button class="theme-toggle" type="button" aria-label="Switch to light appearance" title="Switch to light appearance">☀</button>
+          <details class="mobile-menu">
+            <summary><span class="mobile-menu__icon" aria-hidden="true"></span><span>Menu</span></summary>
+            <div class="mobile-menu__panel">
+              <a href="__BASE_PATH__#features">Features</a>
+              <a href="__BASE_PATH__docs/">Docs</a>
+              <a href="__BASE_PATH__support/" aria-current="page">Support</a>
+              <a href="__BASE_PATH__privacy/">Privacy</a>
+              <a href="__BASE_PATH__terms/">Terms</a>
+              <a href="__BASE_PATH__acknowledgments/">Credits</a>
+            </div>
+          </details>
         </nav>
       </div>
     </header>
@@ -109,6 +121,7 @@
         <h2>Privacy, legal, and source</h2>
         <ul class="resource-list">
           <li><a href="__BASE_PATH__privacy/">Privacy Policy</a></li>
+          <li><a href="__BASE_PATH__docs/">Documentation</a></li>
           <li><a href="__BASE_PATH__terms/">Terms of Use</a></li>
           <li><a href="mailto:legal@mrdemonwolf.com?subject=SonaPin">Legal and privacy contact</a></li>
           <li><a href="__REPOSITORY_URL__">SonaPin source repository</a></li>
@@ -121,6 +134,8 @@
         <p class="footer-credit">© 2026 SonaPin by <a href="https://www.mrdemonwolf.com">MrDemonWolf, Inc.</a></p>
         <ul class="footer-links">
           <li><a href="__BASE_PATH__">Home</a></li>
+          <li><a href="__BASE_PATH__docs/">Docs</a></li>
+          <li><a href="__BASE_PATH__guide/">App guide</a></li>
           <li><a href="__BASE_PATH__privacy/">Privacy</a></li>
           <li><a href="__BASE_PATH__terms/">Terms</a></li>
           <li><a href="__BASE_PATH__acknowledgments/">Acknowledgments</a></li>
