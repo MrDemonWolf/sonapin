@@ -69,6 +69,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.mrdemonwolf.sonapin.dev
           INFOPLIST_KEY_CFBundleDisplayName: SonaPin Dev
           ASSETCATALOG_COMPILER_APPICON_NAME: AppIconDev
+          DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
 
   SonaPinTests:
     type: bundle.unit-test

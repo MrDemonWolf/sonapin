@@ -14,9 +14,9 @@ Reason: iOS 18 is the first iOS release for `RealityView` and entity-targeted Sw
 
 ## 3. Local-first data boundary
 
-Decision: version 1 has no account, backend, analytics, ads, tracking, uploads, public gallery, feed, comments, or background networking.
+Decision: version 1 has no account, backend, product analytics, ads, or tracking. Badge profiles, imported avatars, and user settings stay on-device. The app sends limited crash and hang diagnostics to Sentry; automatic PII, screenshots, view hierarchy, breadcrumbs, session tracking, and network capture are disabled.
 
-Reason: a convention badge must work offline and imported avatars may carry sensitive identity and licensing metadata. Local storage narrows both failure and privacy exposure.
+Reason: a convention badge must work offline, and imported avatars may carry sensitive identity and licensing metadata. Local storage keeps that content on-device. Sentry is a narrow diagnostics exception; badge and QR flows remain available offline.
 
 ## 4. VRM adapter boundary
 

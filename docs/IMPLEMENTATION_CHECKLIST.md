@@ -1,29 +1,42 @@
 # SonaPin 1.0 release checklist
 
-SonaPin is a released open-source iOS project with a TestFlight build. Public App Store distribution is a separate gate. This list records verified work as of 2026-09-24.
+SonaPin is a released open-source iOS project with a TestFlight build. Public App Store distribution is a separate gate. This list records verified work as of 2026-09-26.
 
 ## Product
 
 - [x] Swift 6 and SwiftUI app targets iOS 18 and later.
 - [x] Built-in demo avatar, badge profile, QR code, VRM import, and local settings are implemented.
-- [x] Local profile and avatar storage; no account, tracking, analytics, or backend.
+- [x] Profile and avatar content stay on-device; no account, ads, product analytics, or tracking. Sentry-enabled builds send limited diagnostics for app functionality.
 - [x] Public website includes product, support, privacy, terms, and acknowledgments pages.
 - [x] Source app and website use version 1.0.0 release copy.
 
 ## Automated checks
 
-- [x] Xcode 27 Simulator build and lint gate pass.
-- [x] Swift suite passes: 34 tests across 6 suites, including local VRM fixture checks.
-- [x] iOS end-to-end suite passes: 6 UI tests on iPhone 18 Pro Simulator / iOS 27.
-- [x] Website end-to-end suite passes: 4 desktop and mobile Playwright checks.
-- [x] GitHub main ruleset requires native and browser checks. Administrator bypass remains available.
+- [x] Active `Solo Main Protection` ruleset requires `E2E / Verify` and `Xcode 26.6 / macOS 26`; strict status checks are enabled and no bypass actors are configured.
+- [x] Checkpoint `f6ebd98`: `E2E / Verify` passed on workflow run `36227806626`.
+- [x] Checkpoint `f6ebd98`: Native lint, Simulator build, unit tests, and UI tests passed on workflow run `36227806627`.
+
+## Sentry
+
+- [x] Sentry Cocoa 9.29.0 is integrated with PII, screenshots, view hierarchy, breadcrumbs, session tracking, and network capture disabled.
+- [x] A debug simulator smoke event reached the `sonapin` Sentry project. This verifies delivery only.
+- [x] A recent long hang was traced to SonaPin Dev on a GitHub Actions simulator; Sentry reports its `SonaPin.debug.dylib` symbols are missing.
+- [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
+- [x] Verified a fresh debug smoke event arrived with the `development` environment.
+- [x] Built a matching Debug simulator dSYM for `SonaPin.debug.dylib` (UUID `5FE2D638-9AC8-3A85-92B7-20A0C50786E2`); uploading it to Sentry remains open.
+- [x] Build Release archive 1.0.0 build 21; the app binary and its dSYM match at UUID `560CF100-12DD-3B62-81E3-9B3B60B6272E`.
+- [ ] Export a Distribution-signed TestFlight IPA for build 21. Xcode currently has no valid Apple account credentials or Apple Distribution certificate for team `HBB7T99U79`.
+- [ ] Upload the matching dSYM to Sentry and verify readable app frames.
+- [ ] Sample events from a real TestFlight device before clearing the remaining hang issues.
 
 ## TestFlight gate
 
 - [x] Xcode 27 exported version 1.0.0 build 8 as an App Store Connect IPA; store profile and privacy manifest inspected.
 - [x] Confirm App Store Connect app record and bundle ID; version 1.0 is Prepare for Submission.
 - [x] Confirm the 4+ age rating and the build 1 assignment to the Private Beta internal group.
-- [ ] Revise App Privacy for the Sentry-enabled build, publish the updated privacy policy, complete Content Rights, and add review contact details.
+- [x] Public privacy policy describes Sentry-enabled crash and hang diagnostics.
+- [ ] Update the unpublished App Privacy draft for Sentry; keep it unpublished until it matches the final build.
+- [ ] Complete Content Rights and App Review contact details.
 - [ ] Complete every physical-iPhone check in [DEVICE_TEST_CHECKLIST.md](DEVICE_TEST_CHECKLIST.md).
 - [x] Deployed support and privacy URLs opened successfully on 2026-09-22.
 - [x] Confirm an installed TestFlight build: 1.0.0 build 1 is testing in the Private Beta group.
@@ -31,3 +44,7 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] Upload the 13-inch iPad screenshot.
 
 Simulator results do not clear the physical-device or App Store Connect gates.
+
+## Public release monitoring
+
+- [ ] After public release, monitor Apple crash and hang reports, Sentry production issues, and customer feedback; fix release blockers before shipping new features.
