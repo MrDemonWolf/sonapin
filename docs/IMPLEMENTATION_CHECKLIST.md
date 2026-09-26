@@ -1,29 +1,41 @@
 # SonaPin 1.0 release checklist
 
-SonaPin is a released open-source iOS project with a TestFlight build. Public App Store distribution is a separate gate. This list records verified work as of 2026-09-24.
+SonaPin is a released open-source iOS project with a TestFlight build. Public App Store distribution is a separate gate. This list records verified work as of 2026-09-26.
 
 ## Product
 
 - [x] Swift 6 and SwiftUI app targets iOS 18 and later.
 - [x] Built-in demo avatar, badge profile, QR code, VRM import, and local settings are implemented.
-- [x] Local profile and avatar storage; no account, tracking, analytics, or backend.
+- [x] Profile and avatar content stay on-device; no account, ads, product analytics, or tracking. Sentry-enabled builds send limited diagnostics for app functionality.
 - [x] Public website includes product, support, privacy, terms, and acknowledgments pages.
 - [x] Source app and website use version 1.0.0 release copy.
 
 ## Automated checks
 
-- [x] Xcode 27 Simulator build and lint gate pass.
-- [x] Swift suite passes: 34 tests across 6 suites, including local VRM fixture checks.
-- [x] iOS end-to-end suite passes: 6 UI tests on iPhone 18 Pro Simulator / iOS 27.
-- [x] Website end-to-end suite passes: 4 desktop and mobile Playwright checks.
-- [x] GitHub main ruleset requires native and browser checks. Administrator bypass remains available.
+- [x] Active `Solo Main Protection` ruleset requires `E2E / Verify` and `Xcode 26.6 / macOS 26`; no bypass actors are configured.
+- [x] Current PR head `ca757b0`: Swift lint and Simulator build passed in Native iOS CI.
+- [x] Current PR head `ca757b0`: Website Playwright E2E passed.
+- [x] Current PR head `ca757b0`: Native unit tests passed.
+- [x] Current PR head `ca757b0`: Native UI tests passed.
+
+## Sentry
+
+- [x] Sentry Cocoa 9.29.0 is integrated with PII, screenshots, view hierarchy, breadcrumbs, session tracking, and network capture disabled.
+- [x] A debug simulator smoke event reached the `sonapin` Sentry project. This verifies delivery only.
+- [x] A recent long hang was traced to SonaPin Dev on a GitHub Actions simulator; Sentry reports its `SonaPin.debug.dylib` symbols are missing.
+- [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
+- [ ] Verify the updated environment tag with a new debug smoke event.
+- [ ] Build a fresh release archive, upload its matching dSYM, and verify readable app frames.
+- [ ] Sample events from a real TestFlight device before clearing the remaining hang issues.
 
 ## TestFlight gate
 
 - [x] Xcode 27 exported version 1.0.0 build 8 as an App Store Connect IPA; store profile and privacy manifest inspected.
 - [x] Confirm App Store Connect app record and bundle ID; version 1.0 is Prepare for Submission.
 - [x] Confirm the 4+ age rating and the build 1 assignment to the Private Beta internal group.
-- [ ] Revise App Privacy for the Sentry-enabled build, publish the updated privacy policy, complete Content Rights, and add review contact details.
+- [x] Public privacy policy describes Sentry-enabled crash and hang diagnostics.
+- [ ] Update the unpublished App Privacy draft for Sentry; keep it unpublished until it matches the final build.
+- [ ] Complete Content Rights and App Review contact details.
 - [ ] Complete every physical-iPhone check in [DEVICE_TEST_CHECKLIST.md](DEVICE_TEST_CHECKLIST.md).
 - [x] Deployed support and privacy URLs opened successfully on 2026-09-22.
 - [x] Confirm an installed TestFlight build: 1.0.0 build 1 is testing in the Private Beta group.
