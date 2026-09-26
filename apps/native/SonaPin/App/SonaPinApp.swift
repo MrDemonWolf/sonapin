@@ -9,6 +9,11 @@ struct SonaPinApp: App {
     init() {
         SentrySDK.start { options in
             options.dsn = "https://f98f871d959cb512a2c15dcc0a70b563@o4508281688752128.ingest.us.sentry.io/4512140118196224"
+#if DEBUG
+            options.environment = "development"
+#else
+            options.environment = "production"
+#endif
             options.sendDefaultPii = false
             options.beforeSend = { event in
                 event.user = nil
