@@ -79,8 +79,9 @@ test("keeps rotation paused after focus leaves until Play and respects hover and
   const screenshot = page.locator("#app-screen");
   const chooser = page.locator(".screen-chooser");
   const chooseAvatar = page.getByRole("button", { name: "Choose avatar" });
-  await chooser.hover();
+  await page.keyboard.press("Tab");
   await chooseAvatar.focus();
+  expect(await chooseAvatar.evaluate((element) => (element as HTMLElement).matches(":focus-visible"))).toBe(true);
   await chooseAvatar.evaluate((element) => (element as HTMLElement).blur());
 
   await page.evaluate(() => {
@@ -106,6 +107,18 @@ test("keeps rotation paused after focus leaves until Play and respects hover and
   await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
   await page.clock.fastForward(6000);
   await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+});
+
+test("resumes screen rotation after pointer leaves the chooser", async ({ page }) => {
+  await page.clock.install();
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+
+  const screenshot = page.locator("#app-screen");
+  await page.getByRole("button", { name: "Choose avatar" }).click();
+  await page.mouse.move(0, 0);
+  await page.clock.fastForward(6000);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/details\.jpg$/);
 });
 
 test("defaults to the OS theme and persists a theme choice across docs pages", async ({ page }) => {

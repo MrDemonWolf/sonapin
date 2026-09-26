@@ -127,7 +127,8 @@ screenChooser?.addEventListener("pointerleave", () => {
   chooserHovered = false;
   updateRotation();
 });
-screenChooser?.addEventListener("focusin", () => {
+screenChooser?.addEventListener("focusin", (event) => {
+  if (!(event.target instanceof HTMLElement) || !event.target.matches(":focus-visible")) return;
   rotationPaused = true;
   updateRotation();
 });
