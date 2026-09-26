@@ -62,20 +62,20 @@ function advanceScreen() {
   screenButtons[(current + 1) % screenButtons.length]?.click();
 }
 
-function startRotation(force = false) {
+function startRotation() {
   stopRotation();
-  if (!rotationPaused && (force || !chooserHovered) && !document.hidden && screenButtons.length > 1) {
+  if (!rotationPaused && !chooserHovered && !document.hidden && screenButtons.length > 1) {
     rotationTimer = window.setInterval(advanceScreen, 6000);
   }
 }
 
-function updateRotation(force = false) {
+function updateRotation() {
   stopRotation();
   if (!rotationToggle) return;
 
   rotationToggle.textContent = rotationPaused ? "▶" : "⏸";
   rotationToggle.setAttribute("aria-label", `${rotationPaused ? "Play" : "Pause"} screen rotation`);
-  startRotation(force);
+  startRotation();
 }
 
 applyTheme();
@@ -115,7 +115,7 @@ rotationToggle?.addEventListener("click", (event) => {
   const wasPaused = event.detail > 0 ? pointerPausedState ?? rotationPaused : rotationPaused;
   rotationPaused = !wasPaused;
   pointerPausedState = undefined;
-  updateRotation(!rotationPaused);
+  updateRotation();
 });
 
 const screenChooser = document.querySelector<HTMLElement>(".screen-chooser");
@@ -125,7 +125,7 @@ screenChooser?.addEventListener("pointerenter", () => {
 });
 screenChooser?.addEventListener("pointerleave", () => {
   chooserHovered = false;
-  if (!screenChooser.contains(document.activeElement)) startRotation();
+  updateRotation();
 });
 screenChooser?.addEventListener("focusin", () => {
   rotationPaused = true;

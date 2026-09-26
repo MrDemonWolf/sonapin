@@ -60,6 +60,7 @@ test("automatically rotates through app screens and can be paused", async ({ pag
 
   await rotationToggle.click();
   await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Play screen rotation" })).not.toHaveAttribute("aria-pressed");
   await page.clock.fastForward(12000);
   await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
 
@@ -70,23 +71,41 @@ test("automatically rotates through app screens and can be paused", async ({ pag
   await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
 });
 
-test("pauses rotation when reduced motion changes and keeps it paused after focus leaves", async ({ page }) => {
+test("keeps rotation paused after focus leaves until Play and respects hover and visibility", async ({ page }) => {
   await page.clock.install();
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
 
   const screenshot = page.locator("#app-screen");
-  await page.getByRole("button", { name: "Choose avatar" }).focus();
-  await page.getByRole("button", { name: "See your badge" }).focus();
+  const chooser = page.locator(".screen-chooser");
+  const chooseAvatar = page.getByRole("button", { name: "Choose avatar" });
+  await chooser.hover();
+  await chooseAvatar.focus();
+  await chooseAvatar.evaluate((element) => (element as HTMLElement).blur());
+
+  await page.evaluate(() => {
+    Object.defineProperty(document, "hidden", { configurable: true, value: true });
+    document.dispatchEvent(new Event("visibilitychange"));
+    Object.defineProperty(document, "hidden", { configurable: true, value: false });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
   await page.clock.fastForward(12000);
   await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+  await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
 
   await page.getByRole("button", { name: "Play screen rotation" }).click();
   await expect(page.getByRole("button", { name: "Pause screen rotation" })).toBeVisible();
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
   await page.clock.fastForward(12000);
   await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+
+  await page.mouse.move(0, 0);
+  await page.clock.fastForward(6000);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
+  await page.clock.fastForward(6000);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
 });
 
 test("defaults to the OS theme and persists a theme choice across docs pages", async ({ page }) => {
