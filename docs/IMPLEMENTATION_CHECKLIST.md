@@ -13,10 +13,8 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 ## Automated checks
 
 - [x] Active `Solo Main Protection` ruleset requires `E2E / Verify` and `Xcode 26.6 / macOS 26`; no bypass actors are configured.
-- [x] Current PR head `ca757b0`: Swift lint and Simulator build passed in Native iOS CI.
-- [x] Current PR head `ca757b0`: Website Playwright E2E passed.
-- [x] Current PR head `ca757b0`: Native unit tests passed.
-- [x] Current PR head `ca757b0`: Native UI tests passed.
+- [x] PR head `9a47f1d`: `E2E / Verify` passed on workflow run `36221227286`.
+- [x] PR head `9a47f1d`: Native lint, Simulator build, unit tests, and UI tests passed on workflow run `36221225506`.
 
 ## Sentry
 
@@ -24,7 +22,8 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] A debug simulator smoke event reached the `sonapin` Sentry project. This verifies delivery only.
 - [x] A recent long hang was traced to SonaPin Dev on a GitHub Actions simulator; Sentry reports its `SonaPin.debug.dylib` symbols are missing.
 - [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
-- [ ] Verify the updated environment tag with a new debug smoke event.
+- [x] Verified a fresh debug smoke event arrived with the `development` environment.
+- [x] Built a matching Debug simulator dSYM for `SonaPin.debug.dylib` (UUID `5FE2D638-9AC8-3A85-92B7-20A0C50786E2`); uploading it to Sentry remains open.
 - [ ] Build a fresh release archive, upload its matching dSYM, and verify readable app frames.
 - [ ] Sample events from a real TestFlight device before clearing the remaining hang issues.
 
@@ -43,3 +42,7 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] Upload the 13-inch iPad screenshot.
 
 Simulator results do not clear the physical-device or App Store Connect gates.
+
+## Public release monitoring
+
+- [ ] After public release, monitor Apple crash and hang reports, Sentry production issues, and customer feedback; fix release blockers before shipping new features.
