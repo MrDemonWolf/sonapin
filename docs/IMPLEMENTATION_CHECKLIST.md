@@ -13,8 +13,8 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 ## Automated checks
 
 - [x] Active `Solo Main Protection` ruleset requires `E2E / Verify` and `Xcode 26.6 / macOS 26`; strict status checks are enabled and no bypass actors are configured.
-- [x] PR head `9dd628c`: `E2E / Verify` passed on workflow run `36223471233`.
-- [x] PR head `9dd628c`: Native lint, Simulator build, unit tests, and UI tests passed on workflow run `36223471259`.
+- [x] Checkpoint `f6ebd98`: `E2E / Verify` passed on workflow run `36227806626`.
+- [x] Checkpoint `f6ebd98`: Native lint, Simulator build, unit tests, and UI tests passed on workflow run `36227806627`.
 
 ## Sentry
 
@@ -24,7 +24,9 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
 - [x] Verified a fresh debug smoke event arrived with the `development` environment.
 - [x] Built a matching Debug simulator dSYM for `SonaPin.debug.dylib` (UUID `5FE2D638-9AC8-3A85-92B7-20A0C50786E2`); uploading it to Sentry remains open.
-- [ ] Build a fresh release archive, upload its matching dSYM, and verify readable app frames.
+- [x] Build Release archive 1.0.0 build 21; the app binary and its dSYM match at UUID `560CF100-12DD-3B62-81E3-9B3B60B6272E`.
+- [ ] Export a Distribution-signed TestFlight IPA for build 21. Xcode currently has no valid Apple account credentials or Apple Distribution certificate for team `HBB7T99U79`.
+- [ ] Upload the matching dSYM to Sentry and verify readable app frames.
 - [ ] Sample events from a real TestFlight device before clearing the remaining hang issues.
 
 ## TestFlight gate
