@@ -20,6 +20,7 @@ final class SonaPinUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Step 1 of 3"].waitForExistence(timeout: 8))
         XCTAssertTrue(app.buttons["onboarding.next"].isEnabled)
         XCTAssertEqual(app.buttons["onboarding.next"].label, "Make It Mine")
+        XCTAssertTrue(app.images["QR code"].waitForExistence(timeout: 5))
     }
 
     func testGuidedDemoReactsAndCompletesWithOnlyAName() {
