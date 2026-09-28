@@ -24,7 +24,7 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [ ] Symbolicate Sentry issue `SONAPIN-X` (event `a7be82464de549f9a6f165e8078e7720`) before naming a cause. It is SonaPin Dev 1.0.0 (21), build `26A428`, on an iPhone 18 Pro Max simulator running iOS 27; Sentry requires `SonaPin.debug.dylib` UUID `73C45324-EC04-3EE1-917F-56DA204BEF5B`.
 - [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
 - [x] Verified a fresh debug smoke event arrived with the `development` environment.
-- [ ] Resolve IP-derived location before finalizing App Privacy: the fatal-hang event shows approximate geography, and Sentry IP scrubbing is off.
+- [ ] Finalize App Privacy for Sentry: disclose Crash Data, Performance Data, and Other Diagnostic Data for App Functionality; include Coarse Location while Sentry events show IP-derived geography. Recheck linked/tracking choices against the final archive and event payload.
 - [x] Confirmed Sentry's Debug Information Files page currently has no uploaded symbols. The previously built Debug dSYM UUID `5FE2D638-9AC8-3A85-92B7-20A0C50786E2` does not match this event.
 - [x] Built and launched a fresh Debug simulator app on 2026-09-28. Its matching dSYM has `SonaPin.debug.dylib` UUID `DB185FF4-1D03-3AD7-9511-9288CCEFD3AF` (app executable UUID `2DFA77F5-93EF-3B00-9E21-D803ABE2E96F`); neither matches the older event.
 - [x] Build Release archive 1.0.0 build 21; the app binary and its dSYM match at UUID `560CF100-12DD-3B62-81E3-9B3B60B6272E`.
