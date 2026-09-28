@@ -19,9 +19,9 @@ test("manually switches between genuine app screens and ends on the badge", asyn
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
 
-  await expect(page.getByRole("img", { name: /SonaPin full-screen badge/i })).toBeVisible();
+  await expect(page.getByRole("img", { name: /SonaPin badge showing/i })).toBeVisible();
   const screenshot = page.locator("#app-screen");
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
   expect(await screenshot.evaluate((element) => element.clientWidth / element.clientHeight)).toBeLessThan(0.5);
 
   const chooseAvatar = page.getByRole("button", { name: "Choose avatar" });
@@ -29,22 +29,22 @@ test("manually switches between genuine app screens and ends on the badge", asyn
   const seeBadge = page.getByRole("button", { name: "See your badge" });
   await expect(seeBadge).toHaveAttribute("aria-pressed", "true");
   await chooseAvatar.click();
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-2026-09\.png$/);
   await expect(screenshot).toHaveAttribute("alt", /SonaPin avatar screen/);
   await addDetails.click();
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/details\.jpg$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/details-2026-09\.png$/);
   await seeBadge.click();
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
   await expect(seeBadge).toHaveAttribute("aria-pressed", "true");
 
   await page.getByRole("button", { name: "Switch to dark appearance" }).first().click();
   await chooseAvatar.click();
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-dark\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-2026-09\.png$/);
   await addDetails.click();
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/details-dark\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/details-2026-09\.png$/);
   await seeBadge.click();
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture-dark\.png$/);
-  await expect(screenshot).toHaveAttribute("alt", /full-screen badge in dark appearance/i);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
+  await expect(screenshot).toHaveAttribute("alt", /SonaPin badge showing/i);
 });
 
 test("automatically rotates through app screens and can be paused", async ({ page }) => {
@@ -56,19 +56,19 @@ test("automatically rotates through app screens and can be paused", async ({ pag
   const rotationToggle = page.getByRole("button", { name: "Pause screen rotation" });
   await expect(rotationToggle).not.toHaveAttribute("aria-pressed");
   await page.clock.fastForward(6000);
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-2026-09\.png$/);
 
   await rotationToggle.click();
   await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Play screen rotation" })).not.toHaveAttribute("aria-pressed");
   await page.clock.fastForward(12000);
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-2026-09\.png$/);
 
   await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
   await page.clock.fastForward(12000);
-  await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+  await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
 });
 
 test("keeps rotation paused after focus leaves until Play and respects hover and visibility", async ({ page }) => {
@@ -91,22 +91,22 @@ test("keeps rotation paused after focus leaves until Play and respects hover and
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await page.clock.fastForward(12000);
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
   await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
 
   await page.getByRole("button", { name: "Play screen rotation" }).click();
   await expect(page.getByRole("button", { name: "Pause screen rotation" })).toBeVisible();
   await page.clock.fastForward(12000);
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
 
   await page.mouse.move(0, 0);
   await page.clock.fastForward(6000);
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-2026-09\.png$/);
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page.getByRole("button", { name: "Play screen rotation" })).toBeVisible();
   await page.clock.fastForward(6000);
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar\.png$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/avatar-2026-09\.png$/);
 });
 
 test("resumes screen rotation after pointer leaves the chooser", async ({ page }) => {
@@ -118,7 +118,7 @@ test("resumes screen rotation after pointer leaves the chooser", async ({ page }
   await page.getByRole("button", { name: "Choose avatar" }).click();
   await page.mouse.move(0, 0);
   await page.clock.fastForward(6000);
-  await expect(screenshot).toHaveAttribute("src", /screenshots\/details\.jpg$/);
+  await expect(screenshot).toHaveAttribute("src", /screenshots\/details-2026-09\.png$/);
 });
 
 test("defaults to the OS theme and persists a theme choice across docs pages", async ({ page }) => {
@@ -129,11 +129,11 @@ test("defaults to the OS theme and persists a theme choice across docs pages", a
   await expect(root).toHaveAttribute("data-theme", "light");
   await page.getByRole("button", { name: "Switch to dark appearance" }).click();
   await expect(root).toHaveAttribute("data-theme", "dark");
-  await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture-dark\.png$/);
-  await expect(page.locator("#screen-caption")).toContainText("Actual dark-mode capture · See your badge");
+  await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
+  await expect(page.locator("#screen-caption")).toContainText("Actual light-mode capture · See your badge");
   await page.reload();
   await expect(root).toHaveAttribute("data-theme", "dark");
-  await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture-dark\.png$/);
+  await expect(page.locator("#app-screen")).toHaveAttribute("src", /screenshots\/badge-capture-2026-09\.png$/);
 
   await page.goto("/support/");
   await expect(root).toHaveAttribute("data-theme", "dark");
@@ -194,7 +194,7 @@ test("keeps the page usable on a narrow phone", async ({ page }) => {
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.locator(".hero-copy .store-button")).toBeVisible();
-  await expect(page.getByRole("img", { name: /SonaPin full-screen badge/i })).toBeVisible();
+  await expect(page.getByRole("img", { name: /SonaPin badge showing/i })).toBeVisible();
   const overflow = await page.evaluate(() => ({
     width: document.documentElement.scrollWidth,
     elements: [...document.querySelectorAll("*")]

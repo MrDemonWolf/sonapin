@@ -1,6 +1,6 @@
 # SonaPin 1.0 release checklist
 
-SonaPin is a released open-source iOS project with a TestFlight build. Public App Store distribution is a separate gate. This list records verified work as of 2026-09-26.
+SonaPin is a released open-source iOS project with a TestFlight build. Public App Store distribution is a separate gate. This list records verified work as of 2026-09-28.
 
 ## Product
 
@@ -45,7 +45,8 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] Confirm an installed TestFlight build: 1.0.0 build 1 is testing in the Private Beta group.
 - [x] Upload five iPhone screenshots and save updated App Store listing copy.
 - [x] Upload the 13-inch iPad screenshot.
-- [ ] Refresh and upload all five iPhone screenshots at 1320 × 2868 on iPhone 18 Pro Max, including the corrected “Your profile stays on device” copy; keep the first three focused on the badge, QR scan, and customization.
+- [x] Capture and compose five current iPhone 18 Pro Max App Store screenshots at 1320 × 2868; the first three show the badge, QR scan, and profile customization. Source app screenshots and store artwork are saved under `apps/docs/public/screenshots/`.
+- [ ] Upload the five refreshed iPhone screenshots to App Store Connect. The current Chrome session is signed out.
 
 Simulator results do not clear the physical-device or App Store Connect gates.
 
