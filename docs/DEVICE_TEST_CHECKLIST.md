@@ -44,6 +44,13 @@ Record device model, iOS version, app commit, VRM checksum, tester, date, and ev
 - [ ] Confirm the quiet zone stays clear and no UI overlays cover modules.
 - [ ] Confirm malformed URL-like payloads produce a warning without blocking intentional plain text.
 
+## Offline behavior and crash reporting
+
+- [ ] Enable Airplane Mode, relaunch SonaPin, and confirm the badge, local avatar, profile, and QR code remain available.
+- [ ] While offline, edit the profile and badge settings, force quit, relaunch, and confirm the changes persist.
+- [ ] Show the QR code offline and confirm a second phone can decode its payload, even though an online destination cannot load.
+- [ ] On a Sentry-enabled TestFlight build, confirm a real event reports the expected production release and readable SonaPin stack frames after its matching dSYM is uploaded.
+
 ## Lifecycle, resources, and restoration
 
 - [ ] Perform ten avatar load/remove or replace cycles and record peak and settled memory.
