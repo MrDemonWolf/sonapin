@@ -29,7 +29,7 @@ Verify the deployed URLs again before App Review submission.
 - **Feedback email:** Not set in App Store Connect as of 2026-09-24
 - **Latest observed TestFlight upload:** 1.0.0 build 1, uploaded 2026-09-22
 - **Age rating:** 4+ calculated and saved in App Store Connect on 2026-09-24
-- **App Privacy:** Privacy policy URL saved. The older “Data Not Collected” draft must be replaced before releasing a Sentry-enabled build. Sentry's SDK manifest lists crash data, performance data, and other diagnostic data for app functionality, not linked to the user and not used for tracking.
+- **App Privacy:** Privacy policy URL saved. The older “Data Not Collected” answer remains an unpublished draft. For a Sentry-enabled release, disclose Crash Data, Performance Data, and Other Diagnostic Data for app functionality. The SDK manifest marks these as not linked to the user and not used for tracking. Sentry currently shows IP-derived approximate geography and IP scrubbing is off, so also disclose Coarse Location unless IP scrubbing is enabled and a new event confirms no location is retained. Verify the final archive's privacy report and event payload before publishing the answers.
 - **Content Rights:** Declaration pending owner confirmation of rights for imported VRM content
 
 ## TestFlight beta information
