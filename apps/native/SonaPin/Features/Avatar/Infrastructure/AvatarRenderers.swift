@@ -435,6 +435,8 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         )
     }
 
+    private static let unitSphereMesh = MeshResource.generateSphere(radius: 1)
+
     private static func sphere(
         name: String,
         radius: Float,
@@ -442,10 +444,10 @@ final class ProceduralDemoAvatarRenderer: AvatarRendering {
         position: SIMD3<Float>,
         scale: SIMD3<Float> = .one
     ) -> ModelEntity {
-        let entity = ModelEntity(mesh: .generateSphere(radius: radius), materials: [material])
+        let entity = ModelEntity(mesh: unitSphereMesh, materials: [material])
         entity.name = name
         entity.position = position
-        entity.scale = scale
+        entity.scale = scale * SIMD3<Float>(repeating: radius)
         return entity
     }
 
