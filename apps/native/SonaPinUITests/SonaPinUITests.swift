@@ -67,6 +67,60 @@ final class SonaPinUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Step 2 of 3"].exists)
     }
 
+    func testQRCodeCanBeEditedAndDisplayed() {
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Step 1 of 3"].waitForExistence(timeout: 8))
+
+        advanceOnboarding()
+        let displayName = app.textFields["profile.display-name"]
+        replaceText(in: displayName, with: "Nova")
+        dismissKeyboardIfPresent()
+        advanceOnboarding()
+        XCTAssertTrue(app.staticTexts["Your badge is ready"].waitForExistence(timeout: 3))
+        app.buttons["onboarding.finish"].tap()
+
+        XCTAssertTrue(app.buttons["badge.actions"].waitForExistence(timeout: 10))
+        openSettings()
+        attachScreenshot(named: "settings")
+
+        app.buttons["settings.qr"].tap()
+        let payload = app.textFields["qr.payload"]
+        replaceText(in: payload, with: "https://mrdemonwolf.github.io/sonapin/")
+        dismissKeyboardIfPresent()
+        attachScreenshot(named: "qr-editor")
+        app.buttons["qr.save"].tap()
+
+        app.buttons["settings.profile"].tap()
+        XCTAssertTrue(app.navigationBars["Edit Profile"].waitForExistence(timeout: 5))
+        attachScreenshot(named: "profile-editor")
+        app.buttons["Cancel"].tap()
+
+        let avatarSettings = app.buttons["settings.avatar"]
+        reveal(avatarSettings)
+        avatarSettings.tap()
+        XCTAssertTrue(app.navigationBars["Avatar"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["avatar.import"].exists)
+        attachScreenshot(named: "avatar-manager")
+        app.buttons["BackButton"].tap()
+        XCTAssertTrue(app.buttons["settings.done"].waitForExistence(timeout: 5))
+
+        app.buttons["settings.done"].tap()
+
+        let qr = app.buttons["badge.qr"]
+        XCTAssertTrue(qr.waitForExistence(timeout: 5))
+        XCTAssertEqual(
+            qr.value as? String,
+            "Website QR code containing https://mrdemonwolf.github.io/sonapin/"
+        )
+
+        attachScreenshot(named: "badge-with-qr")
+
+        qr.tap()
+        XCTAssertTrue(app.buttons["badge.qr.close"].waitForExistence(timeout: 5))
+        attachScreenshot(named: "enlarged-qr")
+        app.buttons["badge.qr.close"].tap()
+    }
+
     func testCompleteBadgeFlowEditProfileAndDeleteLocalData() {
         app.launch()
         XCTAssertTrue(app.staticTexts["Step 1 of 3"].waitForExistence(timeout: 8))
@@ -282,6 +336,13 @@ final class SonaPinUITests: XCTestCase {
         let confirm = app.buttons["settings.delete-all.confirm"].firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 3))
         confirm.tap()
+    }
+
+    private func attachScreenshot(named name: String) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     private func advanceOnboarding() {
