@@ -76,11 +76,11 @@ Five screenshots were uploaded to the 6.9-inch iPhone slot on 2026-09-24, in thi
 2. `02_Stories.png` — Enlarged QR code.
 3. `03_Explore.png` — Profile editor.
 4. `04_Everywhere.png` — Avatar import.
-5. `05_Engaging.png` — Settings and on-device privacy.
+5. `05_Engaging.png` — Settings; “Your profile stays on device.”
 
 The cleaned upload files are in `assets/app-store/`. The five iPhone files are 1290 × 2796; that is an accepted 6.9-inch iPhone screenshot size, but the exported files do not prove which simulator model captured them. `06_iPad_Badge.png` is a 13-inch iPad Pro simulator capture at 2064 × 2752 and was uploaded on 2026-09-24. The QR points to the public SonaPin site, not a personal contact.
 
-Apple's current 6.9-inch screenshot specifications also accept 1320 × 2868 for iPhone 18 Pro Max. Refresh the five iPhone screenshots at that size before the public release, using the iPhone 18 Pro Max simulator and Open Screenshot Generator. Where the UI and localization are the same, App Store Connect can scale the highest-resolution screenshots across sizes. See [Apple's screenshot specifications](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications).
+The local `05_Engaging.png` now says “Your profile stays on device,” which accurately describes profile storage while Sentry sends limited crash and hang diagnostics. App Store Connect still needs the refreshed screenshot set. Before public release, recapture and export all five at 1320 × 2868 using the iPhone 18 Pro Max simulator and Open Screenshot Generator. Where the UI and localization are the same, App Store Connect can scale the highest-resolution screenshots across sizes. See [Apple's screenshot specifications](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications).
 
 ## Age-rating notes
 
