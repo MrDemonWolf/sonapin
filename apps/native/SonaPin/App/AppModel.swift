@@ -25,6 +25,7 @@ final class AppModel {
 
     private(set) var bootState: AppBootState = .loading
     private(set) var isImportingAvatar = false
+    private(set) var isMutatingAvatar = false
     var notice: AppNotice?
     var cameraResetToken = 0
     var expressionRequestToken = 0
@@ -113,8 +114,13 @@ final class AppModel {
     }
 
     func importAvatar(from url: URL) async {
+        guard !isMutatingAvatar else { return }
         isImportingAvatar = true
-        defer { isImportingAvatar = false }
+        isMutatingAvatar = true
+        defer {
+            isImportingAvatar = false
+            isMutatingAvatar = false
+        }
 
         do {
             let result = try await avatarImportService.importAvatar(from: url)
@@ -129,12 +135,20 @@ final class AppModel {
     }
 
     func useDemoAvatar() async {
+        guard !isMutatingAvatar else { return }
+        isMutatingAvatar = true
+        defer { isMutatingAvatar = false }
+
         snapshot.avatar = .demo
         await persistNow()
         feedbackToken += 1
     }
 
     func removeImportedAvatar() async {
+        guard !isMutatingAvatar else { return }
+        isMutatingAvatar = true
+        defer { isMutatingAvatar = false }
+
         do {
             var updatedSnapshot = snapshot
             updatedSnapshot.avatar = .demo
