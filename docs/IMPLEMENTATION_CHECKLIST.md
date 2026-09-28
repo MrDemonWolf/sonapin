@@ -21,15 +21,16 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] Sentry Cocoa 9.29.0 is integrated with PII, screenshots, view hierarchy, breadcrumbs, session tracking, and network capture disabled.
 - [x] A debug simulator smoke event reached the `sonapin` Sentry project. This verifies delivery only.
 - [x] Confirmed a fatal “App Hang Fully Blocked” event: the OS watchdog terminated SonaPin Dev after its main thread blocked for at least 2 seconds.
-- [ ] Symbolicate that event before naming a cause: Sentry expects `SonaPin.debug.dylib` UUID `73C45324-EC04-3EE1-917F-56DA204BEF5B`, while the latest local simulator build has UUID `D96E4267-67AD-368E-BD2B-D72386888A4B`; those symbols do not match.
+- [ ] Symbolicate Sentry issue `SONAPIN-X` (event `a7be82464de549f9a6f165e8078e7720`) before naming a cause. It is SonaPin Dev 1.0.0 (21), build `26A428`, on an iPhone 18 Pro Max simulator running iOS 27; Sentry requires `SonaPin.debug.dylib` UUID `73C45324-EC04-3EE1-917F-56DA204BEF5B`.
 - [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
 - [x] Verified a fresh debug smoke event arrived with the `development` environment.
 - [ ] Resolve IP-derived location before finalizing App Privacy: the fatal-hang event shows approximate geography, and Sentry IP scrubbing is off.
-- [x] Built a matching Debug simulator dSYM for `SonaPin.debug.dylib` (UUID `5FE2D638-9AC8-3A85-92B7-20A0C50786E2`); uploading it to Sentry remains open.
+- [x] Confirmed Sentry's Debug Information Files page currently has no uploaded symbols. The previously built Debug dSYM UUID `5FE2D638-9AC8-3A85-92B7-20A0C50786E2` does not match this event.
+- [x] Built and launched a fresh Debug simulator app on 2026-09-28. Its matching dSYM has `SonaPin.debug.dylib` UUID `DB185FF4-1D03-3AD7-9511-9288CCEFD3AF` (app executable UUID `2DFA77F5-93EF-3B00-9E21-D803ABE2E96F`); neither matches the older event.
 - [x] Build Release archive 1.0.0 build 21; the app binary and its dSYM match at UUID `560CF100-12DD-3B62-81E3-9B3B60B6272E`.
 - [ ] Export a Distribution-signed TestFlight IPA for build 21. Xcode currently has no valid Apple account credentials or Apple Distribution certificate for team `HBB7T99U79`.
-- [ ] Upload the matching dSYM to Sentry and verify readable app frames.
-- [ ] Profile a fresh SonaPin Dev launch in Time Profiler; synchronous RealityKit `makeRig()` work is a lead, not a confirmed cause.
+- [ ] Upload the exact event's matching dSYM if its original archive can be recovered; otherwise upload the fresh build's symbols before generating a new event and verifying readable app frames. The local `sentry-cli` has no authentication configured.
+- [ ] Profile a fresh SonaPin Dev launch in Time Profiler. The fresh simulator displayed the onboarding avatar and a later 3-second process sample showed an idle main run loop; the hang was not reproduced. Synchronous RealityKit `makeRig()` work remains a lead, not a confirmed cause.
 - [ ] Sample events from a real TestFlight device before clearing the remaining hang issues.
 
 ## TestFlight gate
