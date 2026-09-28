@@ -27,6 +27,7 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] Build Release archive 1.0.0 build 21; the app binary and its dSYM match at UUID `560CF100-12DD-3B62-81E3-9B3B60B6272E`.
 - [ ] Export a Distribution-signed TestFlight IPA for build 21. Xcode currently has no valid Apple account credentials or Apple Distribution certificate for team `HBB7T99U79`.
 - [ ] Upload the matching dSYM to Sentry and verify readable app frames.
+- [ ] Profile a fresh SonaPin Dev launch in Time Profiler; synchronous RealityKit `makeRig()` work is a lead, not a confirmed cause.
 - [ ] Sample events from a real TestFlight device before clearing the remaining hang issues.
 
 ## TestFlight gate
