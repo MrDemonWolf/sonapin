@@ -149,3 +149,9 @@ struct AvatarImportResult: Equatable, Sendable {
     var record: AvatarRecord
     var fileURL: URL
 }
+
+protocol AvatarImportServicing: Sendable {
+    func importAvatar(from sourceURL: URL) async throws -> AvatarImportResult
+    func currentFileURL() async -> URL?
+    func removeCurrentAvatar() async throws
+}

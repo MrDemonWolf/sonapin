@@ -291,7 +291,7 @@ enum VRMCompatibilityInspector {
     }
 }
 
-actor AvatarImportService {
+actor AvatarImportService: AvatarImportServicing {
     private let directoryURL: URL
     private let currentAvatarURL: URL
     private var isImporting = false
@@ -387,11 +387,11 @@ actor AvatarImportService {
         )
     }
 
-    func currentFileURL() -> URL? {
+    func currentFileURL() async -> URL? {
         FileManager.default.fileExists(atPath: currentAvatarURL.path) ? currentAvatarURL : nil
     }
 
-    func removeCurrentAvatar() throws {
+    func removeCurrentAvatar() async throws {
         guard FileManager.default.fileExists(atPath: currentAvatarURL.path) else {
             return
         }

@@ -234,6 +234,46 @@ struct QRCodeTests {
 
 @Suite("Avatar compatibility and storage")
 struct AvatarTests {
+    @Test("Local-data mutations do not overlap an avatar import")
+    @MainActor
+    func localDataMutationsWaitForAvatarImport() async throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let avatarURL = root.appending(path: "Avatars/current.vrm")
+        let importer = SuspendedAvatarImportService(fileURL: avatarURL)
+        let model = AppModel(
+            applicationSupportDirectory: root,
+            launchArguments: [],
+            avatarImportService: importer
+        )
+        await model.start()
+
+        let importTask = Task { await model.importAvatar(from: URL(fileURLWithPath: "/avatar.vrm")) }
+        await importer.waitUntilImportStarts()
+        let feedbackToken = model.feedbackToken
+
+        await model.useDemoAvatar()
+        await model.removeImportedAvatar()
+        await model.deleteAllLocalData()
+
+        #expect(model.isMutatingLocalData)
+        #expect(model.feedbackToken == feedbackToken)
+        #expect(await importer.removalCount() == 0)
+        #expect(model.snapshot.avatar == .demo)
+
+        await importer.finishImport()
+        await importTask.value
+
+        #expect(model.snapshot.avatar.kind == .imported)
+        #expect(FileManager.default.fileExists(atPath: avatarURL.path))
+
+        await model.deleteAllLocalData()
+
+        #expect(model.snapshot.avatar == .demo)
+        #expect(!FileManager.default.fileExists(atPath: avatarURL.path))
+        #expect(try await AppPersistenceStore(directoryURL: root).load() == nil)
+    }
+
     @Test("VRMKit products resolve")
     func dependenciesResolve() {
         #expect(AvatarDependencyAvailability.vrmKit)
@@ -399,6 +439,55 @@ struct AvatarTests {
         let report = try VRMCompatibilityInspector.inspect(fileURL: fixture, checksum: "local-fixture")
         #expect(report.vrmVersion != .unknown)
     }
+}
+
+private actor SuspendedAvatarImportService: AvatarImportServicing {
+    private let result: AvatarImportResult
+    private var importContinuation: CheckedContinuation<Void, Never>?
+    private var startContinuation: CheckedContinuation<Void, Never>?
+    private var hasStartedImport = false
+    private var removedAvatarCount = 0
+
+    init(fileURL: URL) {
+        result = AvatarImportResult(
+            record: AvatarRecord(kind: .imported, storedFileName: fileURL.lastPathComponent, checksum: "test", compatibility: nil),
+            fileURL: fileURL
+        )
+    }
+
+    func importAvatar(from sourceURL: URL) async throws -> AvatarImportResult {
+        hasStartedImport = true
+        startContinuation?.resume()
+        startContinuation = nil
+        await withCheckedContinuation { importContinuation = $0 }
+        try FileManager.default.createDirectory(
+            at: result.fileURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try Data("avatar".utf8).write(to: result.fileURL)
+        return result
+    }
+
+    func waitUntilImportStarts() async {
+        guard !hasStartedImport else { return }
+        await withCheckedContinuation { startContinuation = $0 }
+    }
+
+    func finishImport() {
+        importContinuation?.resume()
+        importContinuation = nil
+    }
+
+    func currentFileURL() async -> URL? {
+        FileManager.default.fileExists(atPath: result.fileURL.path) ? result.fileURL : nil
+    }
+
+    func removeCurrentAvatar() async throws {
+        removedAvatarCount += 1
+        try? FileManager.default.removeItem(at: result.fileURL)
+    }
+
+    func removalCount() -> Int { removedAvatarCount }
 }
 
 @Suite("Avatar renderers")
