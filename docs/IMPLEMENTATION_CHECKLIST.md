@@ -42,6 +42,7 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] Confirm an installed TestFlight build: 1.0.0 build 1 is testing in the Private Beta group.
 - [x] Upload five iPhone screenshots and save updated App Store listing copy.
 - [x] Upload the 13-inch iPad screenshot.
+- [ ] Refresh the five iPhone screenshots at 1320 × 2868 on iPhone 18 Pro Max; keep the first three focused on the badge, QR scan, and customization.
 
 Simulator results do not clear the physical-device or App Store Connect gates.
 
