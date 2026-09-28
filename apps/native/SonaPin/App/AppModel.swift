@@ -33,7 +33,7 @@ final class AppModel {
     var feedbackToken = 0
 
     @ObservationIgnored private let persistenceStore: AppPersistenceStore
-    @ObservationIgnored private let avatarImportService: AvatarImportService
+    @ObservationIgnored private let avatarImportService: any AvatarImportServicing
     @ObservationIgnored private let launchArguments: Set<String>
     @ObservationIgnored private var saveTask: Task<Void, Never>?
     @ObservationIgnored private var persistenceEnabled = false
@@ -41,10 +41,12 @@ final class AppModel {
 
     init(
         applicationSupportDirectory: URL = AppModel.defaultApplicationSupportDirectory(),
-        launchArguments: [String] = ProcessInfo.processInfo.arguments
+        launchArguments: [String] = ProcessInfo.processInfo.arguments,
+        avatarImportService: (any AvatarImportServicing)? = nil
     ) {
         persistenceStore = AppPersistenceStore(directoryURL: applicationSupportDirectory)
-        avatarImportService = AvatarImportService(applicationSupportDirectory: applicationSupportDirectory)
+        self.avatarImportService = avatarImportService
+            ?? AvatarImportService(applicationSupportDirectory: applicationSupportDirectory)
         self.launchArguments = Set(launchArguments)
     }
 
