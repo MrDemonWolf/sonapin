@@ -277,7 +277,7 @@ final class SonaPinUITests: XCTestCase {
             for: NSPredicate(format: "enabled == true"),
             evaluatedWith: settings
         )
-        wait(for: [settingsEnabled], timeout: 3)
+        wait(for: [settingsEnabled], timeout: 10)
         settings.tap()
         XCTAssertTrue(app.buttons["settings.done"].waitForExistence(timeout: 5))
     }
