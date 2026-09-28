@@ -31,7 +31,7 @@ information.
 
 Create your badge in the app, then show the QR code when you meet someone.
 The app stores badge details on your device. Sentry-enabled builds also send
-limited crash and performance diagnostics to help maintain the app; see the
+crash and hang diagnostics to help maintain the app; see the
 [privacy policy](https://mrdemonwolf.github.io/sonapin/privacy/) for details.
 
 SonaPin is released as source and is available to testers through TestFlight.
