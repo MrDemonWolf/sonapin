@@ -25,7 +25,7 @@ final class AppModel {
 
     private(set) var bootState: AppBootState = .loading
     private(set) var isImportingAvatar = false
-    private(set) var isMutatingAvatar = false
+    private(set) var isMutatingLocalData = false
     var notice: AppNotice?
     var cameraResetToken = 0
     var expressionRequestToken = 0
@@ -114,12 +114,12 @@ final class AppModel {
     }
 
     func importAvatar(from url: URL) async {
-        guard !isMutatingAvatar else { return }
+        guard !isMutatingLocalData else { return }
         isImportingAvatar = true
-        isMutatingAvatar = true
+        isMutatingLocalData = true
         defer {
             isImportingAvatar = false
-            isMutatingAvatar = false
+            isMutatingLocalData = false
         }
 
         do {
@@ -135,9 +135,9 @@ final class AppModel {
     }
 
     func useDemoAvatar() async {
-        guard !isMutatingAvatar else { return }
-        isMutatingAvatar = true
-        defer { isMutatingAvatar = false }
+        guard !isMutatingLocalData else { return }
+        isMutatingLocalData = true
+        defer { isMutatingLocalData = false }
 
         snapshot.avatar = .demo
         await persistNow()
@@ -145,9 +145,9 @@ final class AppModel {
     }
 
     func removeImportedAvatar() async {
-        guard !isMutatingAvatar else { return }
-        isMutatingAvatar = true
-        defer { isMutatingAvatar = false }
+        guard !isMutatingLocalData else { return }
+        isMutatingLocalData = true
+        defer { isMutatingLocalData = false }
 
         do {
             var updatedSnapshot = snapshot
@@ -183,6 +183,10 @@ final class AppModel {
     }
 
     func deleteAllLocalData() async {
+        guard !isMutatingLocalData else { return }
+        isMutatingLocalData = true
+        defer { isMutatingLocalData = false }
+
         saveTask?.cancel()
         persistenceEnabled = false
 
