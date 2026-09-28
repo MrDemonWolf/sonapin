@@ -66,3 +66,12 @@ jobs:
             artifacts/*.log
             artifacts/*.xcresult
             apps/native/.derived-data/Logs/Test/*.xcresult
+
+      - name: Upload simulator debug symbols
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sonapin-ios-simulator-dsyms-macos-26
+          if-no-files-found: ignore
+          retention-days: 14
+          path: apps/native/.derived-data/Build/Products/Debug-iphonesimulator/SonaPin.app.dSYM
