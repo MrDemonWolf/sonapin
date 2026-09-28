@@ -51,6 +51,7 @@ struct SettingsView: View {
                     dismiss()
                     Task { await model.deleteAllLocalData() }
                 }
+                .disabled(model.isMutatingLocalData)
                 .accessibilityIdentifier("settings.delete-all.confirm")
                 Button("Cancel", role: .cancel) {}
             } message: {
@@ -205,6 +206,7 @@ struct SettingsView: View {
             Button("Delete All Local Data", systemImage: "trash", role: .destructive) {
                 confirmsDeleteAll = true
             }
+            .disabled(model.isMutatingLocalData)
             .accessibilityIdentifier("settings.delete-all")
         }
     }

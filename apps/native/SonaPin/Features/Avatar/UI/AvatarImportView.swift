@@ -25,7 +25,7 @@ struct AvatarSourcePicker: View {
             }
             .buttonStyle(.plain)
             .sonaCard()
-            .disabled(model.isMutatingAvatar)
+            .disabled(model.isMutatingLocalData)
             .accessibilityAddTraits(model.snapshot.avatar.kind == .demo ? .isSelected : [])
             .accessibilityHint("Uses the built-in procedural demo avatar.")
             .accessibilityIdentifier("avatar.use-demo")
@@ -48,7 +48,7 @@ struct AvatarSourcePicker: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.sonaNavy)
-                .disabled(model.isMutatingAvatar)
+                .disabled(model.isMutatingLocalData)
                 .frame(minHeight: 44)
                 .accessibilityHint("Opens the system file picker for a dot V R M file.")
                 .accessibilityIdentifier("avatar.import")
@@ -233,7 +233,7 @@ struct AvatarManagerView: View {
                         confirmsRemoval = true
                     }
                     .buttonStyle(.bordered)
-                    .disabled(model.isMutatingAvatar)
+                    .disabled(model.isMutatingLocalData)
                     .frame(minHeight: 44)
                     .accessibilityIdentifier("avatar.remove")
                 }
