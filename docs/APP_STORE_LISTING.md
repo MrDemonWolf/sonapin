@@ -70,7 +70,7 @@ VRM support depends on the model's materials and features. SonaPin reports compa
 
 ## Screenshots
 
-Five screenshots captured from the iPhone 18 Pro simulator were uploaded to the 6.9-inch iPhone slot in this order. App Store Connect uses them for the 6.5-inch slot too. The first three lead with the badge, scanning, and customization because Apple uses those on installation sheets.
+Five screenshots were uploaded to the 6.9-inch iPhone slot on 2026-09-24, in this order. The first three lead with the badge, scanning, and customization; Apple uses the first three on installation sheets.
 
 1. `01_Brand_Hero.png` — SonaPin badge with the built-in wolf.
 2. `02_Stories.png` — Enlarged QR code.
@@ -78,7 +78,9 @@ Five screenshots captured from the iPhone 18 Pro simulator were uploaded to the 
 4. `04_Everywhere.png` — Avatar import.
 5. `05_Engaging.png` — Settings and on-device privacy.
 
-The cleaned upload files are in `assets/app-store/`. `06_iPad_Badge.png` is a real 13-inch iPad Pro simulator capture at 2064 × 2752 and was uploaded on 2026-09-24. The QR points to the public SonaPin site, not a personal contact.
+The cleaned upload files are in `assets/app-store/`. The five iPhone files are 1290 × 2796; that is an accepted 6.9-inch iPhone screenshot size, but the exported files do not prove which simulator model captured them. `06_iPad_Badge.png` is a 13-inch iPad Pro simulator capture at 2064 × 2752 and was uploaded on 2026-09-24. The QR points to the public SonaPin site, not a personal contact.
+
+Apple's current 6.9-inch screenshot specifications also accept 1320 × 2868 for iPhone 18 Pro Max. Refresh the five iPhone screenshots at that size before the public release, using the iPhone 18 Pro Max simulator and Open Screenshot Generator. Where the UI and localization are the same, App Store Connect can scale the highest-resolution screenshots across sizes. See [Apple's screenshot specifications](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications).
 
 ## Age-rating notes
 
