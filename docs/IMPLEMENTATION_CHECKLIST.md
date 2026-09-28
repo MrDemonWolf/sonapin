@@ -23,6 +23,7 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 - [x] A recent long hang was traced to SonaPin Dev on a GitHub Actions simulator; Sentry reports its `SonaPin.debug.dylib` symbols are missing.
 - [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
 - [x] Verified a fresh debug smoke event arrived with the `development` environment.
+- [ ] Resolve IP-derived location before finalizing App Privacy: the fatal-hang event shows approximate geography, and Sentry IP scrubbing is off.
 - [x] Built a matching Debug simulator dSYM for `SonaPin.debug.dylib` (UUID `5FE2D638-9AC8-3A85-92B7-20A0C50786E2`); uploading it to Sentry remains open.
 - [x] Build Release archive 1.0.0 build 21; the app binary and its dSYM match at UUID `560CF100-12DD-3B62-81E3-9B3B60B6272E`.
 - [ ] Export a Distribution-signed TestFlight IPA for build 21. Xcode currently has no valid Apple account credentials or Apple Distribution certificate for team `HBB7T99U79`.
