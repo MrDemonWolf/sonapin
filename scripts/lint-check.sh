@@ -7,7 +7,8 @@ native_dir="$repo_root/apps/native"
 "$repo_root/scripts/test-bump-build-number.sh"
 
 forbidden='@unchecked[[:space:]]+Sendable|nonisolated\(unsafe\)|@preconcurrency|Task\.detached|DispatchSemaphore'
-if rg -n "$forbidden" "$native_dir/SonaPin" "$native_dir/SonaPinTests" "$native_dir/SonaPinUITests"; then
+if rg -n "$forbidden" "$native_dir/SonaPin" "$native_dir/SonaPinTests" "$native_dir/SonaPinUITests" \
+  | rg -v '/QRCodeView.swift:[0-9]+:.*Task\.detached\(priority: \.userInitiated\).*concurrency-reviewed: Core Image rendering stays off the main actor\.$'; then
   print -u2 "Forbidden concurrency escape found. Document and narrow it before use."
   exit 1
 fi
