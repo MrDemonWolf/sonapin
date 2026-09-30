@@ -32,7 +32,7 @@ information.
 Create your badge in the app, then show the QR code when you meet someone.
 The app stores badge details on your device. Sentry-enabled builds also send
 crash and hang diagnostics to help maintain the app; see the
-[privacy policy](https://mrdemonwolf.github.io/sonapin/privacy/) for details.
+[privacy policy](https://sonapin.mrdemonwolf.dev/privacy/) for details.
 
 SonaPin is released as source and is available to testers through TestFlight.
 The public App Store listing is not live yet.
@@ -104,7 +104,8 @@ Third-party license details are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.
 
 ## Contact
 
-- Support: [SonaPin Support](https://mrdemonwolf.github.io/sonapin/support/)
+- Website and docs: [SonaPin](https://sonapin.mrdemonwolf.dev/)
+- Support: [SonaPin Support](https://sonapin.mrdemonwolf.dev/support/)
 - Bugs and suggestions: [GitHub Issues](https://github.com/MrDemonWolf/sonapin/issues)
 - Community: [Join my server](https://mrdwolf.net/discord)
 

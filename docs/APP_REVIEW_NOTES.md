@@ -35,8 +35,8 @@ The app is more than a static model viewer. It includes a built-in interactive a
 
 ## Contact and URLs
 
-- Support: `https://mrdemonwolf.github.io/sonapin/support/`
-- Privacy: `https://mrdemonwolf.github.io/sonapin/privacy/`
-- Terms: `https://mrdemonwolf.github.io/sonapin/terms/`
+- Support: `https://sonapin.mrdemonwolf.dev/support/`
+- Privacy: `https://sonapin.mrdemonwolf.dev/privacy/`
+- Terms: `https://sonapin.mrdemonwolf.dev/terms/`
 
 Verify all deployed pages and provide current review contact information in App Store Connect before submission.
