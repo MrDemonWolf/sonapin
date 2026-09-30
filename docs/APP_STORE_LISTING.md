@@ -10,10 +10,10 @@ SonaPin 1.0 is available to TestFlight testers. The public App Store version is 
 - **Keywords:** `vrm,avatar,furry,character,profile,convention,cosplay,qr,contact,identity,3d,offline`
 - **Proposed primary category:** Lifestyle
 - **Proposed secondary category:** Entertainment
-- **Marketing URL:** `https://mrdemonwolf.github.io/sonapin/`
-- **Support URL:** `https://mrdemonwolf.github.io/sonapin/support/`
-- **Privacy URL:** `https://mrdemonwolf.github.io/sonapin/privacy/`
-- **Terms URL:** `https://mrdemonwolf.github.io/sonapin/terms/`
+- **Marketing URL:** `https://sonapin.mrdemonwolf.dev/`
+- **Support URL:** `https://sonapin.mrdemonwolf.dev/support/`
+- **Privacy URL:** `https://sonapin.mrdemonwolf.dev/privacy/`
+- **Terms URL:** `https://sonapin.mrdemonwolf.dev/terms/`
 
 Verify the deployed URLs again before App Review submission.
 
