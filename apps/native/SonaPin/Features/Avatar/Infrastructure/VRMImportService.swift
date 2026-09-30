@@ -603,7 +603,9 @@ private enum GLBJSONReader {
     ) throws {
         let images = root["images"] as? [[String: Any]] ?? []
         let bufferViews = root["bufferViews"] as? [[String: Any]] ?? []
-        let binaryDataOffset = 20 + jsonChunkLength + 8
+        let binaryChunkHeaderOffset = 20 + jsonChunkLength
+        let binaryDataOffset = binaryChunkHeaderOffset + 8
+        var binaryDataLength: Int?
         var totalImageBytes = 0
 
         for image in images {
@@ -613,8 +615,19 @@ private enum GLBJSONReader {
                 let view = bufferViews[index]
                 let byteLength = (view["byteLength"] as? NSNumber)?.intValue ?? 0
                 let byteOffset = (view["byteOffset"] as? NSNumber)?.intValue ?? 0
+                if binaryDataLength == nil {
+                    try fileHandle.seek(toOffset: UInt64(binaryChunkHeaderOffset))
+                    let binaryHeader = try readExactly(8, from: fileHandle)
+                    guard binaryHeader.littleEndianUInt32(at: 4) == 0x004E4942 else {
+                        throw VRMInspectionError.resourceLimitExceeded("missing binary image data")
+                    }
+                    binaryDataLength = Int(binaryHeader.littleEndianUInt32(at: 0))
+                }
+                let availableBinaryBytes = binaryDataLength ?? 0
+                let bufferIndex = (view["buffer"] as? NSNumber)?.intValue ?? 0
                 guard byteLength > 0, byteLength <= limits.maximumImageBytes,
-                      byteOffset >= 0, binaryDataOffset + byteOffset >= binaryDataOffset else {
+                      bufferIndex == 0, byteOffset >= 0, byteOffset <= availableBinaryBytes,
+                      byteLength <= availableBinaryBytes - byteOffset else {
                     throw VRMInspectionError.resourceLimitExceeded("image data")
                 }
                 totalImageBytes += byteLength

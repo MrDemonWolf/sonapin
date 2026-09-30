@@ -20,7 +20,7 @@ SonaPin is a released open-source iOS project with a TestFlight build. Public Ap
 
 - [x] Sentry Cocoa 9.29.0 is integrated with PII, screenshots, view hierarchy, breadcrumbs, session tracking, and network capture disabled.
 - [x] A debug simulator smoke event reached the `sonapin` Sentry project. This verifies delivery only.
-- [x] Confirmed a fatal “App Hang Fully Blocked” event: the OS watchdog terminated SonaPin Dev after its main thread blocked for at least 2 seconds.
+- [x] Confirmed a fatal “App Hang Fully Blocked” event: Sentry reports that SonaPin Dev was terminated after its main thread blocked for at least 2 seconds; the termination cause is not yet confirmed.
 - [ ] Symbolicate Sentry issue `SONAPIN-X` (event `a7be82464de549f9a6f165e8078e7720`) before naming a cause. It is SonaPin Dev 1.0.0 (21), build `26A428`, on an iPhone 18 Pro Max simulator running iOS 27; Sentry requires `SonaPin.debug.dylib` UUID `73C45324-EC04-3EE1-917F-56DA204BEF5B`.
 - [x] Debug builds now tag events as `development`; Release builds tag events as `production`.
 - [x] Verified a fresh debug smoke event arrived with the `development` environment.

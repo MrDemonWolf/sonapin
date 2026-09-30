@@ -453,6 +453,18 @@ struct AvatarTests {
         }
     }
 
+    @Test("Image buffer views must stay inside the GLB binary chunk")
+    func imageBufferViewMustStayInsideBinaryChunk() throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = root.appending(path: "truncated-image.vrm")
+        try makeVRM(imageByteLength: 4, binaryByteCount: 1).write(to: source)
+
+        #expect(throws: VRMInspectionError.resourceLimitExceeded("image data")) {
+            try VRMCompatibilityInspector.inspect(fileURL: source, checksum: "checksum")
+        }
+    }
+
     @Test("A render-invalid candidate preserves the current avatar")
     func failedRenderValidationPreservesCurrent() async throws {
         let root = try temporaryDirectory()
@@ -689,7 +701,8 @@ private func makeVRM(
     extraRequiredExtension: String? = nil,
     includeScene: Bool = true,
     nodeCount: Int = 1,
-    imageByteLength: Int? = nil
+    imageByteLength: Int? = nil,
+    binaryByteCount: Int? = nil
 ) throws -> Data {
     let bones = Dictionary(uniqueKeysWithValues: requiredHumanoidBones.map { ($0, ["node": 0]) })
     var requiredExtensions = ["VRMC_vrm"]
@@ -743,9 +756,10 @@ private func makeVRM(
     data.appendLittleEndian(0x4E4F534A)
     data.append(json)
     if let imageByteLength {
-        data.appendLittleEndian(UInt32(imageByteLength))
+        let byteCount = binaryByteCount ?? imageByteLength
+        data.appendLittleEndian(UInt32(byteCount))
         data.appendLittleEndian(0x004E4942)
-        data.append(Data(repeating: 0, count: imageByteLength))
+        data.append(Data(repeating: 0, count: byteCount))
         data.replaceSubrange(8..<12, with: withUnsafeBytes(of: UInt32(data.count).littleEndian, Array.init))
     }
     return data
