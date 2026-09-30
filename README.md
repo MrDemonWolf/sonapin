@@ -1,80 +1,111 @@
-# SonaPin
+# SonaPin - Your Fursona, Ready to Share
 
-**Your sona. Your badge. Alive.**
+SonaPin turns your iPhone into an interactive digital badge for your fursona.
+Create a profile, add a compatible VRM avatar, and share your badge in person.
+Make every hello a little more memorable.
 
-SonaPin is a released open-source iPhone and iPad app project that turns your device into an interactive fursona badge. Show a 3D avatar, your name and pronouns, and a scannable QR link at conventions and meetups. Your profile and imported avatar stay on your device.
+## Features
 
-![SonaPin badge mark](assets/brand/sonapin-badge.svg)
+- **A badge that feels like you:** Add your name, pronouns, species, tagline,
+  and the link behind your QR code.
+- **Bring your avatar:** Import compatible `.vrm` files from the Files app, or
+  start with the built-in demo wolf.
+- **Make it interactive:** Tap and move your avatar to see it react.
+- **Share in person:** Show a high-contrast QR code linked to your profile.
+- **Make it comfortable:** Adjust motion, haptics, contrast, and screen-awake
+  behavior.
+- **Keep control of your profile:** Badge and profile data stay on your device;
+  delete local data from Settings whenever you want.
 
-## What you can do
+## Getting Started
 
-- Start with the built-in demo wolf or import a compatible VRM avatar from Files.
-- Tap and move the avatar to trigger reactions.
-- Add a display name, pronouns, species, tagline, and QR destination.
-- Show a high-contrast QR code in badge mode.
-- Adjust motion, haptics, contrast, and screen-awake behavior.
-- Delete all locally stored profile and avatar data from Settings.
+See the [project documentation](docs/) for release, privacy, and support
+information.
 
-No account, ads, product analytics, tracking, or backend. Newer builds send limited crash and hang diagnostics to Sentry; badge data stays on your device.
+1. Install Xcode and Bun using the prerequisites below.
+2. Clone this repository and run `bun install` from the project root.
+3. Run `make project` to generate the Xcode project.
+4. Run `make resolve`, then `make sim` to build and launch the iOS app.
 
-## Get SonaPin
+## Usage
 
-The source release is available here, and a 1.0.0 build has already reached TestFlight. A public App Store link is not available yet. See the [release guide](apps/native/RELEASING.md) for the current distribution status.
+Create your badge in the app, then show the QR code when you meet someone.
+The app stores badge details on your device. Sentry-enabled builds also send
+limited crash and performance diagnostics to help maintain the app; see the
+[privacy policy](https://mrdemonwolf.github.io/sonapin/privacy/) for details.
 
-The [App Store listing copy and screenshots](docs/APP_STORE_LISTING.md) are in this repository.
+SonaPin is released as source and is available to testers through TestFlight.
+The public App Store listing is not live yet.
 
-## Run it locally
+## Tech Stack
 
-Requires macOS, Xcode 26 or newer, XcodeGen, and Bun. The app targets iOS 18 or newer.
+| Layer | Technology |
+| --- | --- |
+| App | Swift 6, SwiftUI, UIKit, RealityKit, Core Image |
+| Avatar import | VRMKit, VRMRealityKit |
+| Diagnostics | Sentry Cocoa |
+| Project generation | XcodeGen |
+| Documentation site | TypeScript, Bun, static HTML and CSS |
+| End-to-end tests | Playwright |
+
+## Development
+
+### Prerequisites
+
+- macOS with Xcode 26.6 or newer
+- Bun 1.4.2 or newer
+- XcodeGen
+
+### Setup
 
 ```sh
 bun install
 make project
-make sim
+make resolve
 ```
 
-To build the website locally:
+### Development Scripts
 
-```sh
-bun run build:docs
-python3 -m http.server 4173 --directory apps/docs/dist
-```
-
-## Test
-
-```sh
-make lint-check  # Swift checks and Simulator build
-make test        # Swift unit tests
-make ui-test     # iOS end-to-end UI tests
-bun run test:e2e # Website end-to-end browser tests
-```
-
-GitHub Actions runs native build, lint, unit and UI tests, plus browser tests on every pull request to `main`. The website deploys from `main` after its build. The [main ruleset](https://github.com/MrDemonWolf/sonapin/rules/23802636) requires both `Xcode 26.6 / macOS 26` and `E2E / Verify` before merging. Repository administrators retain an emergency bypass.
-
-## Release state
-
-| Area | State |
+| Command | Purpose |
 | --- | --- |
-| Source app | Released as version 1.0.0 |
-| Website | Public landing and support pages in this repository |
-| Automated checks | Simulator build, Swift tests, iOS UI tests, browser tests |
-| TestFlight | 1.0.0 build 1 is testing in the Private Beta group and installed on an iPhone 14 Pro Max; physical-device sign-off is still open |
-| App Store | Version 1.0 is Prepare for Submission; five iPhone screenshots, one iPad screenshot, listing copy, and a 4+ age rating are saved |
+| `make sim` | Build and launch SonaPin in the default simulator |
+| `make build` | Build the iOS app for the simulator |
+| `make test` | Run native unit tests |
+| `make ui-test` | Run native UI tests |
+| `bun run build` | Build the documentation site |
+| `bun run test:e2e` | Run documentation end-to-end tests |
 
-See the [device release gate](docs/DEVICE_TEST_CHECKLIST.md) and [App Review notes](docs/APP_REVIEW_NOTES.md). Simulator tests cannot confirm real-world VRM rendering, haptics, QR scanning, battery use, or signing.
+See `make help` for the other project, archive, export, lint, and cleanup tasks.
 
-## Project layout
+### Code Quality
 
-| Path | Purpose |
-| --- | --- |
-| [apps/native](apps/native/) | Swift 6, SwiftUI, RealityKit, VRMKit, and iOS tests |
-| [apps/docs](apps/docs/) | Static TypeScript, HTML, and CSS website |
-| [tests/e2e](tests/e2e/) | Playwright website tests |
-| [docs](docs/) | App Store, privacy, review, and device checklists |
-| [.github/workflows](.github/workflows/) | Pull request checks and Pages deployment |
+Pull requests to `main` require the E2E and native iOS workflow checks. The
+repository ruleset also requires linear history and resolved review threads.
 
-VRMKit is pinned to 0.10.0 and Sentry to 9.29.0. Imported files are checked before the active avatar is replaced. The app is licensed under [GPL-3.0-or-later](LICENSE); dependency notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+## Project Structure
 
-## Support
+```text
+apps/
+  native/          iOS app, unit tests, and UI tests
+  docs/            Product landing page and support pages
+assets/            App and documentation assets
+docs/              Project, privacy, and release documentation
+scripts/           Build and release helpers
+tests/e2e/         Playwright end-to-end tests
+.github/workflows/ Continuous integration
+```
 
-Use the [support page](https://mrdemonwolf.github.io/sonapin/support/) or open a [GitHub issue](https://github.com/MrDemonWolf/sonapin/issues). Built by [MrDemonWolf, Inc.](https://www.mrdemonwolf.com).
+## License
+
+[![License](https://img.shields.io/github/license/mrdemonwolf/sonapin.svg?style=for-the-badge&logo=github)](LICENSE)
+
+SonaPin is licensed under the GNU General Public License v3.0 or later.
+Third-party license details are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Contact
+
+- Support: [SonaPin Support](https://mrdemonwolf.github.io/sonapin/support/)
+- Bugs and suggestions: [GitHub Issues](https://github.com/MrDemonWolf/sonapin/issues)
+- Community: [Join my server](https://mrdwolf.net/discord)
+
+Made with love by [MrDemonWolf, Inc.](https://www.mrdemonwolf.com)
