@@ -143,8 +143,8 @@ private struct PreparedVRMModel: Sendable {
 private actor VRMModelPreparer {
     func prepare(fileURL: URL) throws -> PreparedVRMModel {
         try Task.checkCancellation()
-        let model = try VRMKitModelValidator.parse(fileURL: fileURL)
         let report = try VRMCompatibilityInspector.inspect(fileURL: fileURL, checksum: "")
+        let model = try VRMKitModelValidator.parse(fileURL: fileURL)
         try Task.checkCancellation()
         return PreparedVRMModel(vrm: model, report: report)
     }

@@ -388,6 +388,71 @@ struct AvatarTests {
         #expect(try Data(contentsOf: imported.fileURL) == workingData)
     }
 
+    @Test("Oversized imports are rejected during the staged copy")
+    func oversizedImportIsRejected() async throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = root.appending(path: "oversized.vrm")
+        try Data(repeating: 0, count: 65).write(to: source)
+        let service = AvatarImportService(
+            applicationSupportDirectory: root.appending(path: "Application Support"),
+            resourceLimits: testResourceLimits(maximumFileBytes: 64)
+        )
+
+        await #expect(throws: AvatarImportError.fileTooLarge(maximumBytes: 64)) {
+            try await service.importAvatar(from: source)
+        }
+        #expect(await service.currentFileURL() == nil)
+    }
+
+    @Test("Oversized metadata is rejected before parsing")
+    func oversizedMetadataIsRejected() throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = root.appending(path: "metadata.vrm")
+        try makeVRM().write(to: source)
+
+        #expect(throws: VRMInspectionError.resourceLimitExceeded("metadata size")) {
+            try VRMCompatibilityInspector.inspect(
+                fileURL: source,
+                checksum: "checksum",
+                limits: testResourceLimits(maximumJSONBytes: 32)
+            )
+        }
+    }
+
+    @Test("Excessive scene complexity is rejected before parsing")
+    func excessiveSceneComplexityIsRejected() throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = root.appending(path: "complex.vrm")
+        try makeVRM(nodeCount: 2).write(to: source)
+
+        #expect(throws: VRMInspectionError.resourceLimitExceeded("nodes")) {
+            try VRMCompatibilityInspector.inspect(
+                fileURL: source,
+                checksum: "checksum",
+                limits: testResourceLimits(maximumNodes: 1)
+            )
+        }
+    }
+
+    @Test("Oversized embedded images are rejected before rendering")
+    func oversizedEmbeddedImageIsRejected() throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = root.appending(path: "image-heavy.vrm")
+        try makeVRM(imageByteLength: 33).write(to: source)
+
+        #expect(throws: VRMInspectionError.resourceLimitExceeded("image data")) {
+            try VRMCompatibilityInspector.inspect(
+                fileURL: source,
+                checksum: "checksum",
+                limits: testResourceLimits(maximumImageBytes: 32)
+            )
+        }
+    }
+
     @Test("A render-invalid candidate preserves the current avatar")
     func failedRenderValidationPreservesCurrent() async throws {
         let root = try temporaryDirectory()
@@ -435,8 +500,8 @@ struct AvatarTests {
             return
         }
 
-        try VRMKitModelValidator.validate(fileURL: fixture)
         let report = try VRMCompatibilityInspector.inspect(fileURL: fixture, checksum: "local-fixture")
+        try VRMKitModelValidator.validate(fileURL: fixture)
         #expect(report.vrmVersion != .unknown)
     }
 }
@@ -622,7 +687,9 @@ private func temporaryDirectory() throws -> URL {
 private func makeVRM(
     modelName: String = "Test Sona",
     extraRequiredExtension: String? = nil,
-    includeScene: Bool = true
+    includeScene: Bool = true,
+    nodeCount: Int = 1,
+    imageByteLength: Int? = nil
 ) throws -> Data {
     let bones = Dictionary(uniqueKeysWithValues: requiredHumanoidBones.map { ($0, ["node": 0]) })
     var requiredExtensions = ["VRMC_vrm"]
@@ -652,12 +719,17 @@ private func makeVRM(
             ],
             "VRMC_springBone": ["specVersion": "1.0"],
         ],
-        "nodes": [["name": "Tail.001"]],
+        "nodes": (0..<nodeCount).map { ["name": $0 == 0 ? "Tail.001" : "Node.\($0)"] },
         "animations": [["name": "Idle", "channels": [], "samplers": []]],
     ]
     if includeScene {
         object["scene"] = 0
         object["scenes"] = [["nodes": [0]]]
+    }
+    if let imageByteLength {
+        object["images"] = [["bufferView": 0, "mimeType": "image/png"]]
+        object["bufferViews"] = [["buffer": 0, "byteLength": imageByteLength]]
+        object["buffers"] = [["byteLength": imageByteLength]]
     }
     var json = try JSONSerialization.data(withJSONObject: object, options: .sortedKeys)
     while !json.count.isMultiple(of: 4) {
@@ -670,7 +742,38 @@ private func makeVRM(
     data.appendLittleEndian(UInt32(json.count))
     data.appendLittleEndian(0x4E4F534A)
     data.append(json)
+    if let imageByteLength {
+        data.appendLittleEndian(UInt32(imageByteLength))
+        data.appendLittleEndian(0x004E4942)
+        data.append(Data(repeating: 0, count: imageByteLength))
+        data.replaceSubrange(8..<12, with: withUnsafeBytes(of: UInt32(data.count).littleEndian, Array.init))
+    }
     return data
+}
+
+private func testResourceLimits(
+    maximumFileBytes: Int64 = VRMResourceLimits.mobile.maximumFileBytes,
+    maximumJSONBytes: Int = VRMResourceLimits.mobile.maximumJSONBytes,
+    maximumNodes: Int = VRMResourceLimits.mobile.maximumNodes,
+    maximumImageBytes: Int = VRMResourceLimits.mobile.maximumImageBytes
+) -> VRMResourceLimits {
+    let defaults = VRMResourceLimits.mobile
+    return VRMResourceLimits(
+        maximumFileBytes: maximumFileBytes,
+        maximumJSONBytes: maximumJSONBytes,
+        maximumNodes: maximumNodes,
+        maximumMeshes: defaults.maximumMeshes,
+        maximumPrimitives: defaults.maximumPrimitives,
+        maximumMaterials: defaults.maximumMaterials,
+        maximumTextures: defaults.maximumTextures,
+        maximumImages: defaults.maximumImages,
+        maximumImageBytes: maximumImageBytes,
+        maximumTotalImageBytes: defaults.maximumTotalImageBytes,
+        maximumImagePixels: defaults.maximumImagePixels,
+        maximumSkins: defaults.maximumSkins,
+        maximumAnimations: defaults.maximumAnimations,
+        maximumAccessors: defaults.maximumAccessors
+    )
 }
 
 @Suite("Avatar touch reactions")

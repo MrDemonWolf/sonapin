@@ -1,6 +1,7 @@
 import CryptoKit
 import Darwin
 import Foundation
+import ImageIO
 import VRMKit
 import VRMRealityKit
 
@@ -26,6 +27,7 @@ enum VRMInspectionError: Error, Equatable, LocalizedError, Sendable {
     case unsupportedGLBVersion(UInt32)
     case missingJSONChunk
     case malformedJSON
+    case resourceLimitExceeded(String)
 
     var errorDescription: String? {
         switch self {
@@ -33,14 +35,51 @@ enum VRMInspectionError: Error, Equatable, LocalizedError, Sendable {
         case let .unsupportedGLBVersion(version): "GLB version \(version) is not supported."
         case .missingJSONChunk: "The model does not contain readable metadata."
         case .malformedJSON: "The model metadata is malformed."
+        case let .resourceLimitExceeded(reason): "The model exceeds SonaPin’s resource limits: \(reason)."
         }
     }
+}
+
+struct VRMResourceLimits: Sendable {
+    static let mobile = VRMResourceLimits(
+        maximumFileBytes: 512 * 1_024 * 1_024,
+        maximumJSONBytes: 8 * 1_024 * 1_024,
+        maximumNodes: 4_096,
+        maximumMeshes: 1_024,
+        maximumPrimitives: 4_096,
+        maximumMaterials: 1_024,
+        maximumTextures: 1_024,
+        maximumImages: 1_024,
+        maximumImageBytes: 32 * 1_024 * 1_024,
+        maximumTotalImageBytes: 128 * 1_024 * 1_024,
+        maximumImagePixels: 16_777_216,
+        maximumSkins: 256,
+        maximumAnimations: 256,
+        maximumAccessors: 16_384
+    )
+
+    let maximumFileBytes: Int64
+    let maximumJSONBytes: Int
+    let maximumNodes: Int
+    let maximumMeshes: Int
+    let maximumPrimitives: Int
+    let maximumMaterials: Int
+    let maximumTextures: Int
+    let maximumImages: Int
+    let maximumImageBytes: Int
+    let maximumTotalImageBytes: Int
+    let maximumImagePixels: Int
+    let maximumSkins: Int
+    let maximumAnimations: Int
+    let maximumAccessors: Int
 }
 
 enum AvatarImportError: Error, Equatable, LocalizedError, Sendable {
     case invalidFileType
     case emptyFile
     case invalidModel
+    case fileTooLarge(maximumBytes: Int64)
+    case resourceLimitExceeded(String)
     case importAlreadyInProgress
     case unsupported(AvatarCompatibilityReport)
     case fileOperationFailed
@@ -50,6 +89,8 @@ enum AvatarImportError: Error, Equatable, LocalizedError, Sendable {
         case .invalidFileType: "Choose a .vrm file."
         case .emptyFile: "The selected model is empty."
         case .invalidModel: "The file contains invalid or unsupported VRM data."
+        case let .fileTooLarge(maximumBytes): "Choose a VRM file smaller than \(ByteCountFormatter.string(fromByteCount: maximumBytes, countStyle: .file))."
+        case let .resourceLimitExceeded(reason): "The model is too complex for this device: \(reason)."
         case .importAlreadyInProgress: "Wait for the current avatar import to finish."
         case .unsupported: "This model is not compatible. Review its compatibility report."
         case .fileOperationFailed: "The model could not be copied into the app."
@@ -71,10 +112,14 @@ enum VRMCompatibilityInspector {
         "VRMC_materials_mtoon", "KHR_materials_unlit", "KHR_texture_transform",
     ]
 
-    static func inspect(fileURL: URL, checksum: String) throws -> AvatarCompatibilityReport {
+    static func inspect(
+        fileURL: URL,
+        checksum: String,
+        limits: VRMResourceLimits = .mobile
+    ) throws -> AvatarCompatibilityReport {
         let attributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
         let fileSize = (attributes[.size] as? NSNumber)?.int64Value ?? 0
-        let root = try GLBJSONReader.read(from: fileURL)
+        let root = try GLBJSONReader.read(from: fileURL, limits: limits)
         let extensions = dictionary(root["extensions"]) ?? [:]
         let requiredExtensions = stringArray(root["extensionsRequired"]).sorted()
         let unsupportedExtensions = requiredExtensions
@@ -294,13 +339,15 @@ enum VRMCompatibilityInspector {
 actor AvatarImportService: AvatarImportServicing {
     private let directoryURL: URL
     private let currentAvatarURL: URL
+    private let resourceLimits: VRMResourceLimits
     private var isImporting = false
 
-    init(applicationSupportDirectory: URL) {
+    init(applicationSupportDirectory: URL, resourceLimits: VRMResourceLimits = .mobile) {
         directoryURL = applicationSupportDirectory
             .standardizedFileURL
             .appending(path: "Avatars", directoryHint: .isDirectory)
         currentAvatarURL = directoryURL.appending(path: "current.vrm", directoryHint: .notDirectory)
+        self.resourceLimits = resourceLimits
     }
 
     func importAvatar(from sourceURL: URL) async throws -> AvatarImportResult {
@@ -328,35 +375,59 @@ actor AvatarImportService: AvatarImportServicing {
         )
         defer { try? fileManager.removeItem(at: stagedURL) }
 
+        let copiedBytes: Int64
         do {
-            try AppDiagnostics.measure(.importCopy, logger: AppLog.avatarImport) {
-                try fileManager.copyItem(at: sourceURL, to: stagedURL)
+            copiedBytes = try AppDiagnostics.measure(.importCopy, logger: AppLog.avatarImport) {
+                try BoundedFileCopier.copy(
+                    from: sourceURL,
+                    to: stagedURL,
+                    maximumBytes: resourceLimits.maximumFileBytes
+                )
             }
+        } catch let error as AvatarImportError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
         } catch {
             throw AvatarImportError.fileOperationFailed
         }
 
         try Task.checkCancellation()
-        let attributes = try fileManager.attributesOfItem(atPath: stagedURL.path)
-        guard (attributes[.size] as? NSNumber)?.int64Value ?? 0 > 0 else {
+        guard copiedBytes > 0 else {
             throw AvatarImportError.emptyFile
         }
 
         let checksum: String
-        let parsedModel: VRM
         do {
             checksum = try SHA256FileHasher.hash(fileURL: stagedURL)
-            parsedModel = try VRMKitModelValidator.parse(fileURL: stagedURL)
         } catch is CancellationError {
             throw CancellationError()
         } catch {
             throw AvatarImportError.invalidModel
         }
-        let report = try AppDiagnostics.measure(.parse, logger: AppLog.avatarValidation) {
-            try VRMCompatibilityInspector.inspect(fileURL: stagedURL, checksum: checksum)
+        let report: AvatarCompatibilityReport
+        do {
+            report = try AppDiagnostics.measure(.parse, logger: AppLog.avatarValidation) {
+                try VRMCompatibilityInspector.inspect(
+                    fileURL: stagedURL,
+                    checksum: checksum,
+                    limits: resourceLimits
+                )
+            }
+        } catch let VRMInspectionError.resourceLimitExceeded(reason) {
+            throw AvatarImportError.resourceLimitExceeded(reason)
+        } catch {
+            throw AvatarImportError.invalidModel
         }
         guard report.outcome != .unsupported else {
             throw AvatarImportError.unsupported(report)
+        }
+
+        let parsedModel: VRM
+        do {
+            parsedModel = try VRMKitModelValidator.parse(fileURL: stagedURL)
+        } catch {
+            throw AvatarImportError.invalidModel
         }
 
         do {
@@ -411,6 +482,29 @@ actor AvatarImportService: AvatarImportServicing {
     }
 }
 
+private enum BoundedFileCopier {
+    static func copy(from sourceURL: URL, to destinationURL: URL, maximumBytes: Int64) throws -> Int64 {
+        let source = try FileHandle(forReadingFrom: sourceURL)
+        defer { try? source.close() }
+        guard FileManager.default.createFile(atPath: destinationURL.path, contents: nil) else {
+            throw AvatarImportError.fileOperationFailed
+        }
+        let destination = try FileHandle(forWritingTo: destinationURL)
+        defer { try? destination.close() }
+        var copiedBytes: Int64 = 0
+
+        while let chunk = try source.read(upToCount: 1_048_576), !chunk.isEmpty {
+            try Task.checkCancellation()
+            copiedBytes += Int64(chunk.count)
+            guard copiedBytes <= maximumBytes else {
+                throw AvatarImportError.fileTooLarge(maximumBytes: maximumBytes)
+            }
+            try destination.write(contentsOf: chunk)
+        }
+        return copiedBytes
+    }
+}
+
 private enum SHA256FileHasher {
     static func hash(fileURL: URL) throws -> String {
         let handle = try FileHandle(forReadingFrom: fileURL)
@@ -430,7 +524,7 @@ private enum GLBJSONReader {
     private static let glTFMagic = Data([0x67, 0x6C, 0x54, 0x46])
     private static let jsonChunkType: UInt32 = 0x4E4F534A
 
-    static func read(from fileURL: URL) throws -> [String: Any] {
+    static func read(from fileURL: URL, limits: VRMResourceLimits) throws -> [String: Any] {
         let handle = try FileHandle(forReadingFrom: fileURL)
         defer { try? handle.close() }
         let header = try readExactly(12, from: handle)
@@ -443,6 +537,9 @@ private enum GLBJSONReader {
         }
         let declaredLength = Int(header.littleEndianUInt32(at: 8))
         let actualLength = try handle.seekToEnd()
+        guard actualLength <= UInt64(limits.maximumFileBytes) else {
+            throw VRMInspectionError.resourceLimitExceeded("file size")
+        }
         guard declaredLength >= 20, UInt64(declaredLength) <= actualLength else {
             throw VRMInspectionError.invalidContainer
         }
@@ -454,6 +551,9 @@ private enum GLBJSONReader {
         guard chunkType == jsonChunkType, chunkLength > 0, 20 + chunkLength <= declaredLength else {
             throw VRMInspectionError.missingJSONChunk
         }
+        guard chunkLength <= limits.maximumJSONBytes else {
+            throw VRMInspectionError.resourceLimitExceeded("metadata size")
+        }
         var jsonData = try readExactly(chunkLength, from: handle)
         while jsonData.last == 0 || jsonData.last == 0x20 {
             jsonData.removeLast()
@@ -461,7 +561,92 @@ private enum GLBJSONReader {
         guard let root = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
             throw VRMInspectionError.malformedJSON
         }
+        try validateComplexity(root, fileHandle: handle, jsonChunkLength: chunkLength, limits: limits)
         return root
+    }
+
+    private static func validateComplexity(
+        _ root: [String: Any],
+        fileHandle: FileHandle,
+        jsonChunkLength: Int,
+        limits: VRMResourceLimits
+    ) throws {
+        let limitsByKey = [
+            ("nodes", limits.maximumNodes),
+            ("meshes", limits.maximumMeshes),
+            ("materials", limits.maximumMaterials),
+            ("textures", limits.maximumTextures),
+            ("images", limits.maximumImages),
+            ("skins", limits.maximumSkins),
+            ("animations", limits.maximumAnimations),
+            ("accessors", limits.maximumAccessors),
+        ]
+        for (key, maximum) in limitsByKey where (root[key] as? [Any])?.count ?? 0 > maximum {
+            throw VRMInspectionError.resourceLimitExceeded(key)
+        }
+
+        let primitiveCount = (root["meshes"] as? [[String: Any]] ?? []).reduce(0) {
+            $0 + (($1["primitives"] as? [Any])?.count ?? 0)
+        }
+        guard primitiveCount <= limits.maximumPrimitives else {
+            throw VRMInspectionError.resourceLimitExceeded("mesh primitives")
+        }
+
+        try validateImages(root, fileHandle: fileHandle, jsonChunkLength: jsonChunkLength, limits: limits)
+    }
+
+    private static func validateImages(
+        _ root: [String: Any],
+        fileHandle: FileHandle,
+        jsonChunkLength: Int,
+        limits: VRMResourceLimits
+    ) throws {
+        let images = root["images"] as? [[String: Any]] ?? []
+        let bufferViews = root["bufferViews"] as? [[String: Any]] ?? []
+        let binaryDataOffset = 20 + jsonChunkLength + 8
+        var totalImageBytes = 0
+
+        for image in images {
+            let data: Data
+            if let index = (image["bufferView"] as? NSNumber)?.intValue,
+               bufferViews.indices.contains(index) {
+                let view = bufferViews[index]
+                let byteLength = (view["byteLength"] as? NSNumber)?.intValue ?? 0
+                let byteOffset = (view["byteOffset"] as? NSNumber)?.intValue ?? 0
+                guard byteLength > 0, byteLength <= limits.maximumImageBytes,
+                      byteOffset >= 0, binaryDataOffset + byteOffset >= binaryDataOffset else {
+                    throw VRMInspectionError.resourceLimitExceeded("image data")
+                }
+                totalImageBytes += byteLength
+                guard totalImageBytes <= limits.maximumTotalImageBytes else {
+                    throw VRMInspectionError.resourceLimitExceeded("total image data")
+                }
+                try fileHandle.seek(toOffset: UInt64(binaryDataOffset + byteOffset))
+                data = try readExactly(byteLength, from: fileHandle)
+            } else if let uri = image["uri"] as? String,
+                      uri.hasPrefix("data:"),
+                      let comma = uri.firstIndex(of: ","),
+                      uri[..<comma].hasSuffix(";base64"),
+                      let decoded = Data(base64Encoded: String(uri[uri.index(after: comma)...])),
+                      decoded.count <= limits.maximumImageBytes {
+                totalImageBytes += decoded.count
+                guard totalImageBytes <= limits.maximumTotalImageBytes else {
+                    throw VRMInspectionError.resourceLimitExceeded("total image data")
+                }
+                data = decoded
+            } else {
+                throw VRMInspectionError.resourceLimitExceeded("external or unreadable image")
+            }
+
+            guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+                  let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+                  let width = properties[kCGImagePropertyPixelWidth] as? NSNumber,
+                  let height = properties[kCGImagePropertyPixelHeight] as? NSNumber,
+                  width.intValue > 0, height.intValue > 0,
+                  width.int64Value * height.int64Value <= Int64(limits.maximumImagePixels) else {
+                throw VRMInspectionError.resourceLimitExceeded("image dimensions")
+            }
+        }
     }
 
     private static func readExactly(_ count: Int, from handle: FileHandle) throws -> Data {
