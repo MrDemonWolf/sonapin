@@ -82,7 +82,7 @@ struct QRCodeView: View {
 
             do {
                 try await Task.sleep(for: .milliseconds(150))
-                let generatedRaster = try await Task.detached(priority: .userInitiated) {
+                let generatedRaster = try await Task.detached(priority: .userInitiated) { // concurrency-reviewed: Core Image rendering stays off the main actor.
                     try QRCodeGenerator.generate(configuration: configuration, targetPixelSize: 768)
                 }.value
                 try Task.checkCancellation()
