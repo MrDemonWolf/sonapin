@@ -4,22 +4,23 @@
 .marketing-page .brand, .marketing-page .site-nav { font-family: var(--font-display); }
 .marketing-page section[id] { scroll-margin-top: 96px; }
 .marketing-page .site-header { background: var(--navy); border-bottom: 1px solid var(--border); }
-.marketing-page .hero { position: relative; min-height: auto; padding-block: 64px 72px; gap: 48px; }
+.marketing-page .hero { position: relative; min-height: auto; padding-block: 36px 56px; gap: 40px; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
 .marketing-page .hero-copy { position: relative; z-index: 1; }
 .marketing-page .eyebrow { font-size: 12px; letter-spacing: .14em; font-weight: 700; }
-.marketing-page .hero h1 { font-size: clamp(58px, 6.4vw, 82px); line-height: .98; letter-spacing: -.055em; }
+.marketing-page .hero h1 { font-size: clamp(52px, 5.4vw, 72px); line-height: 1.04; letter-spacing: -.055em; }
 .marketing-page .hero-lede { max-width: 440px; font-size: 19px; line-height: 1.65; margin-block: 28px; }
 .marketing-page .actions { gap: 12px; }
 .marketing-page .button { border-radius: 12px; min-height: 48px; }
 .marketing-page .button--primary { box-shadow: none; }
 .marketing-page .store-note { margin-top: 20px; }
 .marketing-page .availability { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-.marketing-page .hero-proof { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); gap: 18px; }
+.marketing-page .hero-proof { margin-top: 28px; padding-top: 0; border-top: 0; gap: 18px; }
+.marketing-page .hero-proof span::before { content: "✓"; color: var(--cyan); margin-right: 7px; }
 .marketing-page .hero-proof span { border: 0; padding: 0; background: none; font-size: 12px; }
-.marketing-page .hero-stage { position: relative; min-height: 680px; border-radius: 24px; background: radial-gradient(ellipse at 50% 45%, rgb(15 172 237 / 24%), transparent 65%), repeating-linear-gradient(0deg, transparent 0 47px, rgb(125 223 255 / 6%) 47px 48px); border: 1px solid var(--border); }
+.marketing-page .hero-stage { position: relative; min-height: 700px; border-radius: 0; background: radial-gradient(ellipse at 50% 45%, rgb(15 172 237 / 18%), transparent 65%); border: 0; }
 .marketing-page .hero-stage::before { content: none; }
-.marketing-page .badge-demo { padding-top: 34px; }
-.marketing-page .digital-badge { width: 250px; transform: rotate(-3deg); box-shadow: 18px 25px 60px rgb(0 0 0 / 25%); }
+.marketing-page .badge-demo { padding-top: 0; }
+.marketing-page .digital-badge { width: 270px; transform: rotate(-3deg); box-shadow: 18px 25px 60px rgb(0 0 0 / 25%); }
 .marketing-page #screen-caption { font-size: 11px; }
 .marketing-page .features-section, .marketing-page .how-section { padding-block: 80px; border-top: 1px solid var(--border); }
 .marketing-page .section-header { max-width: 650px; margin-bottom: 40px; }
@@ -44,7 +45,7 @@
 .marketing-page .closing-section { padding-block: 0 72px; }
 .marketing-page .closing-card { position: relative; border-radius: 24px; padding: 56px; background: rgb(15 172 237 / 10%); border: 1px solid var(--border); }
 .marketing-page .closing-card h2 { font-size: clamp(40px, 5vw, 64px); letter-spacing: -.04em; }
-:root[data-theme="light"] .marketing-page .hero-stage { background-color: #e4eff7; }
+:root[data-theme="light"] .marketing-page .hero-stage { background-color: transparent; }
 @media (max-width: 900px) {
   .marketing-page .hero { gap: 24px; padding-top: 40px; }
   .marketing-page .hero h1 { font-size: 64px; }
