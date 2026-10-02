@@ -13,7 +13,7 @@
 .marketing-page .availability { display: flex; align-items: center; gap: 8px; font-size: 12px; }
 .marketing-page .hero-proof { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); gap: 18px; }
 .marketing-page .hero-proof span { border: 0; padding: 0; background: none; font-size: 12px; }
-.marketing-page .hero-stage { position: relative; min-height: 680px; border-radius: 180px 180px 24px 24px; background: radial-gradient(ellipse at 50% 45%, rgb(15 172 237 / 24%), transparent 65%), repeating-linear-gradient(0deg, transparent 0 47px, rgb(125 223 255 / 6%) 47px 48px); border: 1px solid var(--border); }
+.marketing-page .hero-stage { position: relative; min-height: 680px; border-radius: 24px; background: radial-gradient(ellipse at 50% 45%, rgb(15 172 237 / 24%), transparent 65%), repeating-linear-gradient(0deg, transparent 0 47px, rgb(125 223 255 / 6%) 47px 48px); border: 1px solid var(--border); }
 .marketing-page .hero-stage::before { content: none; }
 .marketing-page .badge-demo { padding-top: 34px; }
 .marketing-page .digital-badge { width: 250px; transform: rotate(-3deg); box-shadow: 18px 25px 60px rgb(0 0 0 / 25%); }
