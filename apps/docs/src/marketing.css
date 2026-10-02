@@ -1,4 +1,7 @@
-.marketing-page { background: var(--navy); }
+@font-face { font-family: Montserrat; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/montserrat-latin.woff2") format("woff2"); }
+@font-face { font-family: Roboto; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/roboto-latin.woff2") format("woff2"); }
+.marketing-page { --font-display: Montserrat, sans-serif; --font-body: Roboto, sans-serif; background: var(--navy); font-family: var(--font-body); }
+.marketing-page .brand, .marketing-page .site-nav { font-family: var(--font-display); }
 .marketing-page section[id] { scroll-margin-top: 96px; }
 .marketing-page .site-header { background: var(--navy); border-bottom: 1px solid var(--border); }
 .marketing-page .hero { position: relative; min-height: auto; padding-block: 64px 72px; gap: 48px; }
