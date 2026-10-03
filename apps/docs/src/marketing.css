@@ -1,0 +1,88 @@
+@font-face { font-family: Montserrat; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/montserrat-latin.woff2") format("woff2"); }
+@font-face { font-family: Roboto; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/roboto-latin.woff2") format("woff2"); }
+.marketing-page { --font-display: Montserrat, sans-serif; --font-body: Roboto, sans-serif; background: var(--navy); font-family: var(--font-body); }
+.marketing-page .brand, .marketing-page .site-nav { font-family: var(--font-display); }
+.marketing-page section[id] { scroll-margin-top: 96px; }
+.marketing-page { --glass-bg: rgb(24 40 66 / 82%); --glass-line: rgb(255 255 255 / 16%); --glass-highlight: rgb(255 255 255 / 10%); }
+.marketing-page .site-header { width: min(1120px, calc(100% - 24px)); margin: 12px auto 0; top: 12px; border: 1px solid var(--glass-line); border-radius: 22px; background: var(--glass-bg); box-shadow: inset 0 1px 0 var(--glass-highlight), 0 8px 32px rgb(0 0 0 / 16%); }
+.marketing-page .site-header .nav-wrap { width: calc(100% - 32px); }
+.marketing-page .button--secondary, .marketing-page .theme-toggle, .marketing-page .mobile-menu summary,
+.marketing-page .screen-picker button, .marketing-page .screen-rotation-toggle { background: var(--glass-bg); border: 1px solid var(--glass-line); box-shadow: inset 0 1px 0 var(--glass-highlight), 0 4px 16px rgb(0 0 0 / 8%); }
+.marketing-page .screen-picker button { border-radius: 12px; }
+.marketing-page .screen-picker button[aria-pressed="true"] { background: rgb(15 172 237 / 20%); border-color: var(--cyan); color: var(--ink); }
+.marketing-page .mobile-menu__panel { background: var(--glass-bg); border-color: var(--glass-line); box-shadow: 0 12px 32px rgb(0 0 0 / 20%); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .marketing-page .site-header, .marketing-page .mobile-menu__panel { background: rgb(24 40 66 / 68%); -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%); }
+}
+:root[data-theme="light"] .marketing-page { --glass-bg: rgb(255 255 255 / 86%); --glass-line: rgb(9 21 51 / 14%); --glass-highlight: rgb(255 255 255 / 85%); }
+:root[data-theme="light"] .marketing-page .button--primary { color: white; }
+:root[data-theme="light"] .marketing-page .site-header,
+:root[data-theme="light"] .marketing-page .mobile-menu__panel { background: rgb(255 255 255 / 78%); }
+@media (prefers-reduced-transparency: reduce) {
+  .marketing-page .site-header, .marketing-page .mobile-menu__panel { background: var(--navy); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+.marketing-page .hero { position: relative; min-height: auto; padding-block: 36px 56px; gap: 40px; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
+.marketing-page .hero-copy { position: relative; z-index: 1; }
+.marketing-page .eyebrow { font-size: 12px; letter-spacing: .14em; font-weight: 700; }
+.marketing-page .hero h1 { font-size: clamp(52px, 5.4vw, 72px); line-height: 1.04; letter-spacing: -.055em; }
+.marketing-page .hero-lede { max-width: 440px; font-size: 19px; line-height: 1.65; margin-block: 28px; }
+.marketing-page .actions { gap: 12px; }
+.marketing-page .button { border-radius: 12px; min-height: 48px; }
+.marketing-page .button--primary { box-shadow: none; }
+.marketing-page .store-note { margin-top: 20px; }
+.marketing-page .availability { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.marketing-page .hero-proof { margin-top: 28px; padding-top: 0; border-top: 0; gap: 18px; }
+.marketing-page .hero-proof span::before { content: "✓"; color: var(--cyan); margin-right: 7px; }
+.marketing-page .hero-proof span { border: 0; padding: 0; background: none; font-size: 12px; }
+.marketing-page .hero-stage { position: relative; min-height: 700px; border-radius: 0; background: radial-gradient(ellipse at 50% 45%, rgb(15 172 237 / 18%), transparent 65%); border: 0; }
+.marketing-page .hero-stage::before { content: none; }
+.marketing-page .badge-demo { padding-top: 0; }
+.marketing-page .digital-badge { width: 270px; transform: rotate(-3deg); box-shadow: 18px 25px 60px rgb(0 0 0 / 25%); }
+.marketing-page #screen-caption { font-size: 11px; }
+.marketing-page .features-section, .marketing-page .how-section { padding-block: 80px; border-top: 1px solid var(--border); }
+.marketing-page .section-header { max-width: 650px; margin-bottom: 40px; }
+.marketing-page .section-header h2 { font-size: clamp(32px, 4vw, 52px); letter-spacing: -.04em; line-height: 1.1; }
+.marketing-page .feature-grid { gap: 0; border-block: 1px solid var(--border); }
+.marketing-page .feature-card { min-height: 250px; border: 0; border-radius: 0; background: none; box-shadow: none; padding: 32px; grid-template-columns: 1fr; }
+.marketing-page .feature-card:nth-child(odd) { border-right: 1px solid var(--border); }
+.marketing-page .feature-card:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+.marketing-page .feature-card--accent { background: rgb(15 172 237 / 7%); }
+.marketing-page .feature-card h3 { font-size: 26px; letter-spacing: -.025em; line-height: 1.2; }
+.marketing-page .feature-card p { max-width: 380px; font-size: 16px; }
+.marketing-page .feature-card__number { font-size: 10px; letter-spacing: .14em; }
+.marketing-page .step-list { gap: 24px; }
+.marketing-page .step-list > div { padding: 24px 24px 0; overflow: hidden; background: linear-gradient(145deg, var(--glass-highlight), transparent), var(--glass-bg); border: 1px solid var(--glass-line); border-radius: 20px; box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 32px rgb(0 0 0 / 8%); }
+.marketing-page .step-list > div > span { width: auto; height: auto; border: 0; background: none; padding: 0; font-size: 10px; letter-spacing: .12em; }
+.marketing-page .step-list h3 { margin-top: 16px; font-size: 24px; }
+.marketing-page .step-list p { min-height: 70px; }
+.marketing-page .step-list img { display: block; width: min(100%, 220px); height: auto; margin: 24px auto 0; border: 5px solid #25334b; border-bottom: 0; border-radius: 28px 28px 0 0; }
+.marketing-page .guide-section { padding-block: 40px 72px; }
+.marketing-page .guide-card { border-radius: 20px; background: var(--glass-bg); border-color: var(--glass-line); box-shadow: inset 0 1px 0 var(--glass-highlight); }
+.marketing-page .faq-list { margin-top: 56px; }
+.marketing-page .closing-section { padding-block: 0 72px; }
+.marketing-page .closing-card { position: relative; border-radius: 24px; padding: 56px; background: linear-gradient(135deg, rgb(15 172 237 / 15%), transparent), var(--glass-bg); border: 1px solid var(--glass-line); box-shadow: inset 0 1px 0 var(--glass-highlight), 0 16px 40px rgb(0 0 0 / 10%); }
+.marketing-page .closing-card h2 { font-size: clamp(40px, 5vw, 64px); letter-spacing: -.04em; }
+:root[data-theme="light"] .marketing-page .hero-stage { background-color: transparent; }
+@media (max-width: 900px) {
+  .marketing-page .hero { gap: 24px; padding-top: 40px; }
+  .marketing-page .hero h1 { font-size: 64px; }
+  .marketing-page .hero-proof { flex-wrap: wrap; }
+  .marketing-page .step-list { gap: 12px; }
+  .marketing-page .step-list > div { padding: 18px 16px 0; }
+}
+@media (max-width: 700px) {
+  .marketing-page .hero { grid-template-columns: 1fr; padding-block: 40px; }
+  .marketing-page .hero h1 { font-size: clamp(44px, 12vw, 72px); }
+  .marketing-page .hero-lede { font-size: 18px; }
+  .marketing-page .hero-stage { min-height: 680px; margin-top: 16px; }
+  .marketing-page .features-section, .marketing-page .how-section { padding-block: 48px; }
+  .marketing-page .feature-grid, .marketing-page .step-list { grid-template-columns: 1fr; }
+  .marketing-page .feature-card { min-height: auto; padding: 28px 20px; }
+  .marketing-page .feature-card:nth-child(odd) { border-right: 0; }
+  .marketing-page .feature-card:not(:last-child) { border-bottom: 1px solid var(--border); }
+  .marketing-page .step-list { gap: 20px; }
+  .marketing-page .step-list > div { padding: 24px 24px 0; }
+  .marketing-page .step-list p { min-height: auto; }
+  .marketing-page .step-list img { width: 230px; }
+  .marketing-page .closing-card { padding: 32px 24px; }
+}

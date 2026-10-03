@@ -5,10 +5,9 @@ test("shows TestFlight release status and a working source link", async ({ page 
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your sona");
   await expect(page.getByRole("link", { name: /Explore the badge/i })).toHaveAttribute("href", "#features");
-  await expect(page.getByRole("button", { name: /TestFlight release active/i })).toHaveCount(2);
-  for (const button of await page.getByRole("button", { name: /TestFlight release active/i }).all()) {
-    await expect(button).toBeDisabled();
-  }
+  await expect(page.locator(".availability")).toContainText("Private TestFlight release");
+  await expect(page.getByRole("link", { name: "Read the setup guide" })).toHaveAttribute("href", "/guide/");
+  await expect(page.locator(".actions button[disabled]")).toHaveCount(0);
   await expect(page.getByRole("link", { name: /View source on GitHub/i }).first()).toHaveAttribute(
     "href",
     "https://github.com/MrDemonWolf/sonapin",
@@ -193,7 +192,7 @@ test("keeps the page usable on a narrow phone", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page.locator(".hero-copy .store-button")).toBeVisible();
+  await expect(page.locator(".hero-copy .availability")).toBeVisible();
   await expect(page.getByRole("img", { name: /SonaPin badge showing/i })).toBeVisible();
   const overflow = await page.evaluate(() => ({
     width: document.documentElement.scrollWidth,
